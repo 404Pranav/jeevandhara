@@ -333,11 +333,43 @@
             margin-bottom: 20px;
         }
 
-        .stethoscope-icon {
-            font-size: 50px;
-            margin-bottom: 10px;
-            display: block;
-            color: rgba(255, 255, 255, 0.8);
+        .hero-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+        }
+
+        /* Dashboard Stats Section */
+        .dashboard-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            min-width: 120px;
+        }
+
+        .stat-item h3 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-teal);
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 500;
+            margin: 0;
         }
 
         /* Search Widget */
@@ -1405,7 +1437,7 @@
                     <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down"
                             style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
-                        <li><a href="#" data-key="donor_login">Donor Login</a></li>
+                        <li><a href="main_donar_login.html" data-key="donor_login">Donor Login</a></li>
                         <li><a href="blood_availability.html" data-key="availability_sub">Blood Availability</a></li>
                         <li><a href="#" data-key="directory_sub">Blood Center Directory</a></li>
                         <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> <span
@@ -1454,6 +1486,29 @@
         </div>
 
 
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome to Jeevandhara</h1>
+            <p class="hero-subtitle">Your Blood Donation Dashboard</p>
+            
+            <div id="dashboard-stats" class="dashboard-stats">
+                <div class="stat-item">
+                    <h3>0</h3>
+                    <p>Total Donations</p>
+                </div>
+                <div class="stat-item">
+                    <h3>0</h3>
+                    <p>Badges Earned</p>
+                </div>
+                <div class="stat-item">
+                    <h3>0</h3>
+                    <p>Rewards</p>
+                </div>
+                <div class="stat-item">
+                    <h3>Loading...</h3>
+                    <p>Last Donation</p>
+                </div>
+            </div>
+        </div>
         
     </header>
 
@@ -1880,24 +1935,76 @@
 
     </script>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signOut 
+        } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js';
+        import { firebaseConfig } from '../config/firebase-config.js';
+        import { 
+            getUserProfile, 
+            createUserProfile, 
+            getUserDashboardStats,
+            checkAndAwardBadges
+        } from '../config/supabase-client.js';
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
         const authContainer = document.getElementById('auth-section');
 
-        // --- CONFIGURATION ---
-        // const authContainer = document.getElementById('auth-section');
+        // Global user data
+        let currentUser = null;
+        let userProfile = null;
+        let dashboardStats = null;
+
         // 1. MAIN INITIALIZATION
         document.addEventListener('DOMContentLoaded', () => {
-            updateAuthUI();
+            initializeAuth();
+            loadDashboardData();
         });
 
-        // 2. CONSOLIDATED UI UPDATE FUNCTION
-        function updateAuthUI() {
-            const storedUser = localStorage.getItem('donorName');
-            const dataStr = localStorage.getItem('donorData');
+        // 2. AUTHENTICATION SETUP
+        function initializeAuth() {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    currentUser = user;
+                    // Load user profile from Supabase
+                    userProfile = await getUserProfile(user.uid);
+                    
+                    // If no profile exists in Supabase, create one from localStorage
+                    if (!userProfile) {
+                        const localData = localStorage.getItem('userData');
+                        if (localData) {
+                            const parsedData = JSON.parse(localData);
+                            userProfile = await createUserProfile(parsedData);
+                        }
+                    }
+                    
+                    updateAuthUI();
+                    loadDashboardData();
+                } else {
+                    // User is signed out
+                    currentUser = null;
+                    userProfile = null;
+                    dashboardStats = null;
+                    updateAuthUI();
+                    // Redirect to login if not authenticated
+                    if (!window.location.pathname.includes('main_donar_login.html')) {
+                        window.location.href = 'main_donar_login.html';
+                    }
+                }
+            });
+        }
 
-            if (storedUser && storedUser.trim() !== "") {
+        // 3. UI UPDATE FUNCTION
+        function updateAuthUI() {
+            if (currentUser && userProfile) {
                 // A. RENDER AVATAR & DROPDOWN
-                const names = storedUser.trim().split(' ');
+                const names = userProfile.name.trim().split(' ');
                 let initials = names[0].charAt(0);
                 if (names.length > 1) initials += names[names.length - 1].charAt(0);
 
@@ -1908,10 +2015,10 @@
                     </div>
                     <div class="profile-dropdown-menu" id="profileMenu">
                         <div style="padding: 10px 20px; font-size: 11px; color: #888; border-bottom: 1px solid #eee;">
-                            Signed in as <br> <strong style="color: #333;">${storedUser}</strong>
+                            Signed in as <br> <strong style="color: #333;">${userProfile.name}</strong>
                         </div>
                         <a href="profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
-                        <a href="front_page.html" onclick="logoutDonor(event)" class="logout-btn">
+                        <a href="#" onclick="logoutUser(event)" class="logout-btn">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
                     </div>
@@ -1932,37 +2039,33 @@
                 };
 
                 // B. CHECK PROFILE COMPLETENESS FOR ALERT BAR
-                checkProfileCompleteness(dataStr);
+                checkProfileCompleteness();
 
             } else {
                 // RENDER LOGIN BUTTON IF NO USER
                 authContainer.innerHTML = `
-                <a href="front_page.html" onclick="simulateLogin(event)">
+                <a href="main_donar_login.html">
                     <i class="fas fa-user-circle"></i> Donor Login
                 </a>
             `;
             }
         }
 
-        // 3. INTERNAL PROFILE CHECKER
-        function checkProfileCompleteness(dataStr) {
+        // 4. PROFILE COMPLETENESS CHECKER
+        function checkProfileCompleteness() {
             const alertBar = document.getElementById('profile-alert');
-            if (!alertBar) return;
+            if (!alertBar || !userProfile) return;
 
             let isMissing = false;
-            if (!dataStr) {
-                isMissing = true;
-            } else {
-                const data = JSON.parse(dataStr);
-                // List of critical fields to check
-                const checks = [
-                    !data.phone || data.phone.trim() === "" || data.phone.includes("555-0128"),
-                    !data.bloodGroup || data.bloodGroup.trim() === "",
-                    !data.email || data.email.trim() === "",
-                    !data.address || data.address.trim() === ""
-                ];
-                isMissing = checks.some(condition => condition === true);
-            }
+            
+            // Check critical fields
+            const checks = [
+                !userProfile.phone || userProfile.phone.trim() === "",
+                !userProfile.blood_group || userProfile.blood_group.trim() === "",
+                !userProfile.email || userProfile.email.trim() === ""
+            ];
+            
+            isMissing = checks.some(condition => condition === true);
 
             if (isMissing) {
                 alertBar.classList.remove('hidden');
@@ -1973,78 +2076,94 @@
             }
         }
 
-        // 4. LOGIN & LOGOUT ACTIONS
-        function simulateLogin(e) {
-            e.preventDefault();
-            const name = prompt("Enter Full Name:");
-            if (name) {
-                localStorage.setItem('donorName', name);
-                updateAuthUI();
+        // 5. DASHBOARD DATA LOADING
+        async function loadDashboardData() {
+            if (!currentUser) return;
+
+            try {
+                dashboardStats = await getUserDashboardStats(currentUser.uid);
+                
+                if (dashboardStats) {
+                    updateDashboardUI();
+                    // Check and award badges
+                    await checkAndAwardBadges(currentUser.uid);
+                }
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
             }
         }
 
-        function logoutDonor(e) {
-            e.preventDefault();
+        // 6. DASHBOARD UI UPDATE
+        function updateDashboardUI() {
+            if (!dashboardStats) return;
+
+            // Update welcome message
+            const welcomeElement = document.querySelector('.hero-title');
+            if (welcomeElement && userProfile) {
+                welcomeElement.innerHTML = `Welcome back, ${userProfile.name.split(' ')[0]}!`;
+            }
+
+            // Update stats in the hero section or create a stats section
+            updateDashboardStats(dashboardStats);
+        }
+
+        // 7. DASHBOARD STATS DISPLAY
+        function updateDashboardStats(stats) {
+            // Update stats in the dashboard
+            const statsContainer = document.getElementById('dashboard-stats');
+            if (statsContainer) {
+                const lastDonationText = stats.lastDonation 
+                    ? new Date(stats.lastDonation.donation_date).toLocaleDateString()
+                    : 'No donations yet';
+                
+                statsContainer.innerHTML = `
+                    <div class="stat-item">
+                        <h3>${stats.totalDonations}</h3>
+                        <p>Total Donations</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>${stats.badges}</h3>
+                        <p>Badges Earned</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>${stats.rewards}</h3>
+                        <p>Rewards</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>${lastDonationText}</h3>
+                        <p>Last Donation</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 8. LOGOUT FUNCTION
+        async function logoutUser(event) {
+            event.preventDefault();
             if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem('donorName');
-                localStorage.removeItem('donorData');
-                window.location.reload();
+                try {
+                    await signOut(auth);
+                    // Clear local storage
+                    localStorage.removeItem('userId');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userData');
+                    // Redirect to home page
+                    window.location.href = 'front_page.html';
+                } catch (error) {
+                    console.error('Error signing out:', error);
+                    alert('Error signing out. Please try again.');
+                }
             }
         }
 
-        // 5. GLOBAL CLICK TO CLOSE DROPDOWN
+        // 9. GLOBAL CLICK TO CLOSE DROPDOWN
         window.onclick = () => {
             const menu = document.getElementById('profileMenu');
             if (menu) menu.classList.remove('show');
         };
 
-        function refreshUserUI() {
-            const name = localStorage.getItem('donorName');
-            const dataStr = localStorage.getItem('donorData');
-            const authContainer = document.getElementById('auth-section');
-            const alertBar = document.getElementById('profile-alert');
-
-            // 1. Initials Circle Logic
-            if (name && authContainer) {
-                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-                authContainer.innerHTML = `<div style="width:40px; height:40px; background:#2c9786; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">${initials}</div>`;
-            }
-
-            // 2. The Strict "Single Detail" Check
-            if (alertBar) {
-                let showNotice = false;
-
-                if (!dataStr) {
-                    // No data saved at all
-                    showNotice = true;
-                } else {
-                    const data = JSON.parse(dataStr);
-
-                    // Check each field individually
-                    const isPhoneMissing = !data.phone || data.phone.trim() === "" || data.phone === "(405) 555-0128";
-                    const isBloodMissing = !data.bloodGroup || data.bloodGroup.trim() === "";
-                    const isEmailMissing = !data.email || data.email.trim() === "";
-                    const isAddressMissing = !data.address || data.address.trim() === "";
-                    const isLocationMissing = !location.email || data.location.trim() === "";
-                    const isPostol_codeMissing = !posatl_code.email || data.postal_code.trim() === "";
-                    // Add any other fields you want to require here (e.g., address, dob)
-
-                    // If ANY of these are true, we show the notice
-                    if (isPhoneMissing || isBloodMissing || isEmailMissing || isAddressMissing || isLocationMissing || isPostol_codeMissing) {
-                        showNotice = true;
-                    }
-                }
-
-                if (showNotice) {
-                    alertBar.style.display = 'flex'; // This makes the cloud appear
-                } else {
-                    alertBar.style.display = 'none'; // This hides it
-                }
-            }
-        }
-
-        // Run on page load to check if user is already logged in
-        document.addEventListener('DOMContentLoaded', updateAuthUI);
+        // Make logout function global
+        window.logoutUser = logoutUser;
     </script>
 
 

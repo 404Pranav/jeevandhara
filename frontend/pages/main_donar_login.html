@@ -116,6 +116,24 @@
         }
         .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
 
+        .btn-google {
+            width: 100%; padding: 14px; margin-top: 12px;
+            background: #ffffff; color: #202124;
+            border: 1px solid #dadce0; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px; font-weight: 600; font-size: 15px; cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+        .btn-google:hover {
+            background: #f7f7f7;
+            transform: translateY(-1px);
+        }
+
+        .btn-google i {
+            color: #4285f4;
+            font-size: 18px;
+        }
+
         .links { margin-top: 20px; display: flex; justify-content: center; gap: 5px; font-size: 13px; }
         .link-text { color: var(--primary-teal); cursor: pointer; font-weight: 700; text-decoration: none; }
 
@@ -178,6 +196,9 @@
                         </div>
 
                         <button type="submit" class="btn-primary">Sign In</button>
+                        <button type="button" class="btn-google" onclick="handleGoogleSignIn()">
+                            <i class="fab fa-google"></i> Sign in with Google
+                        </button>
                     </form>
 
                     <div class="links">
@@ -250,78 +271,192 @@
         </div>
     </div>
 
-    <script>
-    const MAIN_UI_PAGE = "donar_test.html"; 
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js';
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword,
+            signInWithPopup,
+            GoogleAuthProvider,
+            signOut,
+            onAuthStateChanged 
+        } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js';
+        import { firebaseConfig } from '../config/firebase-config.js';
 
-    function toggleForms(type) {
-        document.getElementById('form-login').classList.toggle('hidden', type === 'register');
-        document.getElementById('form-register').classList.toggle('hidden', type === 'login');
-    }
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-    function handleLogin(event) {
-        event.preventDefault();
-        const email = document.getElementById('login-email').value;
-        const pass = document.getElementById('login-password').value;
-        const errorMsg = document.getElementById('login-error-msg');
-        const successMsg = document.getElementById('login-success-msg');
+        const MAIN_UI_PAGE = "donar_test.html";
 
-        // Get stored data
-        const storedData = JSON.parse(localStorage.getItem('donorData'));
-
-        if (storedData && email === storedData.email && pass === storedData.password) {
-            errorMsg.classList.add('hidden');
-            successMsg.classList.remove('hidden');
-
-            // --- ADD THESE TWO LINES HERE ---
-            const fullName = `${storedData.fname} ${storedData.lname}`.trim();
-            localStorage.setItem('donorName', fullName); 
-            localStorage.setItem('donorData', JSON.stringify(storedData)); // For the Alert
-            // --------------------------------
-            
-            // Set session (so the profile page knows who is logged in)
-            localStorage.setItem('currentUser', JSON.stringify(storedData));
-
-            setTimeout(() => {
-                window.location.href = MAIN_UI_PAGE;
-            }, 1200);
-        } else {
-            errorMsg.innerText = "Invalid email or password.";
-            errorMsg.classList.remove('hidden');
+        function toggleForms(type) {
+            document.getElementById('form-login').classList.toggle('hidden', type === 'register');
+            document.getElementById('form-register').classList.toggle('hidden', type === 'login');
         }
-    }
 
-    function handleRegister(e) {
-        e.preventDefault();
-        
-        const rawName = document.getElementById('reg-name').value.trim();
-        const phone = document.getElementById('reg-phone').value;
-        const email = document.getElementById('reg-email').value;
-        const gender = document.querySelector('input[name="gender"]:checked').value;
-        const blood = document.getElementById('reg-blood').value;
-        const password = document.getElementById('reg-password').value;
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorMsg = document.getElementById('login-error-msg');
+            const successMsg = document.getElementById('login-success-msg');
 
-        const nameParts = rawName.split(/\s+/); 
-        let fname = nameParts[0], mname = "", lname = "";
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                errorMsg.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+                
+                // Store user info in localStorage for dashboard
+                localStorage.setItem('userId', user.uid);
+                localStorage.setItem('userEmail', user.email);
+                if (user.displayName) {
+                    localStorage.setItem('donorName', user.displayName);
+                }
+                
+                setTimeout(() => {
+                    window.location.href = MAIN_UI_PAGE;
+                }, 1200);
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                let errorMessage = 'Login failed. Please try again.';
+                
+                switch (error.code) {
+                    case 'auth/user-not-found':
+                        errorMessage = 'No account found with this email.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMessage = 'Incorrect password.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Invalid email address.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = 'This account has been disabled.';
+                        break;
+                }
+                
+                errorMsg.innerText = errorMessage;
+                errorMsg.classList.remove('hidden');
+                successMsg.classList.add('hidden');
+            }
+        }
 
-        if (nameParts.length === 2) { lname = nameParts[1]; } 
-        else if (nameParts.length >= 3) { mname = nameParts[1]; lname = nameParts.slice(2).join(" "); }
+        async function handleGoogleSignIn() {
+            const errorMsg = document.getElementById('login-error-msg');
+            const successMsg = document.getElementById('login-success-msg');
+            const provider = new GoogleAuthProvider();
 
-        const donorData = {
-            fname, mname, lname, phone, email, gender, 
-            bloodGroup: blood, password, // Password stored for verification
-            location: "Atlanta, USA"
-        };
+            try {
+                const userCredential = await signInWithPopup(auth, provider);
+                const user = userCredential.user;
 
-        localStorage.setItem('donorData', JSON.stringify(donorData)); 
-        localStorage.setItem('donorName', rawName);
-        localStorage.setItem('currentUser', JSON.stringify(donorData));
+                errorMsg.classList.add('hidden');
+                successMsg.classList.remove('hidden');
 
-        document.getElementById('reg-success-msg').classList.remove('hidden');
-        
-        setTimeout(() => {
-            window.location.href = MAIN_UI_PAGE; 
-        }, 1500);
-    }
+                localStorage.setItem('userId', user.uid);
+                localStorage.setItem('userEmail', user.email);
+                if (user.displayName) {
+                    localStorage.setItem('donorName', user.displayName);
+                }
+
+                setTimeout(() => {
+                    window.location.href = MAIN_UI_PAGE;
+                }, 1000);
+            } catch (error) {
+                console.error('Google sign-in error:', error);
+                let errorMessage = 'Google sign-in failed. Please try again.';
+                if (error.code === 'auth/popup-closed-by-user') {
+                    errorMessage = 'Google sign-in was canceled.';
+                } else if (error.code === 'auth/cancelled-popup-request') {
+                    errorMessage = 'Google sign-in is already in progress.';
+                }
+                errorMsg.innerText = errorMessage;
+                errorMsg.classList.remove('hidden');
+                successMsg.classList.add('hidden');
+            }
+        }
+
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const rawName = document.getElementById('reg-name').value.trim();
+            const phone = document.getElementById('reg-phone').value;
+            const email = document.getElementById('reg-email').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const bloodGroup = document.getElementById('reg-blood').value;
+            const password = document.getElementById('reg-password').value;
+
+            try {
+                // Create Firebase user
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // Store additional user data in localStorage (will be synced to Supabase later)
+                const userData = {
+                    uid: user.uid,
+                    name: rawName,
+                    phone: phone,
+                    email: email,
+                    gender: gender,
+                    bloodGroup: bloodGroup,
+                    createdAt: new Date().toISOString()
+                };
+                
+                localStorage.setItem('userData', JSON.stringify(userData));
+                localStorage.setItem('userId', user.uid);
+                localStorage.setItem('userEmail', user.email);
+                
+                document.getElementById('reg-success-msg').classList.remove('hidden');
+                
+                setTimeout(() => {
+                    window.location.href = MAIN_UI_PAGE;
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                let errorMessage = 'Registration failed. Please try again.';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'An account with this email already exists.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Password should be at least 6 characters.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'Invalid email address.';
+                        break;
+                }
+                
+                // Show error in registration form
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'error-msg';
+                errorDiv.innerText = errorMessage;
+                errorDiv.style.marginBottom = '15px';
+                
+                const form = document.querySelector('#form-register form');
+                const existingError = form.querySelector('.error-msg');
+                if (existingError) existingError.remove();
+                form.insertBefore(errorDiv, form.querySelector('.btn-primary'));
+            }
+        }
+
+        // Check if user is already logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user && window.location.pathname.includes('main_donar_login.html')) {
+                // User is already logged in, redirect to dashboard
+                window.location.href = MAIN_UI_PAGE;
+            }
+        });
+
+        // Make functions global
+        window.toggleForms = toggleForms;
+        window.handleLogin = handleLogin;
+        window.handleRegister = handleRegister;
     </script>
 </body>
 </html>

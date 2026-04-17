@@ -1,0 +1,15 @@
+{
+  "name": "jeevandhara",
+  "version": "1.0.0",
+  "description": "Jeevandhara - Blood Donation Network Platform",
+  "private": true,
+  "scripts": {
+    "start": "serve -l 3000",
+    "dev": "serve",
+    "build": "echo 'Static site built'"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}
