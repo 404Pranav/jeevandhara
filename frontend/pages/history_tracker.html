@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation History - Jeevandhara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
+    <style>
+        /* --- CORE VARIABLES & RESETS --- */
+        :root {
+            --logo-height: 160px;
+            --primary-gradient: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            --primary-teal: #2c9786;
+            --accent-orange: #f59e0b;
+            --blood-red: #e63946;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --bg-light: #fdfdfd;
+            --gold-highlight: #ffd700;
+            --border-color: #e5e7eb;
+            --soft-green: #d1fae5;
+            --soft-red: #fee2e2;
+            --soft-orange: #ffedd5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: var(--text-dark); background-color: #f8f9fc; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+       button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+        /* --- NAVBAR STYLES --- */
+        .header-bg { background: var(--primary-gradient); color: var(--white); position: relative; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: -10px 50px; position: relative; z-index: 100; min-height: 100px; }
+
+        /* --- SCROLLING TICKER STYLES --- */
+        .scrolling-ticker {
+            width: 100%;
+            background: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            overflow: hidden;
+            padding: 12px 0;
+            position: relative;
+            z-index: 99;
+            margin-top: 0px; 
+        }
+
+        .ticker-track {
+            display: flex;
+            width: fit-content;
+            animation: scroll-infinite 20s linear infinite;
+        }
+
+        .ticker-content {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-content span {
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-right: 50px;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll-infinite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .logo { display: flex; align-items: center; margin-left: 60px; margin-top: 20px; }
+        .logo img { height: 100px; width: auto; object-fit: contain; }
+        
+        .nav-links { 
+            display: flex; 
+            gap: 25px; 
+            align-items: center; 
+             margin-top: 20px; 
+    
+    /* --- NEW CENTERING LOGIC --- */
+    position: absolute;       /* 1. Take it out of the normal flow */
+    left: 50%;                /* 2. Move it to the middle of the screen */
+    transform: translateX(-50%); /* 3. Perfect center alignment */
+    margin-left: 10px;           /* 4. Remove your old manual margin */
+    /* --------------------------- */
+    margin-top: 20px;
+        }
+
+        .nav-item { position: relative; padding: 10px 0; }
+        .nav-item > a { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 5px; position: relative; transition: color 0.3s ease; }
+        .nav-item > a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--gold-highlight); transition: width 0.3s ease-in-out; }
+        .nav-item:hover > a { color: var(--gold-highlight); text-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+        .nav-item:hover > a::after { width: 100%; }
+
+        .dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(15px); background: rgba(255, 255, 255, 0.95); min-width: 240px; padding: 15px 0; border-radius: 12px; box-shadow: 5px 10px 30px rgba(0,0,0,0.1); opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1000; }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown li a { display: block; padding: 10px 20px 10px 30px; color: var(--text-dark); font-size: 13px; font-weight: 500; position: relative; transition: 0.3s ease; }
+        .dropdown li a::before { content: '\f043'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 10px; top: 50%; transform: translateY(-50%) scale(0); color: var(--blood-red); font-size: 14px; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); height: 16px; line-height: 16px; }
+        .dropdown li a:hover { color: var(--blood-red); transform: translateX(5px); background: transparent; }
+        .dropdown li a:hover::before { transform: translateY(-50%) scale(1); }
+        .dropdown li a.sos-link { color: #e63946; font-weight: 700; }
+
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+
+        @media (max-width: 1000px) {
+            .navbar { flex-direction: column; gap: 20px; padding-bottom: 20px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; position: relative; left: 0; transform: none; }
+            .logo { margin-left: 0; margin-top: 10px; }
+        }
+
+
+
+
+
+    
+
+        /* --- Navbar --- */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: -10px 50px; position: relative; z-index: 100; min-height: 100px; }
+        .logo h2 {
+            cursor: pointer;
+            margin-left: 10px;
+            font-weight: 700;
+        }
+
+        
+        
+        
+
+        /* --- Main Layout Grid --- */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* --- Dashboard Sections --- */
+        .dashboard-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            border: 1px solid #f1f5f9;
+            position: relative;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .section-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .info-icon {
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .info-icon:hover {
+            color: var(--primary-teal);
+        }
+
+        /* --- Summary Cards --- */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stats-mini-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stats-mini-card:hover {
+            background: var(--white);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .mini-icon {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--primary-teal);
+        }
+
+        .mini-val {
+            font-size: 22px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .mini-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* --- Health Snapshot (Report Style) --- */
+        .health-snapshot {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .health-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #f1f5f9;
+            border-radius: 12px;
+        }
+
+        .health-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(230, 57, 70, 0.1);
+            color: var(--blood-red);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .health-details span {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .health-details p {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        /* --- Eligibility Progress Ring --- */
+        .eligibility-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .progress-ring {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+        }
+
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            fill: transparent;
+            stroke-width: 10;
+            stroke-dasharray: 440;
+            stroke-dashoffset: 110;
+            /* Change based on %: 440 - (progress * 440 / 100) */
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .circle-bg {
+            stroke: #f1f5f9;
+        }
+
+        .circle-bar {
+            stroke: var(--primary-teal);
+        }
+
+        .progress-ring-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .days-left {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: block;
+            line-height: 1;
+        }
+
+        .days-label {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .progress-ring:hover .circle-bar {
+            stroke-dashoffset: 100 !important;
+            filter: drop-shadow(0 0 5px var(--primary-teal));
+        }
+
+        .eligibility-container:hover {
+            cursor: pointer;
+        }
+
+        /* --- Digital ID Card (Flip Style) --- */
+        .id-card-wrapper {
+            perspective: 1000px;
+            width: 100%;
+            height: 200px;
+            margin-top: 20px;
+        }
+
+        .id-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .id-card-wrapper:hover .id-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .id-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .id-front {
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 15px 35px rgba(32, 92, 117, 0.2);
+        }
+
+        .id-back {
+            background: var(--white);
+            color: var(--text-dark);
+            transform: rotateY(180deg);
+            border: 2px solid var(--primary-teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .id-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .id-logo {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .id-chip {
+            width: 40px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .id-number {
+            font-family: monospace;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .id-name {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .id-expiry {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        /* --- History Table --- */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 15px 25px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 18px 25px;
+            font-size: 14px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-done {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        /* --- Tooltip Helper --- */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: var(--primary-dark);
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 10px;
+            position: absolute;
+            z-index: 100;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            line-height: 1.4;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .profile-hero {
+                padding: 30px 20px;
+                text-align: center;
+            }
+
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .health-snapshot {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        /* Styling for the View Button */
+        .btn-view {
+            background: #e0f2fe;
+            color: var(--primary-dark);
+            border: none;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-right: 5px;
+        }
+
+        .btn-view:hover {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        /* Modal (Popup) Styling */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 2000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            position: relative;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .modal-header {
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-body p {
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .modal-body strong {
+            color: var(--primary-dark);
+        }
+
+        .detail-label {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+/* --- Final Unified HUD Theme --- */
+.identity-hud-final {
+    position: relative;
+    padding: 30px 20px; /* Slimmer height */
+    background: #fdfdfd;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Background Highlight Accents - Fixed Positioning */
+.hud-glow {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    filter: blur(80px);
+    border-radius: 50%;
+    z-index: 1;
+    opacity: 0.15; /* Adjust to 0.3 for more color */
+}
+.glow-left { top: -50px; left: -50px; background: var(--primary-teal, #2c9786); }
+.glow-right { bottom: -50px; right: -50px; background: var(--accent-orange, #f59e0b); }
+
+.hud-container-final {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid #f1f5f9;
+    border-radius: 20px;
+    padding: 15px 30px; /* Flattened height */
+    width: 100%;
+    max-width: 1200px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+}
+
+.hud-node-final {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0 25px;
+}
+
+.hud-node-final:not(:last-child) {
+    border-right: 1px solid #e2e8f0;
+}
+
+/* Profile Zone */
+.profile-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar-mini-hex {
+    font-size: 40px;
+    color: var(--primary-teal, #2c9786);
+    display: flex;
+}
+
+.node-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-dark, #205c75);
+    margin: 0;
+}
+
+/* Animation Zone */
+.visual-scanner-small {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    background: rgba(44, 151, 134, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--primary-teal, #2c9786);
+}
+
+.pulse-wave {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--primary-teal, #2c9786);
+    border-radius: 50%;
+    animation: waveExpand 2s infinite;
+}
+
+@keyframes waveExpand {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+/* Text Zone */
+.node-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary-teal, #2c9786);
+    margin-bottom: 2px;
+}
+
+#hud-thought {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+    font-style: italic;
+}
+
+/* Badge & Bar Zone */
+.blood-badge-slim {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 900;
+}
+
+.hero-bar-slim {
+    width: 100px;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.hero-fill {
+    width: 80%;
+    height: 100%;
+    background: var(--accent-orange, #f59e0b);
+}
+
+@media (max-width: 992px) {
+    .hud-container-final { flex-direction: column; padding: 20px; }
+    .hud-node-final { border-right: none; border-bottom: 1px solid #f1f5f9; padding: 15px 0; width: 100%; }
+}
+
+
+
+
+
+        /* --- PROFILE AVATAR & DROPDOWN STYLES --- */
+        .auth-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--white);
+            color: var(--primary-teal);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid var(--gold-highlight);
+            transition: 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            text-transform: uppercase;
+            user-select: none;
+        }
+        .profile-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        }
+        .profile-dropdown-menu {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: white;
+            width: 160px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 10px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: 0.3s ease;
+            z-index: 1000;
+            border-top: 4px solid var(--primary-teal);
+        }
+        .profile-dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .profile-dropdown-menu a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--text-dark);
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .profile-dropdown-menu a:hover {
+            background: #f4f4f4;
+            color: var(--primary-teal);
+            padding-left: 25px;
+        }
+        .profile-dropdown-menu .logout-btn {
+            color: var(--blood-red);
+            font-weight: 600;
+            border-top: 1px solid #eee;
+            margin-top: 5px;
+            padding-top: 15px;
+        }
+        .profile-dropdown-menu .logout-btn:hover {
+            background: #fff5f5;
+            color: red;
+        }
+        .hidden { 
+            display: none !important; 
+        }
+        .cloud-alert {
+            display: none; 
+            position: absolute;
+            background: #fff3cd;
+            color: #856404;
+            padding: 8px 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 9999;
+            border: 1px solid #ffeeba;
+            font-size: 13px;
+            left: 100%; 
+            top: 50%;
+            transform: translateY(-50%); 
+            margin-left: 20px;
+            white-space: nowrap !important;
+            width: auto; 
+        }
+        .cloud-arrow {
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 8px solid #fff3cd;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bg">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../images/jeevandhara_logo_2.0.png" alt="Jeevandhara Logo">
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/frontend/pages/front_page.html">Home</a></li>
+                <li class="nav-item">
+                    <a href="#"><span data-key="about_main">About Jeevandhara</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">About Jeevandhara</a></li>
+                        <li><a href="#">Donation History Tracking</a></li>
+                        <li><a href="#">Badges and Rewards</a></li>
+                        <li><a href="#">Jeevandhara FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Donor Login</a></li>
+                        <li><a href="/frontend/pages/blood_availability.html">Blood Availability</a></li>
+                        <li><a href="#">Blood Center Directory</a></li>
+                        <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> SOS Emergency</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="donate_main">Want to Donate</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Blood Bank Appointment</a></li>
+                        <li><a href="#">AI Blood Matching</a></li>
+                        <li><a href="/frontend/pages/health_advice.html">Health Advice (Diet)</a></li>
+                        <li><a href="#">Register VBD Camp</a></li>
+                        <li><a href="/frontend/pages/camp.html" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item" id="auth-section" style="margin-left: auto;">
+                    <a href="#" onclick="simulateLogin(event)">
+                    <i class="fas fa-user-circle"></i> Donor Login
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="scrolling-ticker">
+            <div class="ticker-track">
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        
+    </header>
+
+    <div id="donationModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="modal-header">
+            <h2 style="color: var(--primary-teal);"><i class="fas fa-certificate"></i> Donation Summary</h2>
+        </div>
+        <div class="modal-body" id="modalBody">
+            </div>
+        <button onclick="closeModal()" style="width: 100%; margin-top: 20px; background: var(--primary-teal); color: white; border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: 600;">Close Details</button>
+    </div>
+</div>
+
+<body>
+    
+
+    <section class="identity-hud-final">
+    <div class="hud-glow glow-left"></div>
+    <div class="hud-glow glow-right"></div>
+
+    <div class="hud-container-final">
+        <div class="hud-node-final">
+            <div class="profile-group">
+                <div class="avatar-mini-hex">
+                    <div class="hex-border"></div>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="node-text">
+                    <span class="node-label">Verified Life-Saver</span>
+                    <h1 class="node-value">Bhushan Sonawane</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="hud-node-final center-node">
+            <div class="visual-scanner-small">
+                <div class="pulse-wave"></div>
+                <i class="fas fa-hand-holding-heart"></i>
+            </div>
+            <div class="node-text">
+                <span class="node-label">Vision</span>
+                <div class="thought-box">
+                    <p id="hud-thought">"Your kindness is someone's second chance."</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hud-node-final">
+            <div class="blood-badge-slim">
+                <span class="blood-type">O+</span>
+            </div>
+            <div class="node-text">
+                <span class="node-label">Legacy</span>
+                <div class="hero-bar-slim">
+                    <div class="hero-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <div class="main-content">
+        <!-- Left Column: History & Stats -->
+        <div class="left-col">
+            <!-- Summary Mini Dashboard -->
+            <div class="summary-grid">
+                <div class="stats-mini-card">
+                    <i class="fas fa-tint mini-icon"></i>
+                    <span class="mini-val">12</span>
+                    <span class="mini-label">Total Units</span>
+                </div>
+                <div class="stats-mini-card">
+                    <i class="fas fa-vial mini-icon" style="color: var(--blood-red);"></i>
+                    <span class="mini-val">O+</span>
+                    <span class="mini-label">Blood Type</span>
+                </div>
+                <div class="stats-mini-card">
+                    <i class="fas fa-trophy mini-icon" style="color: var(--accent-orange);"></i>
+                    <span class="mini-val">2.4k</span>
+                    <span class="mini-label">Life Points</span>
+                </div>
+            </div>
+
+            <!-- Health Snapshot Section -->
+            <div class="dashboard-section">
+                <div class="section-title">
+                    <h2>Last Health Report
+                        <div class="tooltip">
+                            <i class="fas fa-info-circle info-icon"></i>
+                            <span class="tooltiptext">Medical Insight: Your vitals (BP, Hb, Pulse) ensure you can donate
+                                safely. Low Hb or high BP might require a short wait for your health.</span>
+                        </div>
+                    </h2>
+                    <span style="font-size: 12px; color: var(--text-light);">Updated: 15 Jan 2026</span>
+                </div>
+                <div class="health-snapshot">
+                    <div class="health-item">
+                        <div class="health-icon"><i class="fas fa-heartbeat"></i></div>
+                        <div class="health-details">
+                            <span>Blood Pressure</span>
+                            <p>120/80 mmHg</p>
+                        </div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-icon"
+                            style="background: rgba(44, 151, 134, 0.1); color: var(--primary-teal);"><i
+                                class="fas fa-vial"></i></div>
+                        <div class="health-details">
+                            <span>Haemoglobin (Hb)</span>
+                            <p>14.5 g/dL</p>
+                        </div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-icon"
+                            style="background: rgba(245, 158, 11, 0.1); color: var(--accent-orange);"><i
+                                class="fas fa-weight"></i></div>
+                        <div class="health-details">
+                            <span>Body Weight</span>
+                            <p>72 kg</p>
+                        </div>
+                    </div>
+                    <div class="health-item">
+                        <div class="health-icon"
+                            style="background: rgba(32, 92, 117, 0.1); color: var(--primary-dark);"><i
+                                class="fas fa-wave-square"></i></div>
+                        <div class="health-details">
+                            <span>Pulse Rate</span>
+                            <p>72 bpm</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed History Table -->
+            <div class="dashboard-section" style="padding: 0;">
+                <div class="section-title" style="padding: 30px 30px 0;">
+                    <h2>Donation Transactions
+                        <div class="tooltip">
+                            <i class="fas fa-info-circle info-icon"></i>
+                            <span class="tooltiptext">A list of all your blood donations. You can download certificates
+                                for completed units.</span>
+                        </div>
+                    </h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Center Location</th>
+                                <th>Units</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <tr>
+                                <td><strong>15 Jan 2026</strong></td>
+                                <td>Jehangir Hospital, Pune</td>
+                                <td>1 Unit (PRBC)</td>
+                                <td><span class="status-badge status-done">Completed</span></td>
+                                <td>
+                                    <button class="btn-view" onclick="viewDetails('15 Jan 2026', 'Jehangir Hospital, Pune', 'Jeevandhara Foundation', '1 Unit (PRBC)', 'JD-REF-882', 'Dr. Alok Sharma')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                    
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>10 Oct 2025</strong></td>
+                                <td>Ruby Hall Clinic, Pune</td>
+                                <td>1 Unit (Whole)</td>
+                                <td><span class="status-badge status-done">Completed</span></td>
+                                <td>
+                                    <button class="btn-view" onclick="viewDetails('10 Oct 2025', 'Ruby Hall Clinic, Pune', 'Red Cross India', '1 Unit (Whole Blood)', 'JD-REF-412', 'Dr. Meera Rao')">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Eligibility & ID -->
+        <div class="right-col">
+            <!-- Eligibility Section -->
+            <div class="dashboard-section">
+                <div class="section-title">
+                    <h2>Next Eligibility
+                        <div class="tooltip">
+                            <i class="fas fa-info-circle info-icon"></i>
+                            <span class="tooltiptext">According to medical guidelines, you can donate blood every 90
+                                days. We track this for you!</span>
+                        </div>
+                    </h2>
+                </div>
+                <div class="eligibility-container" onclick="showEligibilityPopup()">
+                    <div class="progress-ring">
+                        <svg width="150" height="150">
+                            <circle class="progress-ring-circle circle-bg" r="70" cx="75" cy="75"></circle>
+                            <circle class="progress-ring-circle circle-bar" r="70" cx="75" cy="75"
+                                style="stroke-dashoffset: 140;"></circle>
+                        </svg>
+                        <div class="progress-ring-text">
+                            <span class="days-left">53</span>
+                            <span class="days-label">Days to go</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 13px; color: var(--text-light);">You'll be eligible to save more lives on
+                        <br><strong>15 April 2026</strong>
+                    </p>
+                    <button
+                        style="margin-top: 15px; background: none; border: 1px solid var(--primary-teal); color: var(--primary-teal); padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer;">Set
+                        Reminder</button>
+                </div>
+            </div>
+
+        <div id="achievement-app" class="jd-card">
+    <div class="jd-header">
+        <div class="jd-title-group">
+            <i class="fas fa-award jd-accent-icon"></i>
+            <div>
+                <h3 class="jd-main-title">Hero Milestones</h3>
+                <p class="jd-sub-title">Level up your impact</p>
+            </div>
+        </div>
+        <button class="jd-vault-btn" onclick="openBadgeVault()">
+            Vault <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <div id="jd-spotlight" class="jd-spotlight-area" onclick="openActiveFullView()">
+        </div>
+
+    <div id="jd-vault-modal" class="jd-modal" onclick="closeBadgeVault()">
+        <div class="jd-modal-content" onclick="event.stopPropagation()">
+            <div class="jd-modal-header">
+                <h3>Milestone Progress</h3>
+                <i class="fas fa-times jd-close" onclick="closeBadgeVault()"></i>
+            </div>
+            <div id="jd-vault-grid" class="jd-grid">
+                </div>
+        </div>
+    </div>
+
+    <div id="jd-full-viewer" class="jd-full-view" onclick="closeFullView()">
+        <div class="jd-cert-frame" id="jd-cert-body" onclick="event.stopPropagation()">
+            </div>
+        <p class="jd-tap-hint">Tap anywhere to close</p>
+    </div>
+</div>
+
+<style>
+/* --- STYLES --- */
+:root {
+    --jd-teal: #2c9786;
+    --jd-red: #ef4444;
+    --jd-gold: #fbbf24;
+    --jd-bg: #ffffff;
+    --jd-text: #1e293b;
+}
+
+.jd-card {
+    background: var(--jd-bg);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    max-width: 400px;
+    margin: 20px auto;
+    font-family: 'Inter', sans-serif;
+}
+
+.jd-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.jd-title-group { display: flex; align-items: center; gap: 10px; }
+.jd-main-title { font-size: 14px; margin: 0; color: var(--jd-text); text-transform: uppercase; letter-spacing: 1px; }
+.jd-sub-title { font-size: 10px; margin: 0; color: #64748b; }
+.jd-accent-icon { color: var(--jd-gold); font-size: 18px; }
+
+.jd-vault-btn {
+    background: #f1f5f9;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--jd-teal);
+    cursor: pointer;
+}
+
+.jd-spotlight-area {
+    height: 150px;
+    background: #f8fafc;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #f1f5f9;
+    transition: 0.3s;
+}
+
+.jd-spotlight-area:hover { border-color: var(--jd-teal); }
+
+.jd-badge-unit { text-align: center; animation: jdFadeIn 0.5s ease; }
+@keyframes jdFadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+.jd-icon-blob {
+    width: 60px; height: 60px; border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    margin: 0 auto 10px; color: white; font-size: 24px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    border: 3px solid #fff;
+}
+
+/* MODAL & GRID */
+.jd-modal {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(8px);
+    display: none; z-index: 999; justify-content: center; align-items: center;
+}
+
+.jd-modal-content { background: white; width: 90%; max-width: 380px; border-radius: 20px; padding: 20px; }
+.jd-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.jd-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+
+.jd-grid-item { text-align: center; font-size: 10px; cursor: pointer; position: relative; }
+.jd-locked { filter: grayscale(1); opacity: 0.4; cursor: not-allowed; }
+.jd-lock-icon { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); color: #000; z-index: 5; font-size: 14px; }
+
+/* FULLSCREEN CERTIFICATE */
+.jd-full-view {
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: #0f172a; z-index: 1000; display: none;
+    flex-direction: column; justify-content: center; align-items: center;
+}
+
+.jd-cert-frame {
+    width: 85%; max-width: 340px; background: white; padding: 40px 20px;
+    border-radius: 5px; text-align: center; border: 8px double #e2e8f0;
+}
+
+.jd-tap-hint { color: white; opacity: 0.5; font-size: 12px; margin-top: 20px; }
+</style>
+
+<script>
+/* --- CONFIGURATION --- */
+const donorStats = {
+    name: "BHUSHAN",
+    donations: 3 // Set this to the actual donation count from your database
+};
+
+const allMilestones = [
+    { id: 1, req: 1, title: "First Gift", icon: "fa-seedling", color: "#2c9786", desc: "Awarded for your first life-saving donation." },
+    { id: 2, req: 3, title: "Bronze Hero", icon: "fa-shield-heart", color: "#cd7f32", desc: "Recognized for 3 successful donations." },
+    { id: 3, req: 5, title: "Silver Knight", icon: "fa-medal", color: "#94a3b8", desc: "Elite status achieved at 5 donations." },
+    { id: 4, req: 10, title: "Golden King", icon: "fa-crown", color: "#fbbf24", desc: "The ultimate honor for 10 donations." }
+];
+
+/* --- LOGIC --- */
+let activeUnlocked = allMilestones.filter(m => donorStats.donations >= m.req);
+let currentRotateIdx = 0;
+
+function rotateSpotlight() {
+    const spotlight = document.getElementById('jd-spotlight');
+    
+    if (activeUnlocked.length === 0) {
+        spotlight.innerHTML = `
+            <div style="text-align:center;">
+                <i class="fas fa-lock" style="color:#cbd5e1; font-size:30px; margin-bottom:10px;"></i>
+                <p style="font-size:11px; color:#94a3b8;">Complete 1 donation to unlock</p>
+            </div>`;
+        return;
+    }
+
+    const badge = activeUnlocked[currentRotateIdx];
+    spotlight.innerHTML = `
+        <div class="jd-badge-unit">
+            <div class="jd-icon-blob" style="background:${badge.color}">
+                <i class="fas ${badge.icon}"></i>
+            </div>
+            <div style="font-weight:800; color:#1e293b;">${badge.title}</div>
+            <div style="font-size:9px; color:var(--jd-teal);">Click to View Certificate</div>
+        </div>
+    `;
+    currentRotateIdx = (currentRotateIdx + 1) % activeUnlocked.length;
+}
+
+// Auto-flip every 4 seconds
+setInterval(rotateSpotlight, 4000);
+rotateSpotlight();
+
+function openBadgeVault() {
+    const grid = document.getElementById('jd-vault-grid');
+    grid.innerHTML = allMilestones.map(m => {
+        const locked = donorStats.donations < m.req;
+        return `
+            <div class="jd-grid-item ${locked ? 'jd-locked' : ''}" onclick="${locked ? '' : `showCertificate(${m.id})`}">
+                ${locked ? '<i class="fas fa-lock jd-lock-icon"></i>' : ''}
+                <div class="jd-icon-blob" style="background:${m.color}; width:45px; height:45px; font-size:18px;">
+                    <i class="fas ${m.icon}"></i>
+                </div>
+                <div style="font-weight:bold;">${m.title}</div>
+                <div style="font-size:8px; margin-top:3px;">${locked ? `Need ${m.req}` : 'Unlocked'}</div>
+            </div>
+        `;
+    }).join('');
+    document.getElementById('jd-vault-modal').style.display = 'flex';
+}
+
+function showCertificate(id) {
+    const badge = allMilestones.find(m => m.id === id);
+    const body = document.getElementById('jd-cert-body');
+    
+    body.innerHTML = `
+        <i class="fas ${badge.icon}" style="font-size:50px; color:${badge.color}; margin-bottom:20px;"></i>
+        <h2 style="font-size:16px; letter-spacing:2px; color:#64748b;">CERTIFICATE OF HONOR</h2>
+        <p style="font-size:12px;">This is awarded to</p>
+        <h1 style="font-size:24px; color:#1e293b; margin:10px 0;">${donorStats.name}</h1>
+        <p style="font-size:13px; line-height:1.4;">for demonstrating exceptional courage and achieving the rank of <b>${badge.title}</b>.</p>
+        <div style="margin-top:30px; padding-top:15px; border-top:1px solid #f1f5f9; font-size:9px; color:#94a3b8;">
+            OFFICIAL JEEVANDHARA VERIFICATION #JD-00${badge.id}
+        </div>
+    `;
+    
+    document.getElementById('jd-full-viewer').style.display = 'flex';
+}
+
+function openActiveFullView() {
+    if (activeUnlocked.length > 0) {
+        // Show the one that was just visible (previous index)
+        const prevIdx = (currentRotateIdx === 0) ? activeUnlocked.length - 1 : currentRotateIdx - 1;
+        showCertificate(activeUnlocked[prevIdx].id);
+    }
+}
+
+function closeBadgeVault() { document.getElementById('jd-vault-modal').style.display = 'none'; }
+function closeFullView() { document.getElementById('jd-full-viewer').style.display = 'none'; }
+</script>
+    
+
+    <script>
+        function showEligibilityPopup() {
+            alert("Reminder Set! We will notify you on 15 April 2026 via SMS and Email to save another life. Thank you for your commitment!");
+        }
+
+        // Add flip sound effect feel or just visual cue
+        document.querySelector('.id-card-inner').addEventListener('click', function () {
+            this.style.transform = this.style.transform === 'rotateY(180deg)' ? 'rotateY(0deg)' : 'rotateY(180deg)';
+        });
+
+        function viewDetails(date, location, organization, units, ref, doctor) {
+    const modal = document.getElementById("donationModal");
+    const body = document.getElementById("modalBody");
+    
+    // Set the HTML content for the popup
+    body.innerHTML = `
+        <p><span class="detail-label">Reference ID:</span> <strong>${ref}</strong></p>
+        <p><span class="detail-label">Date of Donation:</span> <strong>${date}</strong></p>
+        <p><span class="detail-label">Hospital/Center:</span> <strong>${location}</strong></p>
+        <p><span class="detail-label">Organization:</span> <strong>${organization}</strong></p>
+        <p><span class="detail-label">Donation Type:</span> <strong>${units}</strong></p>
+        <p><span class="detail-label">Supervising Doctor:</span> <strong>${doctor}</strong></p>
+        <p><span class="detail-label">Medical Clearance:</span> <strong style="color: #166534;">Verified ✅</strong></p>
+        <div style="background: #f8fafc; padding: 15px; border-radius: 10px; margin-top: 15px; font-size: 13px; border-left: 4px solid var(--accent-orange);">
+            <i class="fas fa-quote-left"></i> Your contribution has been processed and sent to the emergency wing. You have helped save up to 3 lives with this single unit.
+        </div>
+    `;
+    
+    modal.style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("donationModal").style.display = "none";
+}
+
+// Close modal if user clicks outside of it
+window.onclick = function(event) {
+    const modal = document.getElementById("donationModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+    </script>
+
+    <script>
+        const authContainer = document.getElementById('auth-section');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+        });
+
+        function updateAuthUI() {
+            const storedUser = localStorage.getItem('donorName');
+            const dataStr = localStorage.getItem('donorData');
+
+            if (storedUser && storedUser.trim() !== "") {
+                const names = storedUser.trim().split(' ');
+                let initials = names[0].charAt(0);
+                if (names.length > 1) initials += names[names.length - 1].charAt(0);
+
+                authContainer.innerHTML = `
+                    <div class="auth-wrapper">
+                        <div class="profile-avatar" id="avatarBtn">
+                            ${initials.toUpperCase()}
+                        </div>
+                        <div class="profile-dropdown-menu" id="profileMenu">
+                            <div style="padding: 10px 20px; font-size: 11px; color: #888; border-bottom: 1px solid #eee;">
+                                Signed in as <br> <strong style="color: #333;">${storedUser}</strong>
+                            </div>
+                             <a href="/frontend/pages/profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
+                             <a href="/frontend/pages/front_page.html" onclick="logoutDonor(event)" class="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                        <div id="profile-alert" class="cloud-alert">
+                            <div class="cloud-content">
+                                <span>Please complete your profile.🩸</span>
+                                 <a href="/frontend/pages/profile.html">Edit</a>
+                            </div>
+                            <div class="cloud-arrow"></div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('avatarBtn').onclick = (e) => {
+                    e.stopPropagation();
+                    document.getElementById('profileMenu').classList.toggle('show');
+                };
+
+                checkProfileCompleteness(dataStr);
+            } else {
+                authContainer.innerHTML = `
+                             <a href="/frontend/pages/front_page.html" onclick="simulateLogin(event)">
+                        <i class="fas fa-user-circle"></i> Donor Login
+                    </a>
+                `;
+            }
+        }
+
+        function checkProfileCompleteness(dataStr) {
+            const alertBar = document.getElementById('profile-alert');
+            if (!alertBar) return;
+            let isMissing = false;
+            if (!dataStr) {
+                isMissing = true;
+            } else {
+                const data = JSON.parse(dataStr);
+                const checks = [
+                    !data.phone || data.phone.trim() === "" || data.phone.includes("555-0128"),
+                    !data.bloodGroup || data.bloodGroup.trim() === "",
+                    !data.email || data.email.trim() === "",
+                    !data.address || data.address.trim() === ""
+                ];
+                isMissing = checks.some(condition => condition === true);
+            }
+
+            if (isMissing) {
+                alertBar.classList.remove('hidden');
+                alertBar.style.setProperty('display', 'flex', 'important');
+            } else {
+                alertBar.classList.add('hidden');
+                alertBar.style.setProperty('display', 'none', 'important');
+            }
+        }
+
+        function simulateLogin(e) {
+            e.preventDefault();
+            const name = prompt("Enter Full Name:");
+            if (name) {
+                localStorage.setItem('donorName', name);
+                updateAuthUI();
+            }
+        }
+
+        function logoutDonor(e) {
+            e.preventDefault();
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem('donorName');
+                localStorage.removeItem('donorData');
+                window.location.reload();
+            }
+        }
+
+        window.onclick = () => {
+            const menu = document.getElementById('profileMenu');
+            if (menu) menu.classList.remove('show');
+        };
+
+        function refreshUserUI() {
+            const name = localStorage.getItem('donorName');
+            const dataStr = localStorage.getItem('donorData');
+            const authContainer = document.getElementById('auth-section');
+            const alertBar = document.getElementById('profile-alert');
+
+            if (name && authContainer) {
+                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                authContainer.innerHTML = `<div style="width:40px; height:40px; background:#2c9786; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">${initials}</div>`;
+            }
+
+            if (alertBar) {
+                let showNotice = false;
+                if (!dataStr) {
+                    showNotice = true;
+                } else {
+                    const data = JSON.parse(dataStr);
+                    const isPhoneMissing = !data.phone || data.phone.trim() === "" || data.phone === "(405) 555-0128";
+                    const isBloodMissing = !data.bloodGroup || data.bloodGroup.trim() === "";
+                    const isEmailMissing = !data.email || data.email.trim() === "";
+                    const isAddressMissing = !data.address || data.address.trim() === "";
+                    const isLocationMissing = !location.email || data.location.trim() === "";
+                    const isPostol_codeMissing = !posatl_code.email || data.postal_code.trim() === "";
+                    if (isPhoneMissing || isBloodMissing || isEmailMissing || isAddressMissing || isLocationMissing || isPostol_codeMissing) {
+                        showNotice = true;
+                    }
+                }
+                if (showNotice) {
+                    alertBar.style.display = 'flex';
+                } else {
+                    alertBar.style.display = 'none';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', updateAuthUI);
+    </script>
+</body>
+
+</html>

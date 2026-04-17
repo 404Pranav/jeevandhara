@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Health Advice - Jeevandhara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CORE VARIABLES & RESETS --- */
+        :root {
+            --logo-height: 160px;
+            --primary-gradient: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            --primary-teal: #2c9786;
+            --accent-orange: #f59e0b;
+            --blood-red: #e63946;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --bg-light: #fdfdfd;
+            --gold-highlight: #ffd700;
+            --border-color: #e5e7eb;
+            --soft-green: #d1fae5;
+            --soft-red: #fee2e2;
+            --soft-orange: #ffedd5;
+             /* --- NEW CREAM COLORS --- */
+            --bg-light: #fdfbf7;      /* Very light cream for the whole page */
+            --hero-bg: #f5f0e6;       /* Richer cream/champagne for the top section */
+            --glass-bg: #fffdfa;      /* Bright cream for the search box */
+            --glass-border: #eaddca;  /* Soft tan border */
+            /* ------------------------ */
+            --radius-lg: 20px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: var(--text-dark); background-color: #f8f9fc; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+       button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+        /* --- NAVBAR STYLES --- */
+        .header-bg { background: var(--primary-gradient); color: var(--white); position: relative; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: -10px 50px; position: relative; z-index: 100; min-height: 100px; }
+
+        /* --- SCROLLING TICKER STYLES --- */
+        .scrolling-ticker {
+            width: 100%;
+            background: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            overflow: hidden;
+            padding: 12px 0;
+            position: relative;
+            z-index: 99;
+            margin-top: 0px; 
+        }
+
+        .ticker-track {
+            display: flex;
+            width: fit-content;
+            animation: scroll-infinite 20s linear infinite;
+        }
+
+        .ticker-content {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-content span {
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-right: 50px;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll-infinite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .logo { display: flex; align-items: center; margin-left: 60px; margin-top: 20px; }
+        .logo img { height: 100px; width: auto; object-fit: contain; }
+        
+        .nav-links { 
+            display: flex; 
+            gap: 20px; 
+            align-items: center; 
+             margin-top: 20px; 
+    
+    /* --- NEW CENTERING LOGIC --- */
+    position: absolute;       /* 1. Take it out of the normal flow */
+    left: 50%;                /* 2. Move it to the middle of the screen */
+    transform: translateX(-50%); /* 3. Perfect center alignment */
+    margin-left: 18px;           /* 4. Remove your old manual margin */
+    /* --------------------------- */
+    margin-top: 20px;
+        }
+
+        .nav-item { position: relative; padding: 10px 0; }
+        .nav-item > a { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 5px; position: relative; transition: color 0.3s ease; }
+        .nav-item > a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--gold-highlight); transition: width 0.3s ease-in-out; }
+        .nav-item:hover > a { color: var(--gold-highlight); text-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+        .nav-item:hover > a::after { width: 100%; }
+
+        .dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(15px); background: rgba(255, 255, 255, 0.95); min-width: 240px; padding: 15px 0; border-radius: 12px; box-shadow: 5px 10px 30px rgba(0,0,0,0.1); opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1000; }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown li a { display: block; padding: 10px 20px 10px 30px; color: var(--text-dark); font-size: 13px; font-weight: 500; position: relative; transition: 0.3s ease; }
+        .dropdown li a::before { content: '\f043'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 10px; top: 50%; transform: translateY(-50%) scale(0); color: var(--blood-red); font-size: 14px; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); height: 16px; line-height: 16px; }
+        .dropdown li a:hover { color: var(--blood-red); transform: translateX(5px); background: transparent; }
+        .dropdown li a:hover::before { transform: translateY(-50%) scale(1); }
+        .dropdown li a.sos-link { color: #e63946; font-weight: 700; }
+
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+
+        @media (max-width: 1000px) {
+            .navbar { flex-direction: column; gap: 20px; padding-bottom: 20px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; position: relative; left: 0; transform: none; }
+            .logo { margin-left: 0; margin-top: 10px; }
+        }
+
+
+
+        
+        /* === HERO SECTION === */
+        .page-hero {
+    position: relative;
+    /* This creates a soft, warm cream-to-white transition */
+    background: linear-gradient(135deg, #f5f0e6 0%, #fdfbf7 100%);
+    color: var(--primary-navy); 
+    padding: 30px 20px 120px;
+    text-align: center;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+        .hero-bg-shapes {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; z-index: 0;
+        }
+        .shape-1 {
+            position: absolute; top: -50px; left: -50px; width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .shape-2 {
+            position: absolute; bottom: -100px; right: 10%; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 60%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.4);
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-content h1 {
+            font-size: 52px; font-weight: 800; margin-bottom: 15px; line-height: 1.2;
+            animation: fadeInDown .8s ease .1s both;
+            color: var(--primary-navy); /* Deep blue looks sharp on cream */
+        }
+        .hero-content h1 .highlight {
+    color: var(--blood-red); /* Makes 'Camp Near You' red */
+    border-bottom: 4px solid #f59e0b; /* Adds a gold underline highlight */
+}
+        .hero-content p {
+            font-size: 18px; opacity: .9; line-height: 1.6;
+            animation: fadeInDown .8s ease .2s both;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === SEARCH AND FILTER WIDGET === */
+        .search-container {
+            max-width: 1000px;
+            margin: -70px auto 40px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-widget {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-medium);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .search-inputs-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .input-group {
+            flex: 1;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 18px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            border: 2px solid #e5e7eb;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            color: var(--text-dark);
+            background: white;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 4px rgba(44, 151, 134, 0.1);
+            outline: none;
+        }
+
+        .btn-search {
+            background: var(--accent-orange);
+            color: white;
+            padding: 16px 40px;
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .quick-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-right: 10px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+        
+        .filter-btn:hover { background: #f3f4f6; }
+        .filter-btn.active {
+            background: rgba(44, 151, 134, 0.1);
+            color: var(--primary-teal);
+            border-color: var(--primary-teal);
+        }
+
+        /* === CAMPS SECTION === */
+        .camps-section {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .result-count {
+            font-size: 15px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Grid Layout */
+        .camps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        /* Camp Card */
+        .camp-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .camp-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(44, 151, 134, 0.3);
+        }
+
+        .camp-banner {
+            height: 150px;
+            background: #f1f5f9;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        /* Using subtle medical/camp icons or patterns for banners instead of heavy images */
+        .camp-banner-icon {
+            font-size: 60px;
+            color: rgba(44, 151, 134, 0.15);
+            position: absolute;
+            z-index: 1;
+        }
+
+        .camp-date-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: white;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            box-shadow: var(--shadow-soft);
+            z-index: 2;
+        }
+        .camp-date-badge .d-month { font-size: 12px; color: var(--blood-red); font-weight: 700; text-transform: uppercase; line-height: 1; }
+        .camp-date-badge .d-day { font-size: 22px; color: var(--text-dark); font-weight: 800; line-height: 1.2; }
+
+        .camp-tag {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.9);
+            box-shadow: var(--shadow-soft);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .camp-tag.ngo { color: var(--primary-dark); }
+        .camp-tag.mega { color: var(--accent-orange); }
+
+        .camp-content {
+            padding: 25px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .camp-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .camp-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex: 1;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .detail-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(44, 151, 134, 0.1);
+            color: var(--primary-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .detail-text {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+        .detail-text strong { color: var(--text-dark); font-weight: 600; display: block; }
+
+        .camp-actions {
+            border-top: 1px solid #f3f4f6;
+            padding-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-act {
+            flex: 1;
+            padding: 12px 0;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #e5e7eb;
+            color: var(--text-dark);
+        }
+        .btn-outline:hover {
+            border-color: var(--primary-teal);
+            color: var(--primary-teal);
+            background: rgba(44, 151, 134, 0.05);
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 12px rgba(44, 151, 134, 0.3);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 18px rgba(44, 151, 134, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* === FOOTER === */
+        footer {
+            background: #2c9786;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 900px) {
+            .search-inputs-row { flex-direction: column; }
+            .btn-search { width: 100%; justify-content: center; }
+            .hero-content h1 { font-size: 38px; }
+            .page-hero { padding: 60px 20px 120px; }
+            .navbar { padding: 0 20px; }
+            .nav-links { display: none; /* simple burger implementation space */ }
+        }
+
+        @media (max-width: 600px) {
+            .camps-grid { grid-template-columns: 1fr; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .hero-content h1 { font-size: 32px; }
+            .hero-content p { font-size: 16px; }
+        }
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+    <header class="header-bg">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../images/jeevandhara_logo_2.0.png" alt="Jeevandhara Logo">
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/frontend/pages/front_page.html">Home</a></li>
+                <li class="nav-item">
+                    <a href="#"><span data-key="about_main">About Jeevandhara</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">About Jeevandhara</a></li>
+                        <li><a href="#">Donation History Tracking</a></li>
+                        <li><a href="#">Badges and Rewards</a></li>
+                        <li><a href="#">Jeevandhara FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Donor Login</a></li>
+                        <li><a href="/frontend/pages/blood_availability.html">Blood Availability</a></li>
+                        <li><a href="#">Blood Center Directory</a></li>
+                        <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> SOS Emergency</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="donate_main">Want to Donate</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Blood Bank Appointment</a></li>
+                        <li><a href="#">AI Blood Matching</a></li>
+                        <li><a href="/frontend/pages/health_advice.html">Health Advice (Diet)</a></li>
+                        <li><a href="#">Register VBD Camp</a></li>
+                        <li><a href="/frontend/pages/camp.html" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="center_login">Blood Center Login</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Jeevandhara Login</a></li>
+                        <li><a href="#">Add your Blood Center</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="scrolling-ticker">
+            <div class="ticker-track">
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Header Section -->
+    <header class="page-hero">
+        <div class="hero-bg-shapes">
+            <div class="shape-1"></div>
+            <div class="shape-2"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge"><i class="fas fa-heartbeat" style="color: var(--gold-highlight); margin-right:5px;"></i> Save Lives Together</div>
+            <h1>Find a Blood Donation <br><span class="highlight">Camp Near You</span></h1>
+            <p>Join local communities, organizations, and colleges in a noble cause. Donate blood at a verified camp and make a direct impact.</p>
+        </div>
+    </header>
+
+    <!-- Search & Filter Widget -->
+    <div class="search-container">
+        <div class="search-widget">
+            <div class="search-inputs-row">
+                <div class="input-group">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" placeholder="Enter City, PIN code, or Area">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-calendar-alt"></i>
+                    <input type="date" title="Select Date">
+                </div>
+                <button class="btn-search"><i class="fas fa-search"></i> Find Camps</button>
+            </div>
+            <div class="quick-filters">
+                <span class="filter-label">Quick Filters:</span>
+                <button class="filter-btn active">All Events</button>
+                <button class="filter-btn">Today</button>
+                <button class="filter-btn">This Week</button>
+                <button class="filter-btn">Mega Drives <i class="fas fa-star" style="color:var(--accent-orange); margin-left:3px; font-size:11px;"></i></button>
+                <button class="filter-btn">By NGOs</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camps Listing Section -->
+    <section class="camps-section">
+        <div class="section-header">
+            <h2 class="section-title">Upcoming Camps in <span style="color: var(--primary-teal);">Mumbai</span></h2>
+            <div class="result-count">Found <strong>4</strong> Active Camps</div>
+        </div>
+
+        <div class="camps-grid">
+            
+            <!-- Camp Card 1 -->
+            <div class="camp-card">
+                <div class="camp-banner">
+                    <i class="fas fa-users camp-banner-icon"></i>
+                    <div class="camp-date-badge">
+                        <div class="d-month">Apr</div>
+                        <div class="d-day">15</div>
+                    </div>
+                    <div class="camp-tag mega"><i class="fas fa-bolt"></i> Mega Drive</div>
+                </div>
+                <div class="camp-content">
+                    <h3 class="camp-title">Mega Blood Donation Drive 2026</h3>
+                    <div class="camp-details">
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-clock"></i></div>
+                            <div class="detail-text"><strong>Time:</strong> 09:00 AM - 05:00 PM</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-map-pin"></i></div>
+                            <div class="detail-text"><strong>Venue:</strong> Lions Club Community Hall, Andheri East, Mumbai</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-hospital"></i></div>
+                            <div class="detail-text"><strong>Partner:</strong> Central Blood Bank</div>
+                        </div>
+                    </div>
+                    <div class="camp-actions">
+                        <button class="btn-act btn-outline"><i class="fas fa-share-alt"></i> Share</button>
+                        <button class="btn-act btn-primary"><i class="fas fa-tint"></i> Register to Donate</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Camp Card 2 -->
+            <div class="camp-card">
+                <div class="camp-banner" style="background: #fff8f1;">
+                    <i class="fas fa-university camp-banner-icon" style="color: rgba(245, 158, 11, 0.15)"></i>
+                    <div class="camp-date-badge">
+                        <div class="d-month">Apr</div>
+                        <div class="d-day">18</div>
+                    </div>
+                    <div class="camp-tag ngo"><i class="fas fa-graduation-cap"></i> Institutional</div>
+                </div>
+                <div class="camp-content">
+                    <h3 class="camp-title">NSS Tech College Awareness Camp</h3>
+                    <div class="camp-details">
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-clock"></i></div>
+                            <div class="detail-text"><strong>Time:</strong> 10:00 AM - 04:00 PM</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-map-pin"></i></div>
+                            <div class="detail-text"><strong>Venue:</strong> Tech College Main Auditorium, Navi Mumbai</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-hospital"></i></div>
+                            <div class="detail-text"><strong>Partner:</strong> Rotary Blood Bank</div>
+                        </div>
+                    </div>
+                    <div class="camp-actions">
+                        <button class="btn-act btn-outline"><i class="fas fa-share-alt"></i> Share</button>
+                        <button class="btn-act btn-primary"><i class="fas fa-tint"></i> Register to Donate</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Camp Card 3 -->
+            <div class="camp-card">
+                <div class="camp-banner" style="background: #fdf2f2;">
+                    <i class="fas fa-building camp-banner-icon" style="color: rgba(230, 57, 70, 0.1)"></i>
+                    <div class="camp-date-badge">
+                        <div class="d-month">Apr</div>
+                        <div class="d-day">20</div>
+                    </div>
+                    <div class="camp-tag ngo"><i class="fas fa-briefcase"></i> Corporate</div>
+                </div>
+                <div class="camp-content">
+                    <h3 class="camp-title">Global IT Tech Park Blood Drive</h3>
+                    <div class="camp-details">
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-clock"></i></div>
+                            <div class="detail-text"><strong>Time:</strong> 11:00 AM - 06:00 PM</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-map-pin"></i></div>
+                            <div class="detail-text"><strong>Venue:</strong> Tower B, Ground Floor Lounge, Malad West</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-hospital"></i></div>
+                            <div class="detail-text"><strong>Partner:</strong> City General Hospital BB</div>
+                        </div>
+                    </div>
+                    <div class="camp-actions">
+                        <button class="btn-act btn-outline"><i class="fas fa-share-alt"></i> Share</button>
+                        <button class="btn-act btn-primary"><i class="fas fa-tint"></i> Register to Donate</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Camp Card 4 -->
+            <div class="camp-card">
+                <div class="camp-banner" style="background: #ebf5ff;">
+                    <i class="fas fa-hands-helping camp-banner-icon" style="color: rgba(32, 92, 117, 0.15)"></i>
+                    <div class="camp-date-badge">
+                        <div class="d-month">Apr</div>
+                        <div class="d-day">25</div>
+                    </div>
+                    <div class="camp-tag ngo"><i class="fas fa-heart"></i> NGO</div>
+                </div>
+                <div class="camp-content">
+                    <h3 class="camp-title">Helping Hands Trust Weekend Camp</h3>
+                    <div class="camp-details">
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-clock"></i></div>
+                            <div class="detail-text"><strong>Time:</strong> 08:00 AM - 02:00 PM</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-map-pin"></i></div>
+                            <div class="detail-text"><strong>Venue:</strong> Shivaji Park Gate 4, Dadar West, Mumbai</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-icon"><i class="fas fa-hospital"></i></div>
+                            <div class="detail-text"><strong>Partner:</strong> Red Cross Regional Center</div>
+                        </div>
+                    </div>
+                    <div class="camp-actions">
+                        <button class="btn-act btn-outline"><i class="fas fa-share-alt"></i> Share</button>
+                        <button class="btn-act btn-primary"><i class="fas fa-tint"></i> Register to Donate</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Jeevandhara Blood Network. Saving lives, together.</p>
+    </footer>
+
+    <!-- Interactive Script for UI elements -->
+    <script>
+        // Simple script to toggle active state on quick filters
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

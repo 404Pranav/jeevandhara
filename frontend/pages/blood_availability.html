@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Availability - Jeevandhara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CORE VARIABLES & RESETS --- */
+        :root {
+            --logo-height: 160px;
+            --primary-gradient: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            --primary-teal: #2c9786;
+            --accent-orange: #f59e0b;
+            --blood-red: #e63946;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --bg-light: #fdfdfd;
+            --gold-highlight: #ffd700;
+            --border-color: #e5e7eb;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: var(--text-dark); background-color: #f8f9fc; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+        /* --- NAVBAR STYLES --- */
+        .header-bg { background: var(--primary-gradient); color: var(--white); position: relative; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: -10px 50px; position: relative; z-index: 100; min-height: 100px; }
+
+        /* --- SCROLLING TICKER STYLES --- */
+.scrolling-ticker {
+    width: 100%;
+    background: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+    overflow: hidden; /* Hides the text when it goes outside */
+    padding: 12px 0; /* Vertical padding */
+    position: relative;
+    z-index: 99;
+    margin-top: 0px; 
+}
+
+/* The long track holding both sets of text */
+.ticker-track {
+    display: flex;
+    width: fit-content; /* Adjusts width to fit the content */
+    animation: scroll-infinite 20s linear infinite; /* Adjust '20s' to control speed */
+}
+
+/* The individual content blocks */
+.ticker-content {
+    flex-shrink: 0; /* Prevents text from squishing */
+    display: flex;
+    align-items: center;
+    padding-right: 0; /* Reset */
+}
+
+.ticker-content span {
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-right: 50px; /* Space between sentences */
+    white-space: nowrap;
+}
+
+/* The Seamless Animation Logic */
+@keyframes scroll-infinite {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* Move left exactly -50% (the width of one set of content) */
+        transform: translateX(-50%);
+    }
+}
+
+        .logo { display: flex; align-items: center; margin-left: 60px; margin-top: 20px; }
+        .logo img { height: 100px; width: auto; object-fit: contain; }
+        
+       /* Navigation Links */
+        .nav-links { 
+    display: flex; 
+    gap: 25px; 
+    align-items: center;
+    margin-top: 20px; 
+    
+    /* --- NEW CENTERING LOGIC --- */
+    position: absolute;       /* 1. Take it out of the normal flow */
+    left: 50%;                /* 2. Move it to the middle of the screen */
+    transform: translateX(-50%); /* 3. Perfect center alignment */
+    margin-left: 12;           /* 4. Remove your old manual margin */
+    /* --------------------------- */
+    margin-top: 20px;
+}
+
+         /* --- UPDATED NAV ITEM STYLES --- */
+        .nav-item {
+            /* This is the key fix: position relative allows the dropdown 
+               to position itself relative to THIS specific item */
+            position: relative; 
+            padding: 15px 0; /* Added padding to help hover area */
+        }
+        
+        .nav-item > a {
+            font-size: 15px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.9);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-item > a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--gold-highlight);
+            transition: width 0.3s ease-in-out;
+        }
+
+        .nav-item:hover > a { 
+            color: var(--gold-highlight); 
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        }
+        .nav-item:hover > a::after { width: 100%; }
+ /* --- DROPDOWN STYLES --- */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(15px); 
+            background: rgba(255, 255, 255, 0.95);
+            min-width: 240px;
+            padding: 15px 0;
+            border-radius: 12px;
+            box-shadow: 5px 10px 30px rgba(0,0,0,0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .dropdown::before { display: none; }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+        .dropdown li a {
+            display: block;
+            padding: 10px 20px 10px 30px; 
+            color: var(--text-dark);
+            font-size: 13px;
+            font-weight: 500;
+            position: relative;
+            transition: 0.3s ease;
+        }
+
+        .dropdown li a::before {
+            content: '\f043'; 
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 10px; 
+            top: 50%;
+            transform: translateY(-50%) scale(0);
+            color: var(--blood-red);
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            height: 16px;
+            line-height: 16px;
+        }
+
+        .dropdown li a:hover {
+            color: var(--blood-red);
+            transform: translateX(5px);
+            background: transparent;
+        }
+        .dropdown li a:hover::before { transform: translateY(-50%) scale(1); }
+        .dropdown li a.sos-link { color: #e63946; font-weight: 700; }
+       
+        
+        /* Auth Buttons */
+        .auth-buttons { display: flex; gap: 15px; align-items: center; margin-top: -50px; margin-right: 30px; }
+        .btn-text { color: var(--white); font-weight: 600; font-size: 14px; }
+        .btn-pill { background: var(--white); color: var(--primary-teal); padding: 8px 25px; border-radius: 50px; font-weight: 600; font-size: 14px; }
+        .btn-lang { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); transition: 0.3s; }
+        .btn-lang:hover { background: white; color: var(--primary-teal); }
+
+        /* --- PAGE SPECIFIC STYLES --- */
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .page-header { margin-bottom: 30px; text-align: center;}
+        .page-title { font-size: 32px; font-weight: 700; color: var(--text-dark); margin-bottom: 5px; }
+        .page-subtitle { color: var(--text-light); font-size: 14px; }
+
+        /* Filter Card */
+        .filter-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 13px; font-weight: 600; color: var(--text-light); }
+        
+        .form-select {
+            padding: 12px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background-color: #f9fafb;
+            color: var(--text-dark);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary-teal);
+            background-color: var(--white);
+            box-shadow: 0 0 0 3px rgba(44, 151, 134, 0.1);
+        }
+
+        .btn-search-blood {
+            background-color: var(--blood-red);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(230, 57, 70, 0.2);
+            text-align: center;
+        }
+        .btn-search-blood:hover { background-color: #c53030; transform: translateY(-2px); }
+
+        /* Results Area */
+        .results-section {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f3f4f6;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .tag-group { display: flex; gap: 10px; flex-wrap: wrap; }
+        .filter-tag {
+            background: rgba(44, 151, 134, 0.1);
+            color: var(--primary-teal);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .hospital-search { position: relative; }
+        .hospital-search input {
+            padding: 10px 15px 10px 35px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 13px;
+            outline: none;
+            width: 250px;
+        }
+        .hospital-search i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 12px; }
+
+        /* Table */
+        .table-responsive { overflow-x: auto; }
+        .blood-table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        .blood-table thead { background-color: #f8fafc; }
+        .blood-table th { text-align: left; padding: 15px; font-weight: 600; font-size: 13px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+        .blood-table td { padding: 18px 15px; border-bottom: 1px solid #f3f4f6; font-size: 14px; color: var(--text-dark); vertical-align: middle; }
+        
+        .hospital-name { font-weight: 600; color: var(--text-dark); display: block; }
+        .hospital-loc { font-size: 12px; color: var(--text-light); margin-top: 3px; }
+
+        .category-badge { font-size: 11px; padding: 3px 8px; border-radius: 4px; background: #f3f4f6; color: var(--text-light); font-weight: 500; }
+        .stock-badge { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; display: inline-block; }
+        .stock-high { background: #ecfdf5; color: #059669; }
+        .stock-med { background: #fffbeb; color: #d97706; }
+        .stock-low { background: #fef2f2; color: #dc2626; }
+
+        .btn-call {
+            width: 35px; height: 35px; border-radius: 50%; background: rgba(44, 151, 134, 0.1); color: var(--primary-teal);
+            display: inline-flex; align-items: center; justify-content: center; font-size: 14px; margin-right: 5px; transition: 0.2s;
+        }
+        .btn-call:hover { background: var(--primary-teal); color: white; }
+
+        @media (max-width: 1000px) {
+            .navbar { flex-direction: column; gap: 20px; padding-bottom: 20px; }
+            .nav-links { 
+        /* --- RESET FOR MOBILE --- */
+        position: static;         /* 1. Disable absolute positioning */
+        transform: none;          /* 2. Remove the centering shift */
+        /* ------------------------ */
+        
+        flex-wrap: wrap; 
+        justify-content: center; 
+        width: 100%;              /* Ensure it takes full width to center items */
+    }
+            .header-bg { min-height: auto; }
+            .filter-row { grid-template-columns: 1fr; }
+            .logo { margin-left: 0; margin-top: 10px; }
+            .nav-links, .auth-buttons { margin-top: 0; }
+        }
+
+        /* Slim Footer Style */
+    footer { 
+        background: #2c9786; 
+        color: white; 
+        padding: 15px 0;    /* Changed from 40px to 15px to make it smaller */
+        text-align: center; 
+        font-size: 12px;    /* Slightly smaller font for a cleaner look */
+        letter-spacing: 0.5px; 
+    }
+
+    </style>
+</head>
+<body>
+
+    <header class="header-bg">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../images/jeevandhara_logo_2.0.png" alt="Jeevandhara Logo">
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="/frontend/pages/front_page.html">Home</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#">About Jeevandhara <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">About Jeevandhara</a></li>
+                        <li><a href="#">Donation History Tracking</a></li>
+                        <li><a href="#">Badges and Rewards</a></li>
+                        <li><a href="#">Jeevandhara FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#">Looking for Blood <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Donor Login</a></li>
+                        <li><a href="/frontend/pages/blood_availability.html">Blood Availability</a></li>
+                        <li><a href="#">Blood Center Directory</a></li>
+                        <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> SOS Emergency</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#">Want to Donate <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Blood Bank Appointment</a></li>
+                        <li><a href="#">AI Blood Matching</a></li>
+                        <li><a href="/frontend/pages/health_advice.html">Health Advice (Diet)</a></li>
+                        <li><a href="#">Register VBD Camp</a></li>
+                        <li><a href="#" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#">Blood Center Login <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Jeevandhara Login</a></li>
+                        <li><a href="#">Add your Blood Center</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            
+        </nav>
+
+<div class="scrolling-ticker">
+    <div class="ticker-track">
+        
+        <div class="ticker-content">
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+        </div>
+
+        <div class="ticker-content">
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+        </div>
+
+    </div>
+</div>
+
+    </header>
+
+    <main class="main-container">
+        
+        <div class="page-header">
+            <h1 class="page-title">Blood Stock Availability</h1>
+            <p class="page-subtitle">Check real-time blood stock availability in Blood Banks near you.</p>
+        </div>
+
+        <div class="filter-card">
+            <div class="filter-row">
+                <div class="form-group">
+                    <label>State</label>
+                    <select class="form-select">
+                        <option>Maharashtra</option>
+                        <option>Delhi</option>
+                        <option>Karnataka</option>
+                        <option>West Bengal</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>District</label>
+                    <select class="form-select">
+                        <option>Pune</option>
+                        <option>Mumbai</option>
+                        <option>Nagpur</option>
+                        <option>Nashik</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Blood Group</label>
+                    <select class="form-select">
+                        <option>All Groups</option>
+                        <option>A +ve</option>
+                        <option>B +ve</option>
+                        <option>O +ve</option>
+                        <option>AB +ve</option>
+                        <option>A -ve</option>
+                        <option>B -ve</option>
+                        <option>O -ve</option>
+                        <option>AB -ve</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Component</label>
+                    <select class="form-select">
+                        <option>Packed Red Blood Cells</option>
+                        <option>Whole Blood</option>
+                        <option>Fresh Frozen Plasma</option>
+                        <option>Platelets</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn-search-blood">
+                        <i class="fas fa-search"></i> Search Stock
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <div class="results-header">
+                <div class="tag-group">
+                    <span class="filter-tag">Maharashtra</span>
+                    <span class="filter-tag">Pune</span>
+                    <span class="filter-tag">Whole Blood</span>
+                </div>
+                <div class="hospital-search">
+                    <i class="fas fa-filter"></i>
+                    <input type="text" placeholder="Filter by Hospital Name...">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="blood-table">
+                    <thead>
+                        <tr>
+                            <th>Hospital / Blood Bank</th>
+                            <th>Category</th>
+                            <th>Availability</th>
+                            <th>Last Updated</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="hospital-name">Ruby Hall Clinic Blood Center</span>
+                                <span class="hospital-loc"><i class="fas fa-map-marker-alt"></i> Sassoon Road, Pune</span>
+                            </td>
+                            <td><span class="category-badge">Private</span></td>
+                            <td><span class="stock-badge stock-high">12 Units Available</span></td>
+                            <td>10 mins ago</td>
+                            <td>
+                                <button class="btn-call" title="Call"><i class="fas fa-phone-alt"></i></button>
+                                <button class="btn-call" title="Direction"><i class="fas fa-location-arrow"></i></button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <span class="hospital-name">Sassoon General Hospital</span>
+                                <span class="hospital-loc"><i class="fas fa-map-marker-alt"></i> Jayaprakash Narayan Rd, Pune</span>
+                            </td>
+                            <td><span class="category-badge">Government</span></td>
+                            <td><span class="stock-badge stock-high">45 Units Available</span></td>
+                            <td>Live Update</td>
+                            <td>
+                                <button class="btn-call"><i class="fas fa-phone-alt"></i></button>
+                                <button class="btn-call"><i class="fas fa-location-arrow"></i></button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <span class="hospital-name">Jahangir Hospital Blood Bank</span>
+                                <span class="hospital-loc"><i class="fas fa-map-marker-alt"></i> Bund Garden, Pune</span>
+                            </td>
+                            <td><span class="category-badge">Charitable</span></td>
+                            <td><span class="stock-badge stock-med">3 Units Available</span></td>
+                            <td>1 hour ago</td>
+                            <td>
+                                <button class="btn-call"><i class="fas fa-phone-alt"></i></button>
+                                <button class="btn-call"><i class="fas fa-location-arrow"></i></button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <span class="hospital-name">Sahyadri Super Speciality</span>
+                                <span class="hospital-loc"><i class="fas fa-map-marker-alt"></i> Deccan Gymkhana, Pune</span>
+                            </td>
+                            <td><span class="category-badge">Private</span></td>
+                            <td><span class="stock-badge stock-low">Out of Stock</span></td>
+                            <td>2 hours ago</td>
+                            <td>
+                                <button class="btn-call"><i class="fas fa-phone-alt"></i></button>
+                                <button class="btn-call"><i class="fas fa-location-arrow"></i></button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        
+
+    </main>
+
+    <footer >
+        &copy; 2026 Jeevandhara Blood Services. Made with Love.
+    </footer>
+
+</body>
+</html>

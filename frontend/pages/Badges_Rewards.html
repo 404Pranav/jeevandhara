@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Health Advice - Jeevandhara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CORE VARIABLES & RESETS --- */
+        :root {
+            --logo-height: 160px;
+            --primary-gradient: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            --primary-teal: #2c9786;
+            --primary-dark: #205c75;
+            --accent-orange: #f59e0b;
+            --blood-red: #e63946;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --bg-light: #f8fafc;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+            --platinum: #e5e4e2;
+            --diamond: #b9f2ff;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: var(--text-dark); background-color: #f8f9fc; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+       button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+        /* --- NAVBAR STYLES --- */
+        .header-bg { background: var(--primary-gradient); color: var(--white); position: relative; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: -10px 50px; position: relative; z-index: 100; min-height: 100px; }
+
+        /* --- SCROLLING TICKER STYLES --- */
+        .scrolling-ticker {
+            width: 100%;
+            background: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            overflow: hidden;
+            padding: 12px 0;
+            position: relative;
+            z-index: 99;
+            margin-top: 0px; 
+        }
+
+        .ticker-track {
+            display: flex;
+            width: fit-content;
+            animation: scroll-infinite 20s linear infinite;
+        }
+
+        .ticker-content {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-content span {
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-right: 50px;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll-infinite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .logo { display: flex; align-items: center; margin-left: 60px; margin-top: 20px; }
+        .logo img { height: 100px; width: auto; object-fit: contain; }
+        
+        .nav-links { 
+            display: flex; 
+            gap: 25px; 
+            align-items: center; 
+             margin-top: 20px; 
+    
+    /* --- NEW CENTERING LOGIC --- */
+    position: absolute;       /* 1. Take it out of the normal flow */
+    left: 50%;                /* 2. Move it to the middle of the screen */
+    transform: translateX(-50%); /* 3. Perfect center alignment */
+    margin-left: 10px;           /* 4. Remove your old manual margin */
+    /* --------------------------- */
+    margin-top: 20px;
+        }
+
+        .nav-item { position: relative; padding: 10px 0; }
+        .nav-item > a { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 5px; position: relative; transition: color 0.3s ease; }
+        .nav-item > a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--gold);; transition: width 0.3s ease-in-out; }
+        .nav-item:hover > a { color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+        .nav-item:hover > a::after { width: 100%; }
+
+        .dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(15px); background: rgba(255, 255, 255, 0.95); min-width: 240px; padding: 15px 0; border-radius: 12px; box-shadow: 5px 10px 30px rgba(0,0,0,0.1); opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1000; }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown li a { display: block; padding: 10px 20px 10px 30px; color: var(--text-dark); font-size: 13px; font-weight: 500; position: relative; transition: 0.3s ease; }
+        .dropdown li a::before { content: '\f043'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 10px; top: 50%; transform: translateY(-50%) scale(0); color: var(--blood-red); font-size: 14px; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); height: 16px; line-height: 16px; }
+        .dropdown li a:hover { color: var(--blood-red); transform: translateX(5px); background: transparent; }
+        .dropdown li a:hover::before { transform: translateY(-50%) scale(1); }
+        .dropdown li a.sos-link { color: #e63946; font-weight: 700; }
+
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+
+        @media (max-width: 1000px) {
+            .navbar { flex-direction: column; gap: 20px; padding-bottom: 20px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; position: relative; left: 0; transform: none; }
+            .logo { margin-left: 0; margin-top: 10px; }
+        }
+
+        /* --- Profile Hero (Consistent with History page) --- */
+        .profile-hero {
+            background: var(--white);
+            border-bottom: 1px solid #edf2f7;
+            padding: 25px 50px;
+            margin-bottom: 30px;
+        }
+
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-light);
+            border: 3px solid var(--primary-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--primary-teal);
+        }
+
+        .profile-info h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .profile-info p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .points-box {
+            background: var(--primary-teal);
+            color: var(--white);
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-left: auto;
+            text-align: right;
+            box-shadow: 0 8px 15px rgba(44, 151, 134, 0.2);
+        }
+
+        .points-val {
+            font-size: 28px;
+            font-weight: 700;
+            display: block;
+            line-height: 1;
+        }
+
+        .points-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Container --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        /* --- Achievement Roadmap (Timeline) --- */
+        .roadmap-container {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 24px;
+            margin-bottom: 40px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .roadmap-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .roadmap-line {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .roadmap-line::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #f1f5f9;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .roadmap-step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 100px;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            background: #f1f5f9;
+            border: 4px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 14px;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .roadmap-step.active .step-circle {
+            background: var(--primary-teal);
+            color: white;
+            box-shadow: 0 0 0 10px rgba(44, 151, 134, 0.1);
+        }
+
+        .roadmap-step.completed .step-circle {
+            background: var(--primary-teal);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .roadmap-step.active .step-label {
+            color: var(--primary-dark);
+        }
+
+        /* --- Badges Grid --- */
+        .section-header {
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+            border-left: 5px solid var(--accent-orange);
+            padding-left: 15px;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .badge-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid #f1f5f9;
+        }
+
+        .badge-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .badge-icon {
+            font-size: 40px;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            background: #f8fafc;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            transition: var(--transition);
+        }
+
+        .tier-gold .badge-icon {
+            color: var(--gold);
+        }
+
+        .tier-silver .badge-icon {
+            color: var(--silver);
+        }
+
+        .tier-locked {
+            filter: grayscale(1);
+            opacity: 0.5;
+        }
+
+        /* --- Tooltip Helper --- */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--primary-dark);
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 10px;
+            position: absolute;
+            z-index: 100;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            color: var(--text-light);
+            font-size: 13px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .profile-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .points-box {
+                margin-left: 0;
+                margin-top: 20px;
+                width: 100%;
+                text-align: center;
+            }
+
+            .roadmap-line {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .roadmap-line::before {
+                width: 4px;
+                height: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .roadmap-step {
+                width: 100%;
+            }
+        }
+
+        /* --- New Animations & Interactivity --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .badge-card:hover {
+            box-shadow: 0 20px 40px rgba(44, 151, 134, 0.15);
+            border-color: var(--primary-teal);
+        }
+
+        .tier-gold:hover .badge-icon {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+        }
+
+        .points-box {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .points-box::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: 0.5s;
+        }
+
+        .points-box:hover::after {
+            left: 100%;
+            top: 100%;
+        }
+
+        .elite-badge {
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .elite-badge:active {
+            transform: scale(0.9);
+        }
+
+        /* --- PROFILE AVATAR & DROPDOWN STYLES --- */
+        .auth-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--white);
+            color: var(--primary-teal);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid var(--gold-highlight, var(--gold));
+            transition: 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            text-transform: uppercase;
+            user-select: none;
+        }
+        .profile-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        }
+        .profile-dropdown-menu {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: white;
+            width: 160px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 10px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: 0.3s ease;
+            z-index: 1000;
+            border-top: 4px solid var(--primary-teal);
+        }
+        .profile-dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .profile-dropdown-menu a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--text-dark);
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .profile-dropdown-menu a:hover {
+            background: #f4f4f4;
+            color: var(--primary-teal);
+            padding-left: 25px;
+        }
+        .profile-dropdown-menu .logout-btn {
+            color: var(--blood-red);
+            font-weight: 600;
+            border-top: 1px solid #eee;
+            margin-top: 5px;
+            padding-top: 15px;
+        }
+        .profile-dropdown-menu .logout-btn:hover {
+            background: #fff5f5;
+            color: red;
+        }
+        .hidden { 
+            display: none !important; 
+        }
+        .cloud-alert {
+            display: none; 
+            position: absolute;
+            background: #fff3cd;
+            color: #856404;
+            padding: 8px 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 9999;
+            border: 1px solid #ffeeba;
+            font-size: 13px;
+            left: 100%; 
+            top: 50%;
+            transform: translateY(-50%); 
+            margin-left: 20px;
+            white-space: nowrap !important;
+            width: auto; 
+        }
+        .cloud-arrow {
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 8px solid #fff3cd;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bg">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../images/jeevandhara_logo_2.0.png" alt="Jeevandhara Logo">
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/frontend/pages/front_page.html">Home</a></li>
+                <li class="nav-item">
+                    <a href="#"><span data-key="about_main">About Jeevandhara</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">About Jeevandhara</a></li>
+                        <li><a href="#">Donation History Tracking</a></li>
+                        <li><a href="#">Badges and Rewards</a></li>
+                        <li><a href="#">Jeevandhara FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Donor Login</a></li>
+                        <li><a href="/frontend/pages/blood_availability.html">Blood Availability</a></li>
+                        <li><a href="#">Blood Center Directory</a></li>
+                        <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> SOS Emergency</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="donate_main">Want to Donate</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Blood Bank Appointment</a></li>
+                        <li><a href="#">AI Blood Matching</a></li>
+                        <li><a href="/frontend/pages/health_advice.html">Health Advice (Diet)</a></li>
+                        <li><a href="#">Register VBD Camp</a></li>
+                        <li><a href="#" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item" id="auth-section" style="margin-left: auto;">
+                    <a href="#" onclick="simulateLogin(event)">
+                    <i class="fas fa-user-circle"></i> Donor Login
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="scrolling-ticker">
+            <div class="ticker-track">
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+            </div>
+        </div>
+
+        
+    </header>
+
+<body>
+
+
+    <section class="profile-hero" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);">
+    <div class="profile-container">
+        <div class="profile-avatar" style="position: relative; width: 100px; height: 100px; background: white; border: 4px solid var(--primary-teal); box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+            <i class="fas fa-user-shield" style="font-size: 40px;"></i>
+            <div style="position: absolute; bottom: -5px; right: -5px; background: var(--accent-orange); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 3px solid white;">
+                <i class="fas fa-check"></i>
+            </div>
+        </div>
+
+        <div class="profile-info">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+        <span id="donor-rank-label" style="text-transform: uppercase; font-size: 10px; font-weight: 800; letter-spacing: 2px; color: var(--primary-teal); background: rgba(44,151,134,0.1); padding: 2px 8px; border-radius: 4px;">Verified Guardian</span>
+        <span id="donor-id" style="font-size: 10px; color: var(--text-light);">ID: #JV-00000</span>
+    </div>
+    <h1 id="donor-name" style="font-size: 32px; letter-spacing: -0.5px;">Loading...</h1>
+    <p style="font-weight: 500; color: var(--primary-dark);"><i class="far fa-calendar-alt" style="margin-right: 5px;"></i> Member since <span id="join-date">---</span></p>
+</div>
+
+<div class="points-box">
+    <span class="points-label">Current Balance</span>
+    <div style="display: flex; align-items: baseline; gap: 8px;">
+        <span id="current-points" class="points-val counter" data-target="0" style="font-size: 36px;">0</span>
+        <span style="font-size: 14px; font-weight: 600;">LP</span>
+    </div>
+    <div style="margin-top: 5px; height: 4px; width: 100%; background: rgba(255,255,255,0.2); border-radius: 10px;">
+        <div id="progress-bar" style="width: 0%; height: 100%; background: var(--gold); transition: width 1s ease-in-out;"></div>
+    </div>
+</div>
+
+<script>
+
+// 1. Complete Mock Data
+const donorData = {
+    name: "Arjun Sharma",
+    id: "JV-99281",
+    rank: "Elite Guardian",
+    joinDate: "July 2024",
+    livesImpacted: 36,
+    totalUnits: 15,
+    points: 850,
+    maxPointsForNextTier: 1000,
+    roadmapStage: 3 // This maps to "Master Donor"
+};
+
+// 2. Unified Initialization
+function initDashboard(data) {
+    // Info Injection
+    document.getElementById('donor-name').innerText = data.name;
+    document.getElementById('donor-id').innerText = `ID: #${data.id}`;
+    document.getElementById('donor-rank-label').innerText = data.rank;
+    document.getElementById('join-date').innerText = data.joinDate;
+    
+    // Points & Progress
+    const pointsVal = document.getElementById('current-points');
+    pointsVal.setAttribute('data-target', data.points);
+    
+    const progress = (data.points / data.maxPointsForNextTier) * 100;
+    document.getElementById('progress-bar').style.width = `${progress}%`;
+
+    // Impact Metrics
+    const metrics = document.querySelectorAll('.metric-val.counter');
+    metrics[0].setAttribute('data-target', data.livesImpacted);
+    metrics[1].setAttribute('data-target', data.totalUnits);
+
+    // Roadmap logic
+    const steps = document.querySelectorAll('.roadmap-step');
+    steps.forEach((step, index) => {
+        const stepNum = index + 1;
+        step.classList.remove('active', 'completed');
+        if (stepNum < data.roadmapStage) step.classList.add('completed');
+        if (stepNum === data.roadmapStage) step.classList.add('active');
+    });
+
+    // Start Animations
+    animateAllCounters();
+}
+
+// 3. Robust Counter Animation
+function animateAllCounters() {
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        let count = 0;
+        const speed = 2000; // 2 seconds for animation
+        const increment = target / (speed / 16); // ~60fps
+
+        const updateCount = () => {
+            count += increment;
+            if (count < target) {
+                counter.innerText = Math.floor(count).toLocaleString();
+                requestAnimationFrame(updateCount);
+            } else {
+                counter.innerText = target.toLocaleString();
+            }
+        };
+        updateCount();
+    });
+}
+
+// 4. Execution
+window.addEventListener('load', () => {
+    initDashboard(donorData);
+
+    // Intersection Observer for "Reveal" effect
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('active');
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+});
+</script>
+</section>
+
+    <div class="container" style="max-width: 1200px; margin: 0 auto;">
+
+        <!-- How it Works Guide (Quick Understanding) -->
+        <div class="onboarding-guide reveal"
+            style="background: var(--white); padding: 40px; border-radius: 24px; margin-bottom: 40px; box-shadow: var(--card-shadow); text-align: center;">
+            <h2 style="margin-bottom: 30px; color: var(--primary-dark);">How Jeevandhara Rewards Work</h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;">
+                <div class="guide-step">
+                    <div
+                        style="width: 60px; height: 60px; background: rgba(44,151,134,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 24px; color: var(--primary-teal);">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 10px;">1. Donate</h3>
+                    <p style="font-size: 13px; color: var(--text-light);">Visit any blood center and complete your
+                        donation.</p>
+                </div>
+                <div class="guide-step">
+                    <div
+                        style="width: 60px; height: 60px; background: rgba(245,158,11,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 24px; color: var(--accent-orange);">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 10px;">2. Earn Points</h3>
+                    <p style="font-size: 13px; color: var(--text-light);">Earn life points for every unit of blood
+                        donated.</p>
+                </div>
+                <div class="guide-step">
+                    <div
+                        style="width: 60px; height: 60px; background: rgba(230,57,70,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 24px; color: var(--blood-red);">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3 style="font-size: 16px; margin-bottom: 10px;">3. Claim Perks</h3>
+                    <p style="font-size: 13px; color: var(--text-light);">Redeem points for vouchers, gifts, and health
+                        checks.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Impact Metrics Section -->
+        <div class="reveal"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-bottom: 40px;">
+            <div class="metric-card"
+                style="background: var(--white); padding: 25px; border-radius: 20px; box-shadow: var(--card-shadow); text-align: center;">
+                <i class="fas fa-heartbeat" style="font-size: 30px; color: var(--blood-red); margin-bottom: 10px;"></i>
+                <h4 style="font-size: 14px; color: var(--text-light);">Lives Impacted</h4>
+                <span class="metric-val counter" data-target="36"
+                    style="font-size: 24px; font-weight: 700; color: var(--primary-dark);">0</span><span
+                    style="font-size: 24px; font-weight: 700; color: var(--primary-dark);"> Lives</span>
+            </div>
+            <div class="metric-card"
+                style="background: var(--white); padding: 25px; border-radius: 20px; box-shadow: var(--card-shadow); text-align: center;">
+                <i class="fas fa-flask" style="font-size: 30px; color: var(--primary-teal); margin-bottom: 10px;"></i>
+                <h4 style="font-size: 14px; color: var(--text-light);">Total Units</h4>
+                <span class="metric-val counter" data-target="12"
+                    style="font-size: 24px; font-weight: 700; color: var(--primary-dark);">0</span><span
+                    style="font-size: 24px; font-weight: 700; color: var(--primary-dark);"> Units</span>
+            </div>
+            <div class="metric-card"
+                style="background: var(--white); padding: 25px; border-radius: 20px; box-shadow: var(--card-shadow); text-align: center;">
+                <i class="fas fa-calendar-check"
+                    style="font-size: 30px; color: var(--accent-orange); margin-bottom: 10px;"></i>
+                <h4 style="font-size: 14px; color: var(--text-light);">Donor Since</h4>
+                <span style="font-size: 24px; font-weight: 700; color: var(--primary-dark);">1.5 Years</span>
+            </div>
+        </div>
+
+        <!-- Roadmap Section -->
+        <div class="roadmap-container reveal">
+            <div class="roadmap-title">
+                <h2>Achievement Roadmap
+                    <div class="tooltip">
+                        <i class="fas fa-question-circle" style="color: var(--text-light);"></i>
+                        <span class="tooltiptext">Your journey from a first-time donor to a guardian angel. Complete
+                            donations to move forward!</span>
+                    </div>
+                </h2>
+                <span style="font-size: 12px; color: var(--primary-teal); font-weight: 600;">80% to Platinum Tier</span>
+            </div>
+
+            <div class="roadmap-line">
+                <div class="roadmap-step completed">
+                    <div class="step-circle"><i class="fas fa-check"></i></div>
+                    <span class="step-label">First Drop</span>
+                </div>
+                <div class="roadmap-step completed">
+                    <div class="step-circle"><i class="fas fa-check"></i></div>
+                    <span class="step-label">Frequent Flyer</span>
+                </div>
+                <div class="roadmap-step active">
+                    <div class="step-circle"><i class="fas fa-award"></i></div>
+                    <span class="step-label">Master Donor</span>
+                </div>
+                <div class="roadmap-step">
+                    <div class="step-circle"><i class="fas fa-gem"></i></div>
+                    <span class="step-label">Guardian Angel</span>
+                </div>
+                <div class="roadmap-step">
+                    <div class="step-circle"><i class="fas fa-crown"></i></div>
+                    <span class="step-label">Lifesaver Pro</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="section-header">
+            <h2>Your Earned Badges</h2>
+        </section>
+
+        <div class="badges-grid reveal">
+            <div class="badge-card tier-gold">
+                <div class="badge-icon"><i class="fas fa-medal"></i></div>
+                <h3 style="font-size: 18px; margin-bottom: 5px;">Master Donor</h3>
+                <p style="font-size: 13px; color: var(--text-light); margin-bottom: 10px;">Donated blood 10+ times.</p>
+                <span
+                    style="font-size: 10px; font-weight: 700; color: #166534; background: #dcfce7; padding: 4px 10px; border-radius: 10px;">EARNED
+                    JAN 2026</span>
+            </div>
+            <div class="badge-card tier-silver">
+                <div class="badge-icon"><i class="fas fa-award"></i></div>
+                <h3 style="font-size: 18px; margin-bottom: 5px;">First Drop</h3>
+                <p style="font-size: 13px; color: var(--text-light); margin-bottom: 10px;">Completed first donation.</p>
+                <span
+                    style="font-size: 10px; font-weight: 700; color: #166534; background: #dcfce7; padding: 4px 10px; border-radius: 10px;">EARNED
+                    JULY 2024</span>
+            </div>
+            <div class="badge-card tier-locked">
+                <div class="badge-icon"><i class="fas fa-gem"></i></div>
+                <h3 style="font-size: 18px; margin-bottom: 5px;">Guardian Angel</h3>
+                <p style="font-size: 13px; color: var(--text-light); margin-bottom: 10px;">Refer 5 successful donors.
+                </p>
+                <div style="height: 6px; background: #f1f5f9; border-radius: 3px; margin: 10px 0; overflow: hidden;">
+                    <div style="width: 40%; height: 100%; background: var(--accent-orange);"></div>
+                </div>
+                <span style="font-size: 10px; font-weight: 700; color: var(--text-light);">LOCKED (2/5)</span>
+            </div>
+        </div>
+
+        <section class="section-header">
+            <h2>Available Rewards</h2>
+        </section>
+
+        <div class="reveal"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+            <div class="badge-card"
+                style="text-align: left; display: flex; align-items: center; gap: 20px; padding: 20px;">
+                <div class="badge-icon" style="margin: 0; width: 60px; height: 60px; line-height: 60px;"><i
+                        class="fas fa-gift" style="color: var(--accent-orange);"></i></div>
+                <div>
+                    <h4 style="font-size: 16px;">Health Voucher</h4>
+                    <p style="font-size: 12px; color: var(--text-light);">Full body checkup discount.</p>
+                    <a href="#"
+                        style="color: var(--primary-teal); font-size: 11px; font-weight: 700; text-decoration: none; margin-top: 5px; display: block;">REDEEM
+                        500 PTS</a>
+                </div>
+            </div>
+            <div class="badge-card"
+                style="text-align: left; display: flex; align-items: center; gap: 20px; padding: 20px;">
+                <div class="badge-icon" style="margin: 0; width: 60px; height: 60px; line-height: 60px;"><i
+                        class="fas fa-coffee" style="color: var(--primary-teal);"></i></div>
+                <div>
+                    <h4 style="font-size: 16px;">Partner Perk</h4>
+                    <p style="font-size: 12px; color: var(--text-light);">Free coffee at partner cafes.</p>
+                    <a href="#"
+                        style="color: var(--primary-teal); font-size: 11px; font-weight: 700; text-decoration: none; margin-top: 5px; display: block;">REDEEM
+                        200 PTS</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Points History Section -->
+        <section class="section-header reveal" style="margin-top: 40px;">
+            <h2>Points History</h2>
+        </section>
+        <div class="reveal"
+            style="background: var(--white); border-radius: 24px; padding: 30px; box-shadow: var(--card-shadow); margin-bottom: 50px; overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                <thead>
+                    <tr style="text-align: left; border-bottom: 2px solid #f1f5f9;">
+                        <th style="padding: 15px; color: var(--text-light);">Date</th>
+                        <th style="padding: 15px; color: var(--text-light);">Activity</th>
+                        <th style="padding: 15px; color: var(--text-light);">Type</th>
+                        <th style="padding: 15px; color: var(--text-light); text-align: right;">Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 15px;">15 Jan 2026</td>
+                        <td style="padding: 15px;">Whole Blood Donation</td>
+                        <td style="padding: 15px;"><span
+                                style="color: #166534; background: #dcfce7; padding: 4px 10px; border-radius: 10px; font-size: 11px;">EARNED</span>
+                        </td>
+                        <td style="padding: 15px; text-align: right; font-weight: 600; color: #166534;">+500</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 15px;">02 Dec 2025</td>
+                        <td style="padding: 15px;">Health Voucher Redemption</td>
+                        <td style="padding: 15px;"><span
+                                style="color: #991b1b; background: #fee2e2; padding: 4px 10px; border-radius: 10px; font-size: 11px;">REDEEMED</span>
+                        </td>
+                        <td style="padding: 15px; text-align: right; font-weight: 600; color: #991b1b;">-500</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 15px;">20 Oct 2025</td>
+                        <td style="padding: 15px;">Whole Blood Donation</td>
+                        <td style="padding: 15px;"><span
+                                style="color: #166534; background: #dcfce7; padding: 4px 10px; border-radius: 10px; font-size: 11px;">EARNED</span>
+                        </td>
+                        <td style="padding: 15px; text-align: right; font-weight: 600; color: #166534;">+500</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+    <script>
+        // --- Metric Counter Logic ---
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const count = parseInt(counter.innerText.replace(/,/g, ''));
+                const increment = target / 50;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + increment).toLocaleString();
+                    setTimeout(() => animateCounters(), 20);
+                } else {
+                    counter.innerText = target.toLocaleString();
+                }
+            });
+        }
+
+        // --- Reveal Animations logic ---
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // --- Micro interactions ---
+        function celebrateElite() {
+            const eliteBtn = document.querySelector('.elite-badge');
+            eliteBtn.style.transform = 'scale(1.2) rotate(10deg)';
+            eliteBtn.style.boxShadow = '0 0 20px var(--accent-orange)';
+
+            // Simple visual "sparkle" effect simulation
+            setTimeout(() => {
+                eliteBtn.style.transform = '';
+                eliteBtn.style.boxShadow = '';
+            }, 500);
+
+            console.log("Elite celebration triggered!");
+        }
+
+        window.onload = () => {
+            animateCounters();
+        };
+    </script>
+    <script>
+        const authContainer = document.getElementById('auth-section');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+        });
+
+        function updateAuthUI() {
+            const storedUser = localStorage.getItem('donorName');
+            const dataStr = localStorage.getItem('donorData');
+
+            if (storedUser && storedUser.trim() !== "") {
+                const names = storedUser.trim().split(' ');
+                let initials = names[0].charAt(0);
+                if (names.length > 1) initials += names[names.length - 1].charAt(0);
+
+                authContainer.innerHTML = `
+                    <div class="auth-wrapper">
+                        <div class="profile-avatar" id="avatarBtn">
+                            ${initials.toUpperCase()}
+                        </div>
+                        <div class="profile-dropdown-menu" id="profileMenu">
+                            <div style="padding: 10px 20px; font-size: 11px; color: #888; border-bottom: 1px solid #eee;">
+                                Signed in as <br> <strong style="color: #333;">${storedUser}</strong>
+                            </div>
+                             <a href="/frontend/pages/profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
+                             <a href="/frontend/pages/front_page.html" onclick="logoutDonor(event)" class="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                        <div id="profile-alert" class="cloud-alert">
+                            <div class="cloud-content">
+                                <span>Please complete your profile.🩸</span>
+                                 <a href="/frontend/pages/profile.html">Edit</a>
+                            </div>
+                            <div class="cloud-arrow"></div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('avatarBtn').onclick = (e) => {
+                    e.stopPropagation();
+                    document.getElementById('profileMenu').classList.toggle('show');
+                };
+
+                checkProfileCompleteness(dataStr);
+            } else {
+                authContainer.innerHTML = `
+                             <a href="/frontend/pages/front_page.html" onclick="simulateLogin(event)">
+                        <i class="fas fa-user-circle"></i> Donor Login
+                    </a>
+                `;
+            }
+        }
+
+        function checkProfileCompleteness(dataStr) {
+            const alertBar = document.getElementById('profile-alert');
+            if (!alertBar) return;
+            let isMissing = false;
+            if (!dataStr) {
+                isMissing = true;
+            } else {
+                const data = JSON.parse(dataStr);
+                const checks = [
+                    !data.phone || data.phone.trim() === "" || data.phone.includes("555-0128"),
+                    !data.bloodGroup || data.bloodGroup.trim() === "",
+                    !data.email || data.email.trim() === "",
+                    !data.address || data.address.trim() === ""
+                ];
+                isMissing = checks.some(condition => condition === true);
+            }
+
+            if (isMissing) {
+                alertBar.classList.remove('hidden');
+                alertBar.style.setProperty('display', 'flex', 'important');
+            } else {
+                alertBar.classList.add('hidden');
+                alertBar.style.setProperty('display', 'none', 'important');
+            }
+        }
+
+        function simulateLogin(e) {
+            e.preventDefault();
+            const name = prompt("Enter Full Name:");
+            if (name) {
+                localStorage.setItem('donorName', name);
+                updateAuthUI();
+            }
+        }
+
+        function logoutDonor(e) {
+            e.preventDefault();
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem('donorName');
+                localStorage.removeItem('donorData');
+                window.location.reload();
+            }
+        }
+
+        window.onclick = () => {
+            const menu = document.getElementById('profileMenu');
+            if (menu) menu.classList.remove('show');
+        };
+
+        function refreshUserUI() {
+            const name = localStorage.getItem('donorName');
+            const dataStr = localStorage.getItem('donorData');
+            const authContainer = document.getElementById('auth-section');
+            const alertBar = document.getElementById('profile-alert');
+
+            if (name && authContainer) {
+                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                authContainer.innerHTML = `<div style="width:40px; height:40px; background:#2c9786; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">${initials}</div>`;
+            }
+
+            if (alertBar) {
+                let showNotice = false;
+                if (!dataStr) {
+                    showNotice = true;
+                } else {
+                    const data = JSON.parse(dataStr);
+                    const isPhoneMissing = !data.phone || data.phone.trim() === "" || data.phone === "(405) 555-0128";
+                    const isBloodMissing = !data.bloodGroup || data.bloodGroup.trim() === "";
+                    const isEmailMissing = !data.email || data.email.trim() === "";
+                    const isAddressMissing = !data.address || data.address.trim() === "";
+                    const isLocationMissing = !location.email || data.location.trim() === "";
+                    const isPostol_codeMissing = !posatl_code.email || data.postal_code.trim() === "";
+                    if (isPhoneMissing || isBloodMissing || isEmailMissing || isAddressMissing || isLocationMissing || isPostol_codeMissing) {
+                        showNotice = true;
+                    }
+                }
+                if (showNotice) {
+                    alertBar.style.display = 'flex';
+                } else {
+                    alertBar.style.display = 'none';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', updateAuthUI);
+    </script>
+</body>
+</html>

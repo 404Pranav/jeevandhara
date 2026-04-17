@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camp Registration - Jeevandhara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <style>
+        /* --- CORE VARIABLES & RESETS --- */
+        :root {
+            --logo-height: 160px;
+            --primary-gradient: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            --primary-teal: #2c9786;
+            --accent-orange: #f59e0b;
+            --blood-red: #e63946;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --bg-light: #fdfdfd;
+            --gold-highlight: #ffd700;
+            --border-color: #e5e7eb;
+            --soft-green: #d1fae5;
+            --soft-red: #fee2e2;
+            --soft-orange: #ffedd5;
+             
+            --header-red: #bd1e24; 
+            
+            --text-navy: #0a2342; /* The dark color from your image */
+            --text-gray: #666;
+            --bg-gray: #f8f9fa;
+            --border-color: #ccc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: var(--text-dark); background-color: #f8f9fc; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+       button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+        /* --- NAVBAR STYLES --- */
+        .header-bg { background: var(--primary-gradient); color: var(--white); position: relative; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: -10px 50px; position: relative; z-index: 100; min-height: 100px; }
+
+        /* --- SCROLLING TICKER STYLES --- */
+        .scrolling-ticker {
+            width: 100%;
+            background: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            overflow: hidden;
+            padding: 12px 0;
+            position: relative;
+            z-index: 99;
+            margin-top: 0px; 
+        }
+
+        .ticker-track {
+            display: flex;
+            width: fit-content;
+            animation: scroll-infinite 20s linear infinite;
+        }
+
+        .ticker-content {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-content span {
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-right: 50px;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll-infinite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .logo { display: flex; align-items: center; margin-left: 60px; margin-top: 20px; }
+        .logo img { height: 100px; width: auto; object-fit: contain; }
+        
+        .nav-links { 
+            display: flex; 
+            gap: 25px; 
+            align-items: center; 
+             margin-top: 20px; 
+    
+            /* --- NEW CENTERING LOGIC --- */
+            position: absolute;       /* 1. Take it out of the normal flow */
+            left: 50%;                /* 2. Move it to the middle of the screen */
+            transform: translateX(-50%); /* 3. Perfect center alignment */
+            margin-left: 11px;           /* 4. Remove your old manual margin */
+            /* --------------------------- */
+            margin-top: 20px;
+        }
+
+        .nav-item { position: relative; padding: 10px 0; }
+        .nav-item > a { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 5px; position: relative; transition: color 0.3s ease; }
+        .nav-item > a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--gold-highlight); transition: width 0.3s ease-in-out; }
+        .nav-item:hover > a { color: var(--gold-highlight); text-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+        .nav-item:hover > a::after { width: 100%; }
+
+        .dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(15px); background: rgba(255, 255, 255, 0.95); min-width: 240px; padding: 15px 0; border-radius: 12px; box-shadow: 5px 10px 30px rgba(0,0,0,0.1); opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1000; }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown li a { display: block; padding: 10px 20px 10px 30px; color: var(--text-dark); font-size: 13px; font-weight: 500; position: relative; transition: 0.3s ease; }
+        .dropdown li a::before { content: '\f043'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 10px; top: 50%; transform: translateY(-50%) scale(0); color: var(--blood-red); font-size: 14px; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); height: 16px; line-height: 16px; }
+        .dropdown li a:hover { color: var(--blood-red); transform: translateX(5px); background: transparent; }
+        .dropdown li a:hover::before { transform: translateY(-50%) scale(1); }
+        .dropdown li a.sos-link { color: #e63946; font-weight: 700; }
+
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+
+        @media (max-width: 1000px) {
+            .navbar { flex-direction: column; gap: 20px; padding-bottom: 20px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; position: relative; left: 0; transform: none; }
+            .logo { margin-left: 0; margin-top: 10px; }
+        }
+
+
+        /* NEW CENTERED HEADER STYLE (Free on screen) */
+        .page-header-section {
+            text-align: center;
+            padding: 40px 20px 20px 20px;
+        }
+        
+        /* Main container is now fluid and has no shadow or card borders */
+        .form-container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 20px 0 60px 0; }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 20px; }
+        
+        .field-label { font-size: 14px; font-weight: 600; margin-bottom: 8px; display: block; }
+        .field-label span { color: red; }
+        
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; outline: none; font-size: 14px; background-color: #fcfcfc; }
+        input:focus { border-color: var(--primary-teal); background-color: #fff; }
+        .error-text { color: red; font-size: 13px; margin-top: 5px; }
+
+        #map { height: 400px; width: 100%; border: 2px solid #ddd; border-radius: 8px; margin-top: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
+
+        .btn-group { display: flex; justify-content: center; gap: 15px; margin-top: 40px; }
+        .btn-submit { background: #5cb85c; color: white; padding: 12px 35px; border-radius: 4px; border: 1px solid #4cae4c; font-size: 16px; cursor: pointer; font-weight: 600; }
+        .btn-cancel { background: #d9534f; color: white; padding: 12px 35px; border-radius: 4px; border: 1px solid #d43f3a; font-size: 16px; cursor: pointer; font-weight: 600; }
+
+        .review-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .review-table th, .review-table td { border: 1px solid #ddd; padding: 15px; text-align: left; }
+        .review-table th { background-color: #f9f9f9; width: 40%; color: #555; }
+
+        /* Modals */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); align-items: center; justify-content: center; }
+        .modal-content { background: white; width: 90%; max-width: 600px; border-radius: 15px; padding: 0; overflow: hidden; }
+        .modal-header-success { background: #2c9786; color: white; padding: 20px; text-align: center; font-size: 24px; }
+        .modal-body { padding: 30px; text-align: center; }
+        .conf-letter { text-align: left; background: #f9f9f9; padding: 20px; border: 1px dashed #ccc; margin-top: 15px; font-size: 14px; line-height: 1.6; }
+
+        #successFlash { padding: 40px; color: #2c9786; text-align: center; }
+        #successFlash i { font-size: 60px; margin-bottom: 20px; display: block; }
+
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; gap: 20px; }
+            .nav-links { display: none; }
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <header class="header-bg">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../images/jeevandhara_logo_2.0.png" alt="Jeevandhara Logo">
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/frontend/pages/front_page.html">Home</a></li>
+                <li class="nav-item">
+                    <a href="#"><span data-key="about_main">About Jeevandhara</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">About Jeevandhara</a></li>
+                        <li><a href="#">Donation History Tracking</a></li>
+                        <li><a href="#">Badges and Rewards</a></li>
+                        <li><a href="#">Jeevandhara FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Donor Login</a></li>
+                        <li><a href="/frontend/pages/blood_availability.html">Blood Availability</a></li>
+                        <li><a href="#">Blood Center Directory</a></li>
+                        <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> SOS Emergency</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="donate_main">Want to Donate</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#" data-key="appointment_sub">Blood Bank Appointment</a></li>
+                        <li><a href="/frontend/pages/AI.html" data-key="ai_match">AI Blood Matching</a></li>
+                        <li><a href="/frontend/pages/health_advice.html" data-key="health_advice">Health Advice (Diet)</a></li>
+                        <li><a href="#" data-key="register_camp">Register VBD Camp</a></li>
+                        <li><a href="#" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="center_login">Blood Center Login</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Jeevandhara Login</a></li>
+                        <li><a href="#">Add your Blood Center</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="scrolling-ticker">
+            <div class="ticker-track">
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+        <div class="page-header-section">
+        <h1 class="page-title">Camp Registration</h1>
+        <p class="page-subtitle">Organize a blood donation camp and help save lives near you.</p>
+    </div>
+
+    <form id="multiStepForm" class="form-container">
+        <div id="part1">
+            <div class="form-row">
+                <div>
+                    <label class="field-label">Organization Type: <span>*</span></label>
+                    <select id="orgType"><option>others</option><option>NGO</option><option>Corporate</option></select>
+                    <p class="error-text">Please enter organization type</p>
+                </div>
+                <div>
+                    <label class="field-label">Organization Name: <span>*</span></label>
+                    <input type="text" id="orgName">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label class="field-label">Organizer Name: <span>*</span></label>
+                    <input type="text" id="organizerName">
+                </div>
+                <div>
+                    <label class="field-label">Organizer Mobile No: <span>*</span></label>
+                    <input type="text" id="mobile">
+                    <small style="color: #888;">(OTP will be sent on above Mobile Number on submit)</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div><label class="field-label">Organizer Email Id: <span>*</span></label><input type="email" id="email"></div>
+                <div></div>
+            </div>
+
+            <div class="form-row">
+                <div><label class="field-label">Co-Organizer Name:</label><input type="text" id="coName"></div>
+                <div><label class="field-label">Co-Organizer Mobile:</label><input type="text" id="coMobile"></div>
+            </div>
+
+            <div class="form-row">
+                <div><label class="field-label">Camp Name: <span>*</span></label><input type="text" id="campNameInput"></div>
+                <div><label class="field-label">Camp Address: <span>*</span></label><input type="text" id="address"></div>
+            </div>
+
+            <div class="form-row">
+                <div><label class="field-label">State: <span>*</span></label><select id="state"><option>Maharashtra</option></select></div>
+                <div><label class="field-label">District: <span>*</span></label><select id="district"><option>Mumbai</option></select></div>
+            </div>
+
+            <div class="form-row">
+                <div><label class="field-label">City Name: <span>*</span></label><input type="text" id="cityName"></div>
+                <div><label class="field-label">BloodBank: <span>*</span></label><select id="bloodBank"><option>Central Blood Bank</option></select></div>
+            </div>
+
+            <div class="form-row">
+                <div><label class="field-label">Camp Propose Date: <span>*</span></label><input type="date" id="campDate"></div>
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex:1;">
+                        <label class="field-label">Start Time: <span>*</span></label>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="text" id="startTime" placeholder="09:00" style="flex:2">
+                            <select id="startAMPM" style="width: 75px;"><option>AM</option><option>PM</option></select>
+                        </div>
+                    </div>
+                    <div style="flex:1;">
+                        <label class="field-label">End Time: <span>*</span></label>
+                        <div style="display: flex; gap: 5px;">
+                            <input type="text" id="endTime" placeholder="05:00" style="flex:2">
+                            <select id="endAMPM" style="width: 75px;"><option>PM</option><option>AM</option></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <label class="field-label">Pin Camp Location (Search address then pin): <span>*</span></label>
+                <div id="map"></div>
+            </div>
+
+            <div class="form-row" style="margin-top:20px;">
+                <div><label class="field-label">Estimated Participants: <span>*</span></label><input type="number" id="participants"></div>
+                <div><label class="field-label">Reference/Camp Supporter(Prayojak):</label><input type="text" id="reference"></div>
+            </div>
+
+            <div><label class="field-label">Remarks:</label><input type="text" id="remarks"></div>
+
+            <div class="btn-group">
+                <button type="button" class="btn-submit" onclick="showMedical()">Submit & Next</button>
+                <button type="button" class="btn-cancel">Cancel</button>
+            </div>
+        </div>
+
+        <div id="part2" style="display:none;">
+            <h3 style="color:var(--primary-teal); margin-bottom:20px; border-bottom: 2px solid #eee; padding-bottom:10px;">Medical Team Details</h3>
+            <div class="form-row">
+                <div><label class="field-label">Doctor InCharge Name</label><input type="text" id="docName"></div>
+                <div><label class="field-label">Doctor Qualification</label><input type="text" id="docQual" placeholder="e.g., MBBS, MD"></div>
+            </div>
+            <div class="form-row">
+                <div><label class="field-label">Number of Doctors Present</label><input type="number" id="docCount"></div>
+                <div><label class="field-label">Number of Nurses/Paramedics Present</label><input type="number" id="nurseCount"></div>
+            </div>
+            <div class="form-row">
+                <div><label class="field-label">Blood Bank Technician Name</label><input type="text" id="techName"></div>
+                <div><label class="field-label">Affiliated Blood Bank Name</label><input type="text" id="affilBB"></div>
+            </div>
+            <div class="form-row">
+                <div><label class="field-label">Emergency Hospital Tie-up</label><input type="text" id="hospTie"></div>
+                <div><label class="field-label">Ambulance/First Aid Availability</label>
+                    <select id="ambulance"><option>Yes</option><option>No</option></select>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn-submit" onclick="showReview()">Review All Info</button>
+                <button type="button" class="btn-cancel" onclick="backToPart1()">Back</button>
+            </div>
+        </div>
+
+        <div id="part3" style="display:none;">
+            <h3 style="color:var(--header-red); margin-bottom:20px; border-bottom: 2px solid #eee; padding-bottom:10px;">Review & Confirm Details</h3>
+            <div id="reviewData"></div>
+            <div class="btn-group">
+                <button type="button" class="btn-submit" onclick="showConfirmation()">Confirm & Submit</button>
+                <button type="button" class="btn-cancel" onclick="backToMedical()">Edit Info</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="modal" id="finalModal">
+        <div class="modal-content">
+            <div id="successFlash">
+                <i class="fas fa-check-circle"></i>
+                <h2>Camp Successfully Organized!</h2>
+                <p>Please wait a moment...</p>
+            </div>
+            <div id="letterContent" style="display:none;">
+                <div class="modal-header-success"><i class="fas fa-calendar-check"></i> Camp Confirmation</div>
+                <div class="modal-body">
+                    <h2 id="popDate" style="color: #333;"></h2>
+                    <div class="conf-letter" id="letterText"></div>
+                    <div class="btn-group" style="margin-top:25px;">
+                        <button class="btn-submit" onclick="downloadPDF()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                        <button class="btn-cancel" onclick="location.reload()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+
+    <script>
+        // All original script logic restored
+        const map = L.map('map').setView([19.0760, 72.8777], 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+
+        const geocoder = L.Control.geocoder({ defaultMarkGeocode: false })
+            .on('markgeocode', function(e) {
+                const center = e.geocode.center;
+                map.setView(center, 16);
+                setMarker(center);
+            }).addTo(map);
+
+        let marker;
+        function setMarker(latlng) {
+            if (marker) map.removeLayer(marker);
+            marker = L.marker(latlng).addTo(map).bindPopup("<b>Location Confirmed!</b>").openPopup();
+        }
+        map.on('click', function(e) { setMarker(e.latlng); });
+
+        function showMedical() {
+            document.getElementById('part1').style.display = 'none';
+            document.getElementById('part2').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function backToPart1() {
+            document.getElementById('part2').style.display = 'none';
+            document.getElementById('part1').style.display = 'block';
+        }
+
+        function showReview() {
+    document.getElementById('part2').style.display = 'none';
+    document.getElementById('part3').style.display = 'block';
+    window.scrollTo(0,0);
+    
+    // 1. Format the Date for the screen
+    const rawDate = document.getElementById('campDate').value;
+    let formattedDateForReview = rawDate || "Not Set"; 
+    
+    if(rawDate) {
+        const dateObj = new Date(rawDate);
+        formattedDateForReview = dateObj.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+    }
+
+    // 2. Capture ALL Data (Matching your PDF structure)
+    const data = {
+        "Organization Name": document.getElementById('orgName').value,
+        "Organizer Name": document.getElementById('organizerName').value,
+        "Mobile Number": document.getElementById('mobile').value,
+        "Email ID": document.getElementById('email').value,
+        "Camp Name": document.getElementById('campNameInput').value,
+        "Address": document.getElementById('address').value,
+        "City / State": `${document.getElementById('cityName').value}, ${document.getElementById('state').value}`,
+        "Camp Date": formattedDateForReview,
+        "Timings": `${document.getElementById('startTime').value} ${document.getElementById('startAMPM').value} to ${document.getElementById('endTime').value} ${document.getElementById('endAMPM').value}`,
+        "Estimated Participants": document.getElementById('participants').value,
+        "--------------------": "--------------------", // Section Divider
+        "Doctor In-Charge": document.getElementById('docName').value,
+        "Doctor Qualification": document.getElementById('docQual').value,
+        "Medical Staff": `${document.getElementById('docCount').value} Doctors / ${document.getElementById('nurseCount').value} Nurses`,
+        "Blood Bank": document.getElementById('affilBB').value,
+        "Hospital Tie-up": document.getElementById('hospTie').value,
+        "Ambulance Avail.": document.getElementById('ambulance').value
+    };
+
+    // 3. Build the Table HTML
+    let html = '<table class="review-table">';
+    for (let key in data) { 
+        // Style the divider differently if you want
+        if(key === "--------------------") {
+            html += `<tr style="background:#eee"><td colspan="2" style="text-align:center; font-weight:bold; font-size:12px;">MEDICAL & LOGISTICS DETAILS</td></tr>`;
+        } else {
+            html += `<tr><th>${key}</th><td>${data[key] || 'N/A'}</td></tr>`; 
+        }
+    }
+    html += '</table>';
+    
+    document.getElementById('reviewData').innerHTML = html;
+}
+        function backToMedical() {
+            document.getElementById('part3').style.display = 'none';
+            document.getElementById('part2').style.display = 'block';
+        }
+
+        function showConfirmation() {
+            const dateVal = document.getElementById('campDate').value;
+            const campName = document.getElementById('campNameInput').value;
+            const org = document.getElementById('orgName').value;
+            const organizer = document.getElementById('organizerName').value;
+
+            if(!dateVal) { alert("Please select a date"); return; }
+
+            const dateObj = new Date(dateVal);
+            
+            // Format the Day (e.g., Saturday)
+            const dayName = dateObj.toLocaleDateString('en-GB', { weekday: 'long' });
+            
+            // Format the Date (e.g., 21 February 2026)
+            const formattedDate = dateObj.toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+
+            // Update the display with the new format
+            document.getElementById('popDate').innerText = `Date: ${formattedDate} | Day: ${dayName}`;
+            
+            document.getElementById('letterText').innerHTML = `
+                <strong>To: ${organizer}</strong><br>
+                <strong>Organization: ${org}</strong><br><br>
+                Dear Organizer,<br>
+                We are pleased to confirm your blood donation camp <strong>"${campName}"</strong>. 
+                All medical arrangements have been recorded. Our team will contact you shortly for 
+                logistics support.<br><br>
+                <em>Status: Confirmed via Jeevandhara Portal</em>
+            `;
+
+            // Step 1: Show Modal with Success Flash
+            document.getElementById('finalModal').style.display = 'flex';
+            document.getElementById('successFlash').style.display = 'block';
+            document.getElementById('letterContent').style.display = 'none';
+
+            // Step 2: After 2 seconds, switch to Letter/Download view
+            setTimeout(() => {
+                document.getElementById('successFlash').style.display = 'none';
+                document.getElementById('letterContent').style.display = 'block';
+            }, 2000);
+        }
+        function downloadPDF() {
+    // 1. Initialize jsPDF
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // 2. Capture Time Data
+    const startTime = document.getElementById('startTime')?.value || "N/A";
+    const startAMPM = document.getElementById('startAMPM')?.value || "";
+    const endTime = document.getElementById('endTime')?.value || "N/A";
+    const endAMPM = document.getElementById('endAMPM')?.value || "";
+
+    // 2.5 DATE FORMATTING LOGIC
+    const rawDate = document.getElementById('campDate').value;
+    let formattedDateForPDF = rawDate; // Fallback to raw if empty
+
+    if (rawDate) {
+        const dateObj = new Date(rawDate);
+        formattedDateForPDF = dateObj.toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+    }
+
+    // 3. Define the Rows (Using the new formattedDateForPDF variable)
+    const rows = [
+        ["Organization Name", document.getElementById('orgName').value],
+        ["Organizer Name", document.getElementById('organizerName').value],
+        ["Mobile", document.getElementById('mobile').value],
+        ["Email", document.getElementById('email').value],
+        ["Camp Name", document.getElementById('campNameInput').value],
+        ["Address", document.getElementById('address').value],
+        ["City / State", `${document.getElementById('cityName').value}, ${document.getElementById('state').value}`],
+        ["Camp Date", formattedDateForPDF], // <--- Updated this line
+        ["Timings", `${startTime} ${startAMPM} to ${endTime} ${endAMPM}`],
+        ["Estimated Participants", document.getElementById('participants').value],
+        ["Doctor In-Charge", document.getElementById('docName').value],
+        ["Medical Staff", `${document.getElementById('docCount').value} Doctors / ${document.getElementById('nurseCount').value} Nurses`],
+        ["Blood Bank", document.getElementById('affilBB').value],
+        ["Hospital Tie-up", document.getElementById('hospTie').value],
+        ["Ambulance Avail.", document.getElementById('ambulance').value]
+    ];
+
+    // 4. Header Styling
+    doc.setFontSize(18);
+    doc.setTextColor(44, 151, 134); // Teal
+    doc.text("Jeevandhara Registration Summary", 14, 20);
+
+    // 5. Generate Table
+    doc.autoTable({
+        startY: 30,
+        head: [['Field', 'Response']],
+        body: rows,
+        theme: 'grid',
+        headStyles: { fillColor: [44, 151, 134] },
+        styles: { fontSize: 10 },
+        columnStyles: { 0: { fontStyle: 'bold', width: 60 } }
+    });
+
+    // 6. Final Download Trigger
+    doc.save(`Camp_Registration_${document.getElementById('campNameInput').value || 'Details'}.pdf`);
+}    </script>
+</body>
+</html>

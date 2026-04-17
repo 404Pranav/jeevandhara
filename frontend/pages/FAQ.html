@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Health Advice - Jeevandhara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CORE VARIABLES & RESETS --- */
+        :root {
+            --logo-height: 160px;
+            --primary-gradient: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            --primary-teal: #2c9786;
+            --accent-orange: #f59e0b;
+            --blood-red: #e63946;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --bg-light: #fdfdfd;
+            --gold-highlight: #ffd700;
+            --border-color: #e5e7eb;
+            --soft-green: #d1fae5;
+            --soft-red: #fee2e2;
+            --soft-orange: #ffedd5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: var(--text-dark); background-color: #f8f9fc; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+       button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+        /* --- NAVBAR STYLES --- */
+        .header-bg { background: var(--primary-gradient); color: var(--white); position: relative; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: -10px 50px; position: relative; z-index: 100; min-height: 100px; }
+
+        /* --- SCROLLING TICKER STYLES --- */
+        .scrolling-ticker {
+            width: 100%;
+            background: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            overflow: hidden;
+            padding: 12px 0;
+            position: relative;
+            z-index: 99;
+            margin-top: 0px; 
+        }
+
+        .ticker-track {
+            display: flex;
+            width: fit-content;
+            animation: scroll-infinite 20s linear infinite;
+        }
+
+        .ticker-content {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-content span {
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-right: 50px;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll-infinite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .logo { display: flex; align-items: center; margin-left: 60px; margin-top: 20px; }
+        .logo img { height: 100px; width: auto; object-fit: contain; }
+        
+        .nav-links { 
+            display: flex; 
+            gap: 23px; 
+            align-items: center; 
+             margin-top: 20px; 
+    
+    /* --- NEW CENTERING LOGIC --- */
+    position: absolute;       /* 1. Take it out of the normal flow */
+    left: 50%;                /* 2. Move it to the middle of the screen */
+    transform: translateX(-50%); /* 3. Perfect center alignment */
+    margin-left: 18px;           /* 4. Remove your old manual margin */
+    /* --------------------------- */
+    margin-top: 20px;
+        }
+
+        .nav-item { position: relative; padding: 10px 0; }
+        .nav-item > a { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 5px; position: relative; transition: color 0.3s ease; }
+        .nav-item > a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--gold-highlight); transition: width 0.3s ease-in-out; }
+        .nav-item:hover > a { color: var(--gold-highlight); text-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+        .nav-item:hover > a::after { width: 100%; }
+
+        .dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(15px); background: rgba(255, 255, 255, 0.95); min-width: 240px; padding: 15px 0; border-radius: 12px; box-shadow: 5px 10px 30px rgba(0,0,0,0.1); opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1000; }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown li a { display: block; padding: 10px 20px 10px 30px; color: var(--text-dark); font-size: 13px; font-weight: 500; position: relative; transition: 0.3s ease; }
+        .dropdown li a::before { content: '\f043'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 10px; top: 50%; transform: translateY(-50%) scale(0); color: var(--blood-red); font-size: 14px; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); height: 16px; line-height: 16px; }
+        .dropdown li a:hover { color: var(--blood-red); transform: translateX(5px); background: transparent; }
+        .dropdown li a:hover::before { transform: translateY(-50%) scale(1); }
+        .dropdown li a.sos-link { color: #e63946; font-weight: 700; }
+
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+
+        @media (max-width: 1000px) {
+            .navbar { flex-direction: column; gap: 20px; padding-bottom: 20px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; position: relative; left: 0; transform: none; }
+            .logo { margin-left: 0; margin-top: 10px; }
+        }
+
+
+       /* --- SOFT & ATTRACTIVE MESH HERO --- */
+        .hero {
+            position: relative;
+            /* A very soft, attractive mint-to-teal pastel blend */
+            background-color: #f0f9f7; 
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(44, 151, 134, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(32, 92, 117, 0.1) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(255, 255, 255, 0.8) 0px, transparent 100%);
+            height: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(44, 151, 134, 0.1);
+        }
+
+        /* Adding a "Soft Glow" element that moves slowly */
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(44, 151, 134, 0.1);
+            filter: blur(80px);
+            border-radius: 50%;
+            top: 10%;
+            left: 10%;
+            animation: float 8s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(20px) translateX(20px); }
+        }
+
+        .hero h1 {
+            position: relative;
+            z-index: 2;
+            font-size: 44px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            /* Using a deep version of your brand color for the text */
+            color: var(--secondary-teal);
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            position: relative;
+            z-index: 2;
+            font-size: 18px;
+            color: #5f7d78; /* Soft muted teal-grey */
+            max-width: 600px;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        /* --- THE SEARCH BAR --- */
+        .search-container {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 720px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 22px 30px 22px 65px;
+            border-radius: 100px;
+            border: 2px solid #ffffff; /* White border for contrast */
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            /* A very soft, large shadow to make it look premium */
+            box-shadow: 0 15px 45px rgba(44, 151, 134, 0.12);
+            outline: none;
+            color: var(--text-dark);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .search-container input:focus {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 60px rgba(44, 151, 134, 0.2);
+            background: #ffffff;
+            border-color: var(--primary-teal);
+        }
+
+        .search-container i {
+            z-index: 4;
+            color: var(--primary-teal);
+            font-size: 20px;
+            left: 28px;
+        }
+        /* --- CATEGORIES --- */
+.categories-grid {
+    max-width: 1200px;
+    margin: -40px auto 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.category-card {
+    background: var(--white);
+    padding: 30px 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    cursor: pointer;
+    /* transition: var(--transition) can be jittery, let's use a standard smooth ease */
+    transition: all 0.3s ease-out; 
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    /* This prevents the card from "shrinking" or jumping when border is added */
+    box-sizing: border-box; 
+    overflow: hidden;
+    /* This ensures the hover doesn't break when the card moves up */
+    transform: translateY(0);
+    will-change: transform;
+}
+
+.category-card i {
+    font-size: 28px;
+    color: var(--primary-teal);
+    margin-bottom: 15px;
+    background: rgba(44, 151, 134, 0.08);
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.category-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+    transition: color 0.3s ease;
+}
+
+.category-card p {
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.5;
+    transition: color 0.3s ease;
+}
+
+/* --- THE STABLE HOVER FIX --- */
+/* We target the hover state clearly to avoid vibration */
+@media (hover: hover) {
+    .category-card:hover {
+        transform: translateY(-10px); /* Reduced distance slightly for stability */
+        background: var(--primary-teal) !important; /* Force color change */
+        border-color: var(--primary-teal);
+        box-shadow: 0 15px 35px rgba(44, 151, 134, 0.3);
+    }
+
+    .category-card:hover i {
+        background: rgba(255, 255, 255, 0.2);
+        color: var(--white) !important;
+        transform: scale(1.1);
+    }
+
+    .category-card:hover h3, 
+    .category-card:hover p {
+        color: var(--white) !important;
+    }
+}
+
+/* Maintain style for the clicked (active) card */
+.category-card.active {
+    background: var(--primary-teal);
+    border-color: var(--primary-teal);
+}
+
+.category-card.active h3,
+.category-card.active p,
+.category-card.active i {
+    color: var(--white);
+}
+
+.category-card.active i {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Shine Effect Fix */
+.category-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+    transition: none; /* Reset shine to avoid conflict */
+    pointer-events: none; /* Ensure shine doesn't block mouse clicks */
+}
+
+.category-card:hover::after {
+    left: 100%;
+    transition: 0.6s;
+}
+        /* --- FAQ SECTION --- */
+        .faq-wrapper {
+            max-width: 900px;
+            margin: 0 auto 100px;
+            padding: 0 20px;
+        }
+
+        .section-tag {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-tag span {
+            background: rgba(44, 151, 134, 0.1);
+            color: var(--primary-teal);
+            padding: 8px 20px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .faq-item {
+            background: var(--white);
+            margin-bottom: 18px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border: 1px solid #f0f0f0;
+        }
+
+        .faq-question {
+            padding: 28px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--text-dark);
+            user-select: none;
+        }
+
+        .faq-question i {
+            font-size: 16px;
+            color: var(--text-light);
+            transition: var(--transition);
+            background: #f8f9fa;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .faq-item.active {
+            box-shadow: var(--premium-shadow);
+            border-color: transparent;
+        }
+
+        .faq-item.active .faq-question {
+            color: var(--primary-teal);
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+            background: var(--primary-teal);
+            color: white;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1);
+            background: #fafcfb;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 1000px;
+            transition: max-height 0.8s ease-in-out;
+        }
+
+        .faq-answer-inner {
+            padding: 0 35px 35px;
+            color: var(--text-light);
+            font-size: 16px;
+            line-height: 1.8;
+            border-top: 1px solid #f0f4f2;
+            padding-top: 20px;
+        }
+
+        /* --- HELP CENTER --- */
+        .help-center {
+            background: var(--white);
+            padding: 100px 20px;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+
+        .help-center h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .help-center p {
+            color: var(--text-light);
+            margin-bottom: 60px;
+            font-size: 18px;
+        }
+
+        .support-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .support-card {
+            background: var(--bg-light);
+            padding: 50px 40px;
+            border-radius: 30px;
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .support-card i {
+            font-size: 30px;
+            margin-bottom: 25px;
+            color: var(--primary-teal);
+        }
+
+        .support-card h4 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .support-card p {
+            font-size: 15px;
+            margin-bottom: 25px;
+            color: var(--text-light);
+        }
+
+        .btn-outline {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 2px solid var(--primary-teal);
+            color: var(--primary-teal);
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .support-card:hover {
+            background: var(--white);
+            transform: translateY(-10px);
+            box-shadow: var(--premium-shadow);
+        }
+
+        .support-card:hover .btn-outline {
+            background: var(--primary-teal);
+            color: white;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: slideUpFade 0.8s forwards;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 991px) {
+            .navbar {
+                padding: 0 30px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+
+    <header class="header-bg">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../images/jeevandhara_logo_2.0.png" alt="Jeevandhara Logo">
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/frontend/pages/front_page.html">Home</a></li>
+                <li class="nav-item">
+                    <a href="#"><span data-key="about_main">About Jeevandhara</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">About Jeevandhara</a></li>
+                        <li><a href="#">Donation History Tracking</a></li>
+                        <li><a href="#">Badges and Rewards</a></li>
+                        <li><a href="#">Jeevandhara FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Donor Login</a></li>
+                        <li><a href="/frontend/pages/blood_availability.html">Blood Availability</a></li>
+                        <li><a href="#">Blood Center Directory</a></li>
+                        <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> SOS Emergency</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="donate_main">Want to Donate</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Blood Bank Appointment</a></li>
+                        <li><a href="#">AI Blood Matching</a></li>
+                        <li><a href="/frontend/pages/health_advice.html">Health Advice (Diet)</a></li>
+                        <li><a href="#">Register VBD Camp</a></li>
+                        <li><a href="/frontend/pages/camp.html" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="center_login">Blood Center Login</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Jeevandhara Login</a></li>
+                        <li><a href="#">Add your Blood Center</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="scrolling-ticker">
+            <div class="ticker-track">
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <body>
+
+
+    <section class="hero">
+        <h1 class="fade-in">Knowledge Base</h1>
+        <p class="fade-in" style="animation-delay: 0.1s;">Find answers to your questions and learn more about blood
+            donation with Jeevandhara.</p>
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" id="faqSearch" placeholder="Search for questions, terms or keywords...">
+        </div>
+    </section>
+
+    <div class="categories-grid">
+        <div class="category-card " data-category="general" style="animation-delay: 0.3s;">
+            <i class="fas fa-layer-group"></i>
+            <h3>General Info</h3>
+            <p>Basics about Jeevandhara and how things work.</p>
+        </div>
+        <div class="category-card" data-category="eligibility" style="animation-delay: 0.4s;">
+            <i class="fas fa-user-check"></i>
+            <h3>Eligibility</h3>
+            <p>Guidelines on who can and cannot donate.</p>
+        </div>
+        <div class="category-card" data-category="health" style="animation-delay: 0.5s;">
+            <i class="fas fa-notes-medical"></i>
+            <h3>Health & Safety</h3>
+            <p>Post-donation care and medical safety.</p>
+        </div>
+        <div class="category-card" data-category="rewards" style="animation-delay: 0.6s;">
+            <i class="fas fa-award"></i>
+            <h3>Rewards</h3>
+            <p>About Life Points, badges and benefit levels.</p>
+        </div>
+    </div>
+
+    <div class="faq-wrapper">
+        <div class="section-tag fade-in">
+            <span id="activeCategoryName">General Information</span>
+        </div>
+        <div id="faqAccordion">
+            <!-- FAQ items will be rendered here -->
+        </div>
+        <div style="text-align: center; margin-top: 40px; color: var(--text-light); font-size: 14px; opacity: 0.8;" class="fade-in">
+            * Many of these guidelines are aligned with the official <a href="https://eraktkosh.mohfw.gov.in" target="_blank" style="color: var(--primary-teal); text-decoration: none; font-weight: 500;">eRaktKosh Knowledge Base</a> to maintain national standards.
+        </div>
+    </div>
+
+    <section class="help-center">
+        <h2>Can't find what you're looking for?</h2>
+        <p>Our support team is available 24/7 to help you with any queries.</p>
+
+        <div class="support-grid">
+            <a href="tel:+918001234567" class="support-card">
+                <i class="fas fa-phone-alt"></i>
+                <h4>Phone Support</h4>
+                <p>Speak directly with our medical experts and coordinators.</p>
+                <div class="btn-outline">Call Now</div>
+            </a>
+            <a href="mailto:support@jeevandhara.com" class="support-card">
+                <i class="fas fa-envelope-open-text"></i>
+                <h4>Email Support</h4>
+                <p>Send us your queries and we'll respond within 2-4 hours.</p>
+                <div class="btn-outline">Send Email</div>
+            </a>
+            <div class="support-card" style="cursor: default;">
+                <i class="fas fa-map-marker-alt"></i>
+                <h4>Network Offices</h4>
+                <p>Visit any of our 500+ registered blood centers nationwide.</p>
+                <div class="btn-outline" style="opacity: 0.6; pointer-events: none;">Find Center</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const faqData = [
+            {
+                category: "general",
+                question: "What exactly is Jeevandhara?",
+                answer: "Jeevandhara is India's most advanced digital blood network. We act as a bridge between voluntary donors and patients, ensuring that safe blood is accessible within minutes. Our platform integrates real-time inventory tracking with a decentralized donor management system."
+            },
+            {
+                category: "general",
+                question: "How do I become a registered donor?",
+                answer: "Simply sign up on our portal or mobile app. Once registered, you'll receive notifications when someone in your area needs your blood type. You can also view upcoming donation camps nearby."
+            },
+            {
+                category: "general",
+                question: "Is there any cost involved in using the service?",
+                answer: "No. Jeevandhara is a non-profit initiative. Registration, searching for blood, and donor coordination are all free services aimed at making life-saving blood accessible to everyone."
+            },
+            {
+                category: "general",
+                question: "How much blood is collected in a single donation?",
+                answer: "Generally, 350ml or 450ml of blood is collected depending on the donor's weight. 350ml is collected from donors weighing between 45-55 kg, and 450ml from those weighing more than 55 kg."
+            },            
+            {
+                category: "general",
+                question: "How long does the blood donation process take?",
+                answer: "The actual blood donation takes about 8 to 10 minutes. However, the entire process including registration, medical screening, donation, and post-donation rest takes around 45 to 60 minutes."
+            },
+            {
+                category: "general",
+                question: "How often can I donate blood?",
+                answer: "Male donors can donate safely once every 3 months, while female donors can donate every 4 months. Platelet apheresis donors may donate more frequently, typically once every 2 weeks."
+            },
+            {
+                category: "eligibility",
+                question: "What are the core requirements for donation?",
+                answer: "To ensure both donor and recipient safety, you must be between 18-65 years old, weigh at least 45kg (or 50kg for 450ml), and have a hemoglobin level of 12.5g/dL or higher. You should be in good general health with no active infections."
+            },
+            {
+                category: "eligibility",
+                question: "Can I donate after getting a COVID-19 vaccine?",
+                answer: "Yes, you can donate blood 14 days after your vaccination dose, provided you are symptom-free and feel well."
+            },
+            {
+                category: "eligibility",
+                question: "Are there travel restrictions for donors?",
+                answer: "If you have recently traveled to a country with high endemicity for certain diseases (like Malaria or Zika), a deferral period of 3-6 months may apply. Please check with the screening technician."
+            },
+            {
+                category: "eligibility",
+                question: "Can I donate if I have a tattoo or body piercing?",
+                answer: "As per guidelines, you must wait for 12 months after getting a tattoo, body piercing, acupuncture, or permanent makeup before you can donate blood."
+            },
+            {
+                category: "eligibility",
+                question: "Can I donate if I have diabetes?",
+                answer: "If your blood sugar is under control by diet and oral medication, and you have no complications, you may be eligible to donate. However, if you require insulin injections, you are not eligible to donate blood."
+            },
+            {
+                category: "eligibility",
+                question: "Can I donate if I had alcohol recently?",
+                answer: "You should completely avoid consuming alcohol for at least 24 hours prior to blood donation. If you are under the influence of alcohol, you will be deferred."
+            },
+            {
+                category: "eligibility",
+                question: "Can women donate during menstruation?",
+                answer: "It is generally advised to defer blood donation during menstruation and for 7 days thereafter due to the physiological loss of blood and lowered iron levels."
+            },
+            {
+                category: "health",
+                question: "What is the procedure on the day of donation?",
+                answer: "The process includes registration, a brief medical screening (BP, Pulse, Hb check), the actual donation (takes 8-10 mins), and a mandatory rest period with refreshments. The entire visit usually takes about 45-60 minutes."
+            },
+            {
+                category: "health",
+                question: "How does my body recover the blood I donated?",
+                answer: "Your body replenishes the blood volume (plasma) within 24-48 hours. The red blood cells take about 4-6 weeks to be fully replaced. This is why we recommend waiting at least 12 weeks between whole blood donations."
+            },
+            {
+                category: "health",
+                question: "Are there any side effects of donating blood?",
+                answer: "Most donors experience no side effects. A few may feel slightly dizzy or lightheaded immediately after. This is normal and passes quickly after resting and having a sugary drink."
+            },
+            {
+                category: "health",
+                question: "Can I donate if I have high blood pressure?",
+                answer: "You can donate if your blood pressure is currently stable and under control within acceptable limits (Systolic 100-140 mm Hg, Diastolic 60-90 mm Hg), even if you are on blood pressure medication."
+            },
+            {
+                category: "health",
+                question: "Is it safe to give blood?",
+                answer: "Yes, it is completely safe. All supplies including the blood bag and needles are sterile, opened in front of you, and used only once. There is no chance of catching any infection from donating blood."
+            },
+            {
+                category: "health",
+                question: "What should I do after donating blood?",
+                answer: "Drink plenty of fluids over the next 24 hours. Avoid strenuous physical exercise or heavy lifting for the rest of the day. Keep the bandage on for a few hours. Do not consume alcohol or smoke for at least a few hours after donation."
+            },
+            {
+                category: "rewards",
+                question: "What are Life Points and how are they calculated?",
+                answer: "Life Points are a measure of your contribution to the community. You earn 100 points for every whole blood donation and 25 points for referring a fellow donor who successfully donates. These points determine your donor tier."
+            },
+            {
+                category: "rewards",
+                question: "What benefits do I get at the 'Platinum' level?",
+                answer: "Platinum donors (10+ donations) receive lifetime recognition and certficates, priority health screenings at partner hospitals, and are invited to our annual 'Heroes of Jeevandhara' gala."
+            }
+        ];
+
+        const faqContainer = document.getElementById('faqAccordion');
+        const searchInput = document.getElementById('faqSearch');
+        const categoryCards = document.querySelectorAll('.category-card');
+        const activeCategoryTitle = document.getElementById('activeCategoryName');
+
+        let currentCategory = 'general';
+
+        function renderFAQs(searchTerm = '') {
+            faqContainer.innerHTML = '';
+
+            const filtered = faqData.filter(item => {
+                const matchesCat = item.category === currentCategory || searchTerm.length > 0;
+                const matchesSearch = item.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    item.answer.toLowerCase().includes(searchTerm.toLowerCase());
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                faqContainer.innerHTML = `
+                    <div style="text-align: center; padding: 60px 0;">
+                        <img src="https://cdni.iconscout.com/illustration/premium/thumb/no-search-found-2511608-2133696.png" style="width: 150px; opacity: 0.5; margin-bottom: 20px;">
+                        <h3 style="color: var(--text-light);">No matching questions found</h3>
+                        <p style="color: var(--text-light);">Try using different keywords or search terms.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'faq-item fade-in';
+                div.style.animationDelay = `${index * 0.1}s`;
+                div.innerHTML = `
+                    <div class="faq-question">
+                        <span>${item.question}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">${item.answer}</div>
+                    </div>
+                `;
+
+                div.addEventListener('click', () => {
+                    const isActive = div.classList.contains('active');
+                    // Close all
+                    document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+                    // Toggle current
+                    if (!isActive) div.classList.add('active');
+                });
+
+                faqContainer.appendChild(div);
+            });
+        }
+
+        // Category Switching
+        categoryCards.forEach(card => {
+            card.addEventListener('click', () => {
+                categoryCards.forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                currentCategory = card.dataset.category;
+                activeCategoryTitle.innerText = card.querySelector('h3').innerText;
+                searchInput.value = '';
+                renderFAQs();
+
+                // Scroll to FAQ section on mobile
+                if (window.innerWidth < 768) {
+                    document.querySelector('.faq-wrapper').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Search Input
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value;
+            if (val.length > 0) {
+                activeCategoryTitle.innerText = `Search Results for "${val}"`;
+            } else {
+                const activeCard = document.querySelector('.category-card.active');
+                activeCategoryTitle.innerText = activeCard.querySelector('h3').innerText;
+            }
+            renderFAQs(val);
+        });
+
+        // Initialize
+        renderFAQs();
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

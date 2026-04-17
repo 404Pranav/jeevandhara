@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Health Advice - Jeevandhara</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CORE VARIABLES & RESETS --- */
+        :root {
+            --logo-height: 160px;
+            --primary-gradient: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            --primary-teal: #2c9786;
+            --accent-orange: #f59e0b;
+            --blood-red: #e63946;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --bg-light: #fdfdfd;
+            --gold-highlight: #ffd700;
+            --border-color: #e5e7eb;
+            --soft-green: #d1fae5;
+            --soft-red: #fee2e2;
+            --soft-orange: #ffedd5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: var(--text-dark); background-color: #f8f9fc; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+       button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+        /* --- NAVBAR STYLES --- */
+        .header-bg { background: var(--primary-gradient); color: var(--white); position: relative; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: -10px 50px; position: relative; z-index: 100; min-height: 100px; }
+
+        /* --- SCROLLING TICKER STYLES --- */
+        .scrolling-ticker {
+            width: 100%;
+            background: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            overflow: hidden;
+            padding: 12px 0;
+            position: relative;
+            z-index: 99;
+            margin-top: 0px; 
+        }
+
+        .ticker-track {
+            display: flex;
+            width: fit-content;
+            animation: scroll-infinite 20s linear infinite;
+        }
+
+        .ticker-content {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-content span {
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-right: 50px;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll-infinite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .logo { display: flex; align-items: center; margin-left: 60px; margin-top: 20px; }
+        .logo img { height: 100px; width: auto; object-fit: contain; }
+        
+        .nav-links { 
+            display: flex; 
+            gap: 25px; 
+            align-items: center; 
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-left: 10px;
+            margin-top: 20px;
+        }
+
+        .nav-item { position: relative; padding: 10px 0; }
+        .nav-item > a { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 5px; position: relative; transition: color 0.3s ease; }
+        .nav-item > a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--gold-highlight); transition: width 0.3s ease-in-out; }
+        .nav-item:hover > a { color: var(--gold-highlight); text-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+        .nav-item:hover > a::after { width: 100%; }
+
+        .dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(15px); background: rgba(255, 255, 255, 0.95); min-width: 240px; padding: 15px 0; border-radius: 12px; box-shadow: 5px 10px 30px rgba(0,0,0,0.1); opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1000; }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown li a { display: block; padding: 10px 20px 10px 30px; color: var(--text-dark); font-size: 13px; font-weight: 500; position: relative; transition: 0.3s ease; }
+        .dropdown li a::before { content: '\f043'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 10px; top: 50%; transform: translateY(-50%) scale(0); color: var(--blood-red); font-size: 14px; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); height: 16px; line-height: 16px; }
+        .dropdown li a:hover { color: var(--blood-red); transform: translateX(5px); background: transparent; }
+        .dropdown li a:hover::before { transform: translateY(-50%) scale(1); }
+        .dropdown li a.sos-link { color: #e63946; font-weight: 700; }
+
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+
+        @media (max-width: 1000px) {
+            .navbar { flex-direction: column; gap: 20px; padding-bottom: 20px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; position: relative; left: 0; transform: none; }
+            .logo { margin-left: 0px; margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bg">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../images/jeevandhara_logo_2.0.png" alt="Jeevandhara Logo">
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/frontend/pages/front_page.html">Home</a></li>
+                <li class="nav-item">
+                    <a href="#"><span data-key="about_main">About Jeevandhara</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">About Jeevandhara</a></li>
+                        <li><a href="#">Donation History Tracking</a></li>
+                        <li><a href="#">Badges and Rewards</a></li>
+                        <li><a href="#">Jeevandhara FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Donor Login</a></li>
+                        <li><a href="/frontend/pages/blood_availability.html">Blood Availability</a></li>
+                        <li><a href="#">Blood Center Directory</a></li>
+                        <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> SOS Emergency</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="donate_main">Want to Donate</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Blood Bank Appointment</a></li>
+                        <li><a href="#">AI Blood Matching</a></li>
+                        <li><a href="/frontend/pages/health_advice.html">Health Advice (Diet)</a></li>
+                        <li><a href="#">Register VBD Camp</a></li>
+                        <li><a href="#" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="center_login">Blood Center Login</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Jeevandhara Login</a></li>
+                        <li><a href="#">Add your Blood Center</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="scrolling-ticker">
+            <div class="ticker-track">
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="hero-section" class="hero-wrapper">
+        <div class="robot-container">
+            <div class="floating-ring"></div>
+            <img src="../images/Adorable_Friendly_Robot_With_Glowing_Eyes_Waving_Hello_On_A_Black_Background__Robot__Friendly_Robot__Waving_Robot_PNG_Transparent_Image_and_Clipart_for_Free_Download-removebg-preview.png" class="ai-robot-img" alt="AI Robot">
+        </div>
+        <div class="hero-content">
+            <span class="badge" style="background: #6366f1; color: white; padding: 6px 18px; border-radius: 20px; font-size: 13px; font-weight: 500;">Personal AI Buddy</span>
+            <h1 style="font-size: 3rem; margin: 15px 0; color: var(--text-dark);">How may I help you today?</h1>
+            <button class="get-started-btn" onclick="openDashboard()">
+                Get Started <i class="fas fa-chevron-right" style="margin-left: 10px;"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="dashboard-section" class="dashboard-wrapper" style="display:none; max-width: 850px; margin: 0 auto;">
+        <div class="glass-panel">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 30px;">
+                <img src="../images/robat.png" style="width: 60px;">
+                <div>
+                    <h2 style="margin:0; color: var(--primary-teal);">Center Locator AI</h2>
+                    <p id="ai-status" style="margin:0; font-size: 13px; color: var(--text-light);">System Online: Awaiting parameters...</p>
+                </div>
+            </div>
+
+            <div class="grid-row">
+                <div class="ai-input-group">
+                    <span class="label-tag">District</span>
+                    <input type="text" id="district" class="input-field" placeholder="e.g. Pune">
+                </div>
+                <div class="ai-input-group">
+                    <span class="label-tag">City</span>
+                    <input type="text" id="city" class="input-field" placeholder="e.g. Shivajinagar">
+                </div>
+            </div>
+
+            <div class="grid-row" style="margin-top: 20px;">
+                <div class="ai-input-group">
+                    <span class="label-tag">Blood Group</span>
+                    <select id="blood" class="input-field">
+                        <option>O+</option><option>A+</option><option>B+</option><option>AB+</option>
+                    </select>
+                </div>
+                <div class="range-box">
+                    <span class="label-tag">Search Radius: <b id="distLabel">20</b> KM</span>
+                    <input type="range" min="1" max="100" value="20" style="width:100%; accent-color:var(--primary-teal);" oninput="document.getElementById('distLabel').innerText = this.value">
+                </div>
+            </div>
+
+            <button class="get-started-btn" style="width: 100%; background: var(--primary-gradient); color: white; border: none; margin-top: 50px;" onclick="runSearch()">
+                INITIATE AI SCAN
+            </button>
+        </div>
+
+        <div id="results-view" style="display:none; margin-top: 40px;">
+            <h3 style="color: var(--text-dark); border-bottom: 2px solid var(--primary-teal); display: inline-block; margin-bottom: 20px;">Optimal Matches Found</h3>
+            <div id="results-list"></div>
+        </div>
+    </div>
+
+    <div id="search-overlay" class="searching-state" style="display:none;">
+        <div style="text-align: center; position: relative; z-index: 10000;">
+            <div class="radar-hud">
+                <div class="radar-sweep"></div>
+            </div>
+            <img src="../images/robat.png" class="ai-robot-img" style="width: 180px;">
+            
+            <div class="terminal-text">
+                <p>> SCANNING COORDINATES: <span id="log-city" style="color:var(--primary-teal)">...</span></p>
+                <p>> DATABASE SYNC: <span style="color:#fbbf24">IN PROGRESS</span></p>
+                <p style="margin:0;">> STATUS: <span class="blink-text">SEARCHING NODES...</span></p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .hero-wrapper { display: flex; flex-direction: column; align-items: center; padding: 60px 0; }
+        .robot-container { position: relative; }
+        .ai-robot-img { width: 250px; animation: float 3s infinite ease-in-out; position: relative; z-index: 5; }
+        .floating-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 320px; height: 320px; border: 2px solid var(--primary-teal); border-radius: 50%; opacity: 0.2; animation: pulseRing 2s infinite; }
+        
+        .get-started-btn { padding: 18px 45px; border-radius: 15px; font-weight: 700; font-size: 1.1rem; border: 1px solid var(--border-color); background: white; transition: 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .get-started-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(44, 151, 134, 0.3); }
+
+        .glass-panel { background: white; padding: 60px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.06); border: 1px solid var(--border-color);max-width: 1000px;margin: 80px auto; }
+        .grid-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .label-tag { font-size: 11px; font-weight: 700; color: var(--primary-teal); letter-spacing: 1px; margin-bottom: 8px; display: block; text-transform: uppercase; }
+        .input-field { width: 100%; padding: 14px; border: 2px solid #f1f5f9; border-radius: 12px; font-family: inherit; }
+        .range-box { background: #f8fafc; padding: 20px; border-radius: 15px; border: 1px dashed var(--primary-teal); }
+
+        .searching-state { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 15, 25, 0.98); z-index: 9999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(12px); color: white; }
+        .radar-hud { position: absolute; width: 400px; height: 400px; border: 1px solid rgba(44, 151, 134, 0.2); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .radar-sweep { position: absolute; top: 50%; left: 50%; width: 50%; height: 3px; background: linear-gradient(90deg, var(--primary-teal), transparent); transform-origin: left; animation: sweep 2s infinite linear; }
+        .terminal-text { font-family: 'Courier New', monospace; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-top: 30px; border-left: 4px solid var(--primary-teal); text-align: left; }
+        .blink-text { animation: blink 1s infinite; color: var(--primary-teal); }
+
+        .result-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary-teal); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes pulseRing { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; } }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Stock Table Styling */
+.stock-table-container {
+    display: none; /* Hidden by default */
+    width: 100%;
+    margin-top: 15px;
+    background: #fdfdfd;
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid #eee;
+    animation: fadeIn 0.4s ease;
+}
+
+.stock-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.stock-table th {
+    background: var(--primary-teal);
+    color: white;
+    padding: 8px;
+    text-align: center;
+}
+
+.stock-table td {
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid #f1f1f1;
+    font-weight: 600;
+}
+
+.availability-btn {
+    background: transparent;
+    border: 1px solid var(--primary-teal);
+    color: var(--primary-teal);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    transition: 0.3s;
+}
+
+.availability-btn:hover {
+    background: var(--primary-teal);
+    color: white;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+.result-card a i {
+    transition: transform 0.2s ease;
+}
+
+.result-card a:hover i {
+    transform: scale(1.2);
+}
+
+    </style>
+
+<script>
+    /* AUTOMATIC DETECTION: 
+       This line checks if a user is logged in by looking for 'donorData' in the browser memory.
+       If it's there, 'loggedInUser' becomes their profile. 
+       If not, 'loggedInUser' stays 'null'. No manual commenting needed!
+    */
+    const loggedInUser = JSON.parse(localStorage.getItem('donorData')) || null;
+
+    function openDashboard() {
+        document.getElementById('hero-section').style.display = 'none';
+        document.getElementById('dashboard-section').style.display = 'block';
+
+        const statusBox = document.getElementById('ai-status');
+        const actionBtn = document.querySelector('#dashboard-section .get-started-btn');
+
+        if (loggedInUser) {
+            // --- LOGGED IN DONOR VIEW ---
+            document.getElementById('district').value = loggedInUser.district;
+            document.getElementById('city').value = loggedInUser.city;
+            document.getElementById('blood').value = loggedInUser.bloodGroup;
+
+            statusBox.innerHTML = `<span style="color: var(--primary-teal); font-weight:600;">
+                <i class="fas fa-user-check"></i> Welcome back! Profile synced successfully.
+            </span>`;
+            
+            actionBtn.innerText = "CONFIRM & INITIATE SCAN";
+            
+            // Visual cue: green borders for auto-filled data
+            document.querySelectorAll('.input-field').forEach(el => el.style.borderColor = "var(--primary-teal)");
+        } 
+        else {
+            // --- GUEST VIEW ---
+            statusBox.innerHTML = `<span style="color: var(--accent-orange);">
+                <i class="fas fa-robot"></i> Hello Guest! Please enter details to begin scan.
+            </span>`;
+
+            actionBtn.innerText = "INITIATE AI SCAN";
+            
+            // Standard borders
+            document.querySelectorAll('.input-field').forEach(el => el.style.borderColor = "#f1f5f9");
+        }
+    }
+
+    function runSearch() {
+        const city = document.getElementById('city').value || "Current Location";
+        document.getElementById('log-city').innerText = city.toUpperCase();
+        document.getElementById('search-overlay').style.display = 'flex';
+
+        setTimeout(() => {
+            document.getElementById('search-overlay').style.display = 'none';
+            document.getElementById('results-view').style.display = 'block';
+            
+            document.getElementById('results-list').innerHTML = `
+                <div class="result-card" style="flex-direction: column; align-items: flex-start;">
+                    <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                        <div>
+                            <h4 style="margin:0; color: var(--text-dark);">Jeevandhara Apollo Bank</h4>
+                            <p style="margin:0; font-size:12px; color:#e63946; font-weight:600;">0.8 KM away • ${city}</p>
+                        </div>
+                        <div style="display:flex; gap:15px; align-items: center;">
+                            <button class="availability-btn" onclick="toggleStock('stock-1')">View Stock Availability</button>
+                            
+                            <div style="display: flex; gap: 35px; border-left: 1px solid #eee; padding-left: 30px;">
+                                <a href="tel:911" style="color: var(--primary-teal); font-size: 18px;" title="Call Center">
+                                    <i class="fas fa-phone-alt"></i>
+                                </a>
+                                <a href="https://maps.google.com" target="_blank" style="color: var(--blood-red); font-size: 18px;" title="Direction">
+                                    <i class="fas fa-location-dot"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="stock-1" class="stock-table-container">
+                        <table class="stock-table">
+                            <thead>
+                                <tr><th>A+</th><th>A-</th><th>B+</th><th>B-</th><th>O+</th><th>O-</th><th>AB+</th><th>AB-</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>12</td><td>3</td><td>25</td><td>0</td><td>18</td><td>5</td><td>8</td><td>2</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>`;
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }, 3000);
+    }
+
+    function toggleStock(id) {
+        const stockPanel = document.getElementById(id);
+        stockPanel.style.display = (stockPanel.style.display === "block") ? "none" : "block";
+    }
+</script>

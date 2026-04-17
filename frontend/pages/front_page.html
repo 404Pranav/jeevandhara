@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeevandhara - Blood Network</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --logo-height: 160px;
+            --primary-gradient: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            --primary-teal: #2c9786;
+            --accent-orange: #f59e0b;
+            --card-active-green: #2d7a68;
+            --blood-red: #e63946;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --bg-light: #fdfdfd;
+            --gold-highlight: #ffd700;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; color: var(--text-dark); background-color: var(--white); overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            /* background: url('Gemini_Generated_Image_cl3rr1cl3rr1cl3r.png');
+            background-size: 100% auto;
+            background-position: center 100px;
+            background-repeat: no-repeat;*/
+            
+            min-height: 100vh;
+            position: relative;
+            color: var(--white);
+            padding-bottom: 80px;
+        }
+
+         /* --- BACKGROUND SLIDER STYLES (NEW) --- */
+        .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Sits behind content */
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0; /* Hidden by default */
+            transition: opacity 1s ease-in-out; /* Smooth fade transition */
+        }
+
+        .slide.active {
+            opacity: 1; /* Visible when active */
+        }
+
+        /* Optional: Dark overlay to make text readable */
+        .hero-slider::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2); /* Adjust darkness here */
+            z-index: 2;
+        }
+
+
+        /* Navbar Styling */
+            .navbar {
+                display: flex;
+                /* justify-content: space-between;  <-- We removed this line */
+                align-items: center;
+                padding: 0 50px;
+                position: relative;
+                z-index: 100;
+                background: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            }
+/* --- SCROLLING TICKER STYLES --- */
+.scrolling-ticker {
+    width: 100%;
+    background: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+    overflow: hidden; /* Hides the text when it goes outside */
+    padding: 12px 0; /* Vertical padding */
+    position: relative;
+    z-index: 99;
+    margin-top: 0px; 
+}
+
+/* The long track holding both sets of text */
+.ticker-track {
+    display: flex;
+    width: fit-content; /* Adjusts width to fit the content */
+    animation: scroll-infinite 20s linear infinite; /* Adjust '20s' to control speed */
+}
+
+/* The individual content blocks */
+.ticker-content {
+    flex-shrink: 0; /* Prevents text from squishing */
+    display: flex;
+    align-items: center;
+    padding-right: 0; /* Reset */
+}
+
+.ticker-content span {
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-right: 50px; /* Space between sentences */
+    white-space: nowrap;
+}
+
+/* The Seamless Animation Logic */
+@keyframes scroll-infinite {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* Move left exactly -50% (the width of one set of content) */
+        transform: translateX(-50%);
+    }
+}
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+            margin-top: 20px; 
+        }
+        
+        .logo img {
+            height: 100px;
+            width: auto; 
+            object-fit: contain;
+        }
+
+        /* Navigation Links */
+        .nav-links { 
+        display: flex; 
+        gap: 25px; 
+        align-items: center; 
+        margin-top: 20px;
+        
+        /* --- ADD THIS LINE TO CENTER THE MENU --- */
+        margin-left: 205px; 
+        /* ---------------------------------------- */
+        }
+
+         /* --- UPDATED NAV ITEM STYLES --- */
+        .nav-item {
+            /* This is the key fix: position relative allows the dropdown 
+               to position itself relative to THIS specific item */
+            position: relative; 
+            padding: 15px 0; /* Added padding to help hover area */
+        }
+        
+        .nav-item > a {
+            font-size: 15px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.9);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-item > a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--gold-highlight);
+            transition: width 0.3s ease-in-out;
+        }
+
+        .nav-item:hover > a { 
+            color: var(--gold-highlight); 
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+        }
+        .nav-item:hover > a::after { width: 100%; }
+
+        /* --- DROPDOWN STYLES --- */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(15px); 
+            background: rgba(255, 255, 255, 0.95);
+            min-width: 240px;
+            padding: 15px 0;
+            border-radius: 12px;
+            box-shadow: 5px 10px 30px rgba(0,0,0,0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .dropdown::before { display: none; }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+        .dropdown li a {
+            display: block;
+            padding: 10px 20px 10px 30px; 
+            color: var(--text-dark);
+            font-size: 13px;
+            font-weight: 500;
+            position: relative;
+            transition: 0.3s ease;
+        }
+
+        .dropdown li a::before {
+            content: '\f043'; 
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 10px; 
+            top: 50%;
+            transform: translateY(-50%) scale(0);
+            color: var(--blood-red);
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            height: 16px;
+            line-height: 16px;
+        }
+
+        .dropdown li a:hover {
+            color: var(--blood-red);
+            transform: translateX(5px);
+            background: transparent;
+        }
+        .dropdown li a:hover::before { transform: translateY(-50%) scale(1); }
+        .dropdown li a.sos-link { color: #e63946; font-weight: 700; }
+        
+        /* Hero Content */
+        .hero-content {
+            text-align: center;
+            margin-top: 150px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .stethoscope-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+            display: block;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Search Widget */
+        .search-widget {
+            background: var(--white);
+            max-width: 800px;
+            margin: 50px auto 0;
+            border-radius: 50px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .input-group {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-right: 1px solid #eee;
+        }
+        .input-group:last-of-type { border-right: none; }
+        .input-group i { color: #ccc; margin-right: 12px; }
+        .input-group input, .input-group select {
+            border: none;
+            width: 100%;
+            outline: none;
+            font-size: 14px;
+            color: var(--text-dark);
+            background: transparent;
+        }
+        
+        .btn-find {
+            background: var(--accent-orange);
+            color: var(--white);
+            padding: 12px 35px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        /* --- GLOBAL SECTION STYLES --- */
+        .section-header { font-size: 28px; font-weight: 600; margin-bottom: 50px; color: var(--text-dark); }
+        .sub-tag { color: var(--primary-teal); font-weight: 600; font-size: 14px; margin-bottom: 10px; display: block; text-transform: uppercase; letter-spacing: 1px;}
+        .main-heading { font-size: 36px; font-weight: 700; margin-bottom: 20px; line-height: 1.3; color: var(--text-dark); }
+        .paragraph { color: var(--text-light); line-height: 1.7; margin-bottom: 30px; font-size: 15px; }
+        .btn-primary { background: var(--accent-orange); color: var(--white); padding: 12px 30px; border-radius: 30px; font-weight: 600; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4); }
+        
+        .btn-secondary { background: transparent; color: var(--text-dark); padding: 12px 25px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .play-icon { width: 40px; height: 40px; background: var(--primary-teal); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+
+        /* --- SERVICES SECTION STYLES --- */
+        .services-section { padding: 80px 50px; background: var(--white); text-align: center; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
+        
+        .service-card { 
+            background: var(--white); 
+            border-radius: 20px; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05); 
+            transition: 0.3s ease; 
+            cursor: pointer; 
+            text-align: left;
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .service-img-box { width: 100%; height: 160px; overflow: hidden; }
+        .service-img-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .service-content-box { padding: 30px; flex: 1; display: flex; flex-direction: column; }
+        .svc-icon { width: 60px; height: 60px; background: rgba(44, 151, 134, 0.1); color: var(--primary-teal); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 20px; transition: 0.3s; }
+        .service-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+        .service-desc { font-size: 13px; color: var(--text-light); line-height: 1.6; transition: 0.3s; }
+        
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); background: var(--card-active-green); color: var(--white); }
+        .service-card:hover .service-img-box img { transform: scale(1.1); }
+        .service-card:hover .svc-icon { background: rgba(255,255,255,0.2); color: var(--white); }
+        .service-card:hover .service-desc { color: rgba(255,255,255,0.8); }
+        
+        /* --- DONATE SECTION --- */
+        .donate-section { padding: 80px 50px; background: var(--white); display: flex; align-items: center; justify-content: space-between; gap: 50px; }
+        .donate-content { flex: 1; max-width: 600px; }
+        .donate-image-wrapper { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
+        .silhouette-bg-circle { background-color: #fce7cf; border-radius: 50%; width: 350px; height: 350px; display: flex; justify-content: center; align-items: center; overflow: hidden; padding: 20px; border: 5px solid rgba(255,255,255,0.5); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .donate-img { width: 100%; height: auto; object-fit: cover; mix-blend-mode: multiply; }
+
+        /* =========================================
+           --- INTERACTIVE COMPATIBILITY WEB ---
+           (Themed: Blood Red & Medical Teal)
+           ========================================= */
+        .compatibility-section {
+            background-color: #f8fafc; /* Very light grey/white */
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dark); 
+            position: relative;
+            overflow: hidden;
+            min-height: 800px;
+            font-family: 'Poppins', sans-serif;
+            border-top: 1px solid #eee;
+        }
+
+        .web-header { text-align: center; margin-bottom: 60px; z-index: 2; position: relative; }
+        
+        .web-header h2 { 
+            font-size: 36px; 
+            font-weight: 700; 
+            color: var(--text-dark);
+            margin-bottom: 10px; 
+        }
+        .web-header p { color: var(--text-light); font-size: 15px; max-width: 500px; margin: 0 auto; }
+        
+        .web-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            z-index: 2;
+        }
+
+        .web-svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1000px;
+            height: 1000px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .connection-line {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            opacity: 0.8;
+        }
+
+        /* THEME: Teal for Life (Giving), Red for Blood (Receiving) */
+        .line-giving {
+            stroke: var(--primary-teal); 
+            stroke-dasharray: 10;
+            animation: flowOut 0.5s linear infinite;
+        }
+
+        .line-receiving {
+            stroke: var(--blood-red); 
+            stroke-dasharray: 10;
+            animation: flowIn 0.5s linear infinite;
+        }
+
+        @keyframes flowOut { from { stroke-dashoffset: 20; } to { stroke-dashoffset: 0; } }
+        @keyframes flowIn { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 20; } }
+
+        /* NODES (Blood Cells) */
+        .blood-node {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background: white; 
+            border: 3px solid var(--blood-red); /* Red Border for Blood Theme */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--blood-red); 
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.2); 
+            z-index: 3;
+        }
+
+        .blood-node:hover {
+            transform: scale(1.15);
+            background: var(--blood-red); 
+            color: white;
+            box-shadow: 0 15px 30px rgba(230, 57, 70, 0.4);
+            border-color: var(--blood-red);
+        }
+
+        /* Center Info */
+        .center-info {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 250px;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .center-highlight {
+            font-size: 40px;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: block;
+            margin-bottom: 5px;
+        }
+        .center-text { font-size: 14px; color: var(--text-light); }
+
+        .legend {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        .legend span { display: flex; align-items: center; gap: 6px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot-give { background-color: var(--primary-teal); }
+        .dot-receive { background-color: var(--blood-red); }
+
+        
+        /* ======================================================
+           --- NEW VISUAL TABLE PANEL (LEFT SIDE) ---
+           ====================================================== */
+        .details-panel {
+            position: absolute;
+            left: 5%; /* Position to the left */
+            top: 50%;
+            transform: translateY(-50%) translateX(-20px);
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--primary-teal);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            
+            /* Hidden by default */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .details-panel.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) translateX(0);
+        }
+
+        .panel-header {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .panel-header h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        
+        .panel-header span { font-size: 12px; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
+
+        .panel-row { margin-bottom: 20px; }
+        .panel-row:last-child { margin-bottom: 0; }
+
+        .row-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .row-title.give-title { color: var(--primary-teal); }
+        .row-title.receive-title { color: var(--blood-red); }
+
+        .badges-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .b-badge {
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .b-badge.give { background-color: rgba(44, 151, 134, 0.15); color: var(--primary-teal); border: 1px solid rgba(44, 151, 134, 0.3); }
+        .b-badge.receive { background-color: rgba(230, 57, 70, 0.1); color: var(--blood-red); border: 1px solid rgba(230, 57, 70, 0.3); }
+
+
+        /* --- FINAL CTA SECTION (New) --- */
+        .final-cta-section {
+            padding: 80px 50px;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+        }
+        .cta-container {
+            width: 100%;
+            max-width: 1100px;
+            background: #fdfdfd;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+            border: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-content {
+            flex: 1;
+            padding-right: 40px;
+            z-index: 2;
+        }
+        
+        .cta-content h2 {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+        .cta-content h2 span { color: var(--primary-teal); }
+        
+        .cta-content p {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .cta-image-box {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .cta-image-box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.1));
+        }
+
+        /* Decorative BG Circle for CTA */
+        .cta-container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(44, 151, 134, 0.1), rgba(32, 92, 117, 0.1));
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* =========================================
+           --- ELIGIBILITY MODAL STYLES (NEW) ---
+           ========================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .modal-container {
+            background: var(--white);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .modal-overlay.active .modal-container { transform: translateY(0); }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: #ccc;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .close-modal:hover { color: var(--blood-red); }
+
+        .modal-step { display: none; animation: fadeIn 0.4s ease; }
+        .modal-step.active { display: block; }
+
+        .modal-title { font-size: 24px; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; }
+        .modal-desc { color: var(--text-light); font-size: 14px; margin-bottom: 30px; }
+
+        /* Gender Selection Styles */
+        .gender-options { display: flex; gap: 20px; justify-content: center; margin-bottom: 20px; }
+        .gender-card {
+            border: 2px solid #eee;
+            border-radius: 15px;
+            padding: 20px;
+            width: 140px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .gender-card i { font-size: 40px; margin-bottom: 10px; display: block; }
+        .gender-card span { font-weight: 600; }
+        
+        .gender-card.male { color: #205c75; }
+        .gender-card.female { color: #e63946; }
+        
+        .gender-card:hover, .gender-card.selected { border-color: currentColor; background: rgba(0,0,0,0.02); transform: translateY(-5px); }
+
+        /* Quiz Buttons */
+        .quiz-btn-group { display: flex; flex-direction: column; gap: 15px; }
+        .quiz-option {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .quiz-option:hover { background: #eee; }
+        
+        .result-icon { font-size: 60px; margin-bottom: 20px; }
+        .result-success { color: var(--primary-teal); }
+        .result-fail { color: var(--blood-red); }
+
+        .progress-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+        .p-dot { width: 8px; height: 8px; background: #eee; border-radius: 50%; }
+        .p-dot.active { background: var(--primary-teal); }
+
+
+        @media (max-width: 1000px) {
+            .navbar { flex-direction: column; gap: 20px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .hero-section { min-height: auto; padding-bottom: 50px; }
+            .search-widget { flex-direction: column; border-radius: 20px; }
+            .input-group { width: 100%; border-right: none; border-bottom: 1px solid #eee; }
+            .btn-find { width: 100%; margin: 10px 0 0 0; }
+            .donate-section { flex-direction: column; text-align: center; }
+            
+            /* Web Responsive */
+            .web-container { width: 300px; height: 300px; }
+            .web-svg { width: 600px; height: 600px; }
+            .blood-node { width: 50px; height: 50px; font-size: 14px; }
+
+            /* Panel Responsive - Move to bottom instead of left on mobile */
+            .details-panel {
+                position: relative;
+                left: 0;
+                top: 0;
+                transform: none;
+                width: 90%;
+                margin: 20px auto 0;
+                opacity: 1; /* Always show empty or hide via JS logic if preferred */
+                visibility: visible;
+                display: none; /* Hide initially on mobile, show via JS block */
+            }
+            .details-panel.active {
+                display: block;
+                animation: fadeIn 0.5s ease;
+            }
+
+            /* CTA Responsive */
+            .cta-container { flex-direction: column-reverse; padding: 30px; text-align: center; }
+            .cta-content { padding-right: 0; margin-top: 30px; }
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Slim Footer Style */
+    footer { 
+        background: #2c9786; 
+        color: white; 
+        padding: 15px 0;    /* Changed from 40px to 15px to make it smaller */
+        text-align: center; 
+        font-size: 12px;    /* Slightly smaller font for a cleaner look */
+        letter-spacing: 0.5px; 
+    }
+    </style>
+</head>
+<body>
+
+    <header class="hero-section">
+        <div class="hero-slider">
+            <div class="slide active" style="background-image: url('../images/pp.png');"></div>
+            <div class="slide" style="background-image: url('../images/vv.png');"></div>
+            <div class="slide" style="background-image: url('../images/ppp.png');"></div>
+            <div class="slide" style="background-image: url('../images/pppp.png');"></div>
+        </div>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="../images/jeevandhara_logo_2.0.png" alt="Jeevandhara Logo">
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="#"><span data-key="home">Home</span></a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#"><span data-key="about_main">About Jeevandhara</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="/frontend/pages/about_jeevandhara.html" data-key="about_sub">About Jeevandhara</a></li>
+                        <li><a href="/frontend/pages/main_donar_login.html" data-key="history">Donation History Tracking</a></li>
+                        <li><a href="/frontend/pages/main_donar_login.html" data-key="rewards">Badges and Rewards</a></li>
+                        <li><a href="/frontend/pages/FAQ.html" data-key="jeev_faq">Jeevandhara FAQ</a></li>
+                        <li><a href="#" data-key="contact">Contact Us</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="/frontend/pages/main_donar_login.html" data-key="donor_login">Donor Login</a></li>
+                        <li><a href="/frontend/pages/blood_availability.html" data-key="availability_sub">Blood Availability</a></li>
+                        <li><a href="/frontend/pages/blood_center_directory.html" data-key="directory_sub">Blood Center Directory</a></li>
+                        <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> <span data-key="sos">SOS Emergency</span></a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="donate_main">Want to Donate</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="/frontend/pages/BBA.html" data-key="appointment_sub">Blood Bank Appointment</a></li>
+                        <li><a href="/frontend/pages/AI.html" data-key="ai_match">AI Blood Matching</a></li>
+                        <li><a href="/frontend/pages/health_advice.html" data-key="health_advice">Health Advice (Diet)</a></li>
+                        <li><a href="/frontend/pages/VBD.html" data-key="register_camp">Register VBD Camp</a></li>
+                        <li><a href="/frontend/pages/camp.html" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
+                    </ul>
+                </li>
+
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="center_login">Blood Center Login</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="/frontend/pages/jeevandhara_login.html" data-key="jeev_login">Jeevandhara Login</a></li>
+                        <li><a href="/frontend/pages/blood_center.html" data-key="add_center">Add your Blood Center</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+
+        <div class="scrolling-ticker">
+    <div class="ticker-track">
+        
+        <div class="ticker-content">
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+        </div>
+
+        <div class="ticker-content">
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+        </div>
+
+    </div>
+</div>
+
+        
+    </header>
+
+    <section class="services-section">
+    <h3 class="section-header" data-key="services_title">Our Services</h3>
+    <div class="services-grid">
+        
+        <a href="/frontend/pages/blood_availability.html" class="service-card clickable-card">
+            <div class="service-img-box">
+                <img src="https://images.unsplash.com/photo-1536856136534-bb679c52a9aa?auto=format&fit=crop&w=600&q=80" alt="Blood Availability">
+            </div>
+            <div class="service-content-box">
+                <div class="svc-icon"><i class="fas fa-tint"></i></div>
+                <div class="service-title" data-key="card1_title">Blood Availability</div>
+                <p class="service-desc" data-key="card1_desc">Check real-time stock levels of blood groups across nearby banks immediately.</p>
+            </div>
+        </a>
+
+        <a href="/frontend/pages/blood_center_directory.html" class="service-card clickable-card">
+            <div class="service-img-box">
+                <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80" alt="Blood Center">
+            </div>
+            <div class="service-content-box">
+                <div class="svc-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <div class="service-title" data-key="card2_title">Blood Center Directory</div>
+                <p class="service-desc" data-key="card2_desc">Find contact details and directions to all certified blood centers in your city.</p>
+            </div>
+        </a>
+
+        <a href="/frontend/pages/AI.html" class="service-card clickable-card">
+            <div class="service-img-box">
+                <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=600&q=80" alt="AI Matching">
+            </div>
+            <div class="service-content-box">
+                <div class="svc-icon"><i class="fas fa-microchip"></i></div>
+                <div class="service-title" data-key="card3_title">Emergency Blood Match AI</div>
+                <p class="service-desc" data-key="card3_desc">Our AI algorithm instantly matches patients with the nearest compatible donors.</p>
+            </div>
+        </a>
+        
+        <a href="/frontend/pages/health_advice.html" class="service-card clickable-card">
+            <div class="service-img-box">
+                <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80" alt="Health Diet">
+            </div>
+            <div class="service-content-box">
+                <div class="svc-icon"><i class="fas fa-apple-alt"></i></div>
+                <div class="service-title" data-key="card4_title">Health Diet</div>
+                <p class="service-desc" data-key="card4_desc">Explore personalized nutrition plans and diet tips for a healthier lifestyle.</p>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+
+            function nextSlide() {
+                // Remove active class from current slide
+                slides[currentSlide].classList.remove('active');
+                
+                // Calculate next slide index
+                currentSlide = (currentSlide + 1) % slides.length;
+                
+                // Add active class to next slide
+                slides[currentSlide].classList.add('active');
+            }
+
+            // Change slide every 3000 milliseconds (3 seconds).
+            // Change 3000 to 1000 if you want it to change every 1 second.
+            setInterval(nextSlide, 3000); 
+        });
+    </script>
+
+   <section class="donate-section">
+        <div class="donate-content">
+            <span class="sub-tag">Eligibility</span>
+            <h2 class="main-heading">Who Can Donate Blood?</h2>
+            <p class="paragraph">Donating blood is a simple, safe and life-saving act. But not everyone may be eligible to donate. To ensure the safety of both donors and recipients, certain health criteria must be met.</p>
+            <p class="paragraph">Take our quick interactive quiz to check if you are eligible to be a hero today.</p>
+            <div class="action-area">
+                <button class="btn-primary" onclick="openEligModal()">Check Eligibility</button>
+                <button class="btn-secondary"><i class="fas fa-map-marker-alt" style="color: var(--primary-teal);"></i> <span>Find Nearby Camps</span></button>
+            </div>
+        </div>
+        <div class="donate-image-wrapper">
+            <div class="silhouette-bg-circle"><img src="../images/download (1).jpg" alt="Hands holding heart" class="donate-img"></div>
+        </div>
+    </section>
+
+    <section class="compatibility-section">
+        <div class="web-header">
+            <span class="sub-tag">Visual Guide</span>
+            <h2>Interactive Compatibility Web</h2>
+            <p>Hover over a blood type to visualize donation compatibility.</p>
+        </div>
+
+        <div class="details-panel" id="detailsPanel">
+            <div class="panel-header">
+                <span>Selected Type</span>
+                <h3 id="panelTitle">O+</h3>
+            </div>
+            
+            <div class="panel-row">
+                <div class="row-title give-title"><i class="fas fa-arrow-right"></i> Can Give To:</div>
+                <div class="badges-grid" id="giveBadges">
+                    </div>
+            </div>
+
+            <div class="panel-row">
+                <div class="row-title receive-title"><i class="fas fa-arrow-left"></i> Can Receive From:</div>
+                <div class="badges-grid" id="receiveBadges">
+                     </div>
+            </div>
+        </div>
+
+        <div class="web-container" id="webContainer">
+            <div class="center-info">
+                <span class="center-highlight" id="centerType">Hover Me</span>
+                <span class="center-text" id="centerDesc">Hover a blood type to see details</span>
+                <div class="legend">
+                    <span><i class="dot dot-give"></i> Gives To (Teal)</span>
+                    <span><i class="dot dot-receive"></i> Receives (Red)</span>
+                </div>
+            </div>
+
+            <svg class="web-svg" id="linesSvg" viewBox="0 0 1000 1000">
+                </svg>
+            
+        </div>
+    </section>
+
+     <div class="modal-overlay" id="eligibilityModal">
+        <div class="modal-container">
+            <div class="close-modal" onclick="closeEligModal()">&times;</div>
+            
+            <div class="modal-step active" id="step-gender">
+                <h3 class="modal-title">Welcome Donor</h3>
+                <p class="modal-desc">Please select your gender to proceed with relevant health questions.</p>
+                <div class="gender-options">
+                    <div class="gender-card male" onclick="selectGender('male')">
+                        <div class="img-wrapper">
+                            <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" alt="Male" style="width: 80px; height: 80px;">
+                        </div>
+                        
+                        <span>Male</span>
+                    </div>
+
+                    <div class="gender-card female" onclick="selectGender('female')">
+                        <div class="img-wrapper">
+                            <img src="https://cdn-icons-png.flaticon.com/512/4140/4140047.png" alt="Female" style="width: 80px; height: 80px;">
+                        </div>
+                
+                        <span>Female</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-step" id="step-question">
+                <div class="progress-dots" id="dots-container">
+                    </div>
+                <h3 class="modal-title" id="q-text">Question Text</h3>
+                <div class="quiz-btn-group">
+                    <button class="quiz-option" onclick="answerQuestion(true)">Yes</button>
+                    <button class="quiz-option" onclick="answerQuestion(false)">No</button>
+                </div>
+            </div>
+
+            <div class="modal-step" id="step-success">
+                <div class="result-icon result-success"><i class="fas fa-check-circle"></i></div>
+                <h3 class="modal-title">You are Eligible!</h3>
+                <p class="modal-desc">Great news! You meet the preliminary requirements to donate blood.</p>
+                <button class="btn-primary" onclick="closeEligModal()">Find a Center Now</button>
+            </div>
+
+            <div class="modal-step" id="step-fail">
+                <div class="result-icon result-fail"><i class="fas fa-times-circle"></i></div>
+                <h3 class="modal-title">Not Eligible Currently</h3>
+                <p class="modal-desc" id="fail-reason">Reason text goes here.</p>
+                <button class="btn-secondary" onclick="closeEligModal()" style="margin: 0 auto; border: 1px solid #ccc; border-radius: 30px;">Close</button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <section class="final-cta-section">
+        <div class="cta-container">
+            <div class="cta-content">
+                <h2 data-key="cta_heading">Every Drop <span>Counts</span></h2>
+                <p data-key="cta_desc">Your small contribution can save a life. Join the Jeevandhara network today and become a hero in your community. Safe, simple, and impactful.</p>
+                <button class="btn-primary" data-key="register" onclick="window.location.href='/frontend/pages/main_donar_login.html'">Register as Donor</button>
+            </div>
+            <div class="cta-image-box">
+                <img src="../images/0e419862ed7d603f67d4006dc8e814a0.jpg" alt="Blood Donation Illustration">
+            </div>
+        </div>
+    </section>
+
+     <footer>
+        <p>&copy; 2026 Jeevandhara Blood Network. Made with Love.</p>
+    </footer>
+
+    <script>;
+        /* =======================================================
+           --- SCRIPT FOR COMPATIBILITY WEB ---
+           ======================================================= */
+        
+        const bloodTypes = ['O-', 'O+', 'B-', 'B+', 'A-', 'A+', 'AB-', 'AB+'];
+        
+        // Rules: Who can GIVE to whom
+        const donationRules = {
+            'O-':  ['O-', 'O+', 'A-', 'A+', 'B-', 'B+', 'AB-', 'AB+'], // Universal Donor
+            'O+':  ['O+', 'A+', 'B+', 'AB+'],
+            'A-':  ['A-', 'A+', 'AB-', 'AB+'],
+            'A+':  ['A+', 'AB+'],
+            'B-':  ['B-', 'B+', 'AB-', 'AB+'],
+            'B+':  ['B+', 'AB+'],
+            'AB-': ['AB-', 'AB+'],
+            'AB+': ['AB+'] // Universal Receiver
+        };
+
+        // We also need reverse rules (Who can RECEIVE from whom)
+        const receivingRules = {};
+        bloodTypes.forEach(type => receivingRules[type] = []);
+        
+        Object.keys(donationRules).forEach(donor => {
+            donationRules[donor].forEach(recipient => {
+                if(!receivingRules[recipient]) receivingRules[recipient] = [];
+                receivingRules[recipient].push(donor);
+            });
+        });
+
+        const container = document.getElementById('webContainer');
+        const svg = document.getElementById('linesSvg');
+        const centerType = document.getElementById('centerType');
+        const centerDesc = document.getElementById('centerDesc');
+        
+        const radius = 200; // Radius of the circle of nodes
+        const centerX = 500; // SVG viewBox center X
+        const centerY = 500; // SVG viewBox center Y
+        
+        // Position variables
+        const positions = {};
+
+        // 1. Create Nodes
+        bloodTypes.forEach((type, index) => {
+            const angle = (index / bloodTypes.length) * 2 * Math.PI - (Math.PI / 2); // Start at top
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            
+            positions[type] = { x, y };
+
+            const node = document.createElement('div');
+            node.className = 'blood-node';
+            node.innerText = type;
+            // Adjust position to center the div
+            node.style.left = `calc(${50}% + ${radius * Math.cos(angle)}px - 35px)`;
+            node.style.top = `calc(${50}% + ${radius * Math.sin(angle)}px - 35px)`;
+            
+            node.addEventListener('mouseenter', () => highlightConnections(type));
+            node.addEventListener('mouseleave', resetConnections);
+            
+            container.appendChild(node);
+        });
+
+        function highlightConnections(type) {
+            svg.innerHTML = ''; // Clear lines
+            centerType.innerText = type;
+            centerDesc.innerText = "Showing compatibility";
+
+            // Draw Giving Lines (Teal)
+            const recipients = donationRules[type];
+            recipients.forEach(target => {
+                if (target !== type) { // Don't draw line to self
+                    drawLine(positions[type], positions[target], 'line-giving');
+                }
+            });
+
+            // Draw Receiving Lines (Red)
+            const donors = receivingRules[type];
+            donors.forEach(source => {
+                if (source !== type) {
+                    drawLine(positions[source], positions[type], 'line-receiving');
+                }
+            });
+
+             // 2. UPDATE VISUAL TABLE (PANEL)
+            panelTitle.innerText = type;
+            
+            // Populate Give Grid
+            giveBadges.innerHTML = donationRules[type].map(t => 
+                `<div class="b-badge give">${t}</div>`
+            ).join('');
+
+            // Populate Receive Grid
+            receiveBadges.innerHTML = receivingRules[type].map(t => 
+                `<div class="b-badge receive">${t}</div>`
+            ).join('');
+
+            // Show Panel
+            detailsPanel.classList.add('active');
+        }
+
+        function drawLine(start, end, className) {
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            // Create a curved path (quadratic bezier)
+            const midX = (start.x + end.x) / 2;
+            const midY = (start.y + end.y) / 2;
+            // Pull the curve towards the center slightly
+            const curveX = (midX + centerX) / 2;
+            const curveY = (midY + centerY) / 2;
+
+            const d = `M ${start.x} ${start.y} Q ${curveX} ${curveY} ${end.x} ${end.y}`;
+            
+            line.setAttribute('d', d);
+            line.setAttribute('class', `connection-line ${className}`);
+            svg.appendChild(line);
+        }
+
+        function resetConnections() {
+            svg.innerHTML = '';
+            centerType.innerText = "Hover Me";
+            centerDesc.innerText = "Hover a blood type to see details";
+
+            // Hide Panel
+            detailsPanel.classList.remove('active');
+        }
+
+        
+        // ===============================================
+        // --- ELIGIBILITY MODAL LOGIC (UPDATED) ---
+        // ===============================================
+        
+        const modal = document.getElementById('eligibilityModal');
+        const steps = {
+            gender: document.getElementById('step-gender'),
+            question: document.getElementById('step-question'),
+            success: document.getElementById('step-success'),
+            fail: document.getElementById('step-fail')
+        };
+        const questionTitle = document.getElementById('q-text');
+        const dotsContainer = document.getElementById('dots-container');
+        const failReasonText = document.getElementById('fail-reason');
+
+        let currentGender = '';
+        let currentQIndex = 0;
+        let activeQuestions = [];
+
+        // Define Question Banks
+        const questionsMale = [
+            { text: "Are you between 18 and 65 years old?", expected: true, failMsg: "You must be between 18 and 65 years old to donate." },
+            { text: "Is your weight above 45kg?", expected: true, failMsg: "Donor weight must be above 45kg for safety." },
+            { text: "Have you donated blood in the last 3 months?", expected: false, failMsg: "Males must wait 3 months between donations." },
+            { text: "Have you had any major surgery or tattoos in the last 6 months?", expected: false, failMsg: "You must wait 6 months after surgery or tattoos." },
+            { text: "Are you currently on any antibiotics or medication?", expected: false, failMsg: "Please consult a doctor; usually you cannot donate while on antibiotics." }
+        ];
+
+        const questionsFemale = [
+            { text: "Are you between 18 and 65 years old?", expected: true, failMsg: "You must be between 18 and 65 years old to donate." },
+            { text: "Is your weight above 45kg?", expected: true, failMsg: "Donor weight must be above 45kg for safety." },
+            { text: "Are you currently pregnant or breastfeeding?", expected: false, failMsg: "Pregnant or breastfeeding women cannot donate blood." },
+            { text: "Have you donated blood in the last 4 months?", expected: false, failMsg: "Females must wait 4 months between donations." },
+            { text: "Have you had any major surgery or tattoos in the last 6 months?", expected: false, failMsg: "You must wait 6 months after surgery or tattoos." }
+        ];
+
+        function openEligModal() {
+            modal.classList.add('active');
+            showStep('gender');
+        }
+
+        function closeEligModal() {
+            modal.classList.remove('active');
+        }
+
+        function showStep(stepName) {
+            // Hide all steps
+            Object.values(steps).forEach(el => el.classList.remove('active'));
+            // Show requested step
+            steps[stepName].classList.add('active');
+        }
+
+        function selectGender(gender) {
+            currentGender = gender;
+            currentQIndex = 0;
+            // Load appropriate questions
+            activeQuestions = (gender === 'male') ? questionsMale : questionsFemale;
+            
+            setupQuestionUI();
+            showStep('question');
+        }
+
+        function setupQuestionUI() {
+            // Update Text
+            questionTitle.innerText = activeQuestions[currentQIndex].text;
+            
+            // Update Dots
+            dotsContainer.innerHTML = '';
+            activeQuestions.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.className = `p-dot ${idx === currentQIndex ? 'active' : ''}`;
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function answerQuestion(answer) {
+            const currentQ = activeQuestions[currentQIndex];
+            
+            // Logic Check
+            if (answer === currentQ.expected) {
+                // Correct answer, proceed
+                currentQIndex++;
+                if (currentQIndex < activeQuestions.length) {
+                    setupQuestionUI(); // Next question
+                } else {
+                    showStep('success'); // All passed
+                }
+            } else {
+                // Wrong answer (Ineligible)
+                failReasonText.innerText = currentQ.failMsg;
+                showStep('fail');
+            }
+        }    
+            // Close modal if clicked outside
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) closeEligModal();
+        });
+
+    </script>
+</body>
+</html>

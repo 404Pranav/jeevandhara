@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Jeevandhara | Clinical Blood Network Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+             --logo-height: 160px;
+           --primary-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+/* Slate 100 (#f1f5f9) merging into Slate 200 (#e2e8f0) */
+            --primary-teal: #2c9786;
+            --text-hero: #0f172a;
+            --accent-orange: #f59e0b;
+            --blood-red: #e63946;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --white: #ffffff;
+            --bg-light: #f8fafc;
+            --gold-highlight: #ffd700;
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: var(--bg-light); 
+            color: var(--text-dark);
+            overflow-x: hidden; 
+        }
+
+        /* --- HEADER & NAVBAR STYLES --- */
+        .header-bg { background: linear-gradient(100deg, #2c9786 0%, #205c75 100%); color: var(--white); position: relative; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: -10px 50px; position: relative; z-index: 100; min-height: 100px; }
+
+        .logo { display: flex; align-items: center; margin-left: 60px; margin-top: 20px; }
+        .logo img { height: 100px; width: auto; object-fit: contain; }
+        
+        .nav-links { 
+    display: flex; 
+    gap: 20px; 
+    align-items: center; 
+    
+    /* --- CENTERING LOGIC --- */
+    position: absolute;       
+    left: 50%;                
+    transform: translateX(-50%); 
+    margin-left: 18px; 
+    
+    /* CHANGE THIS: Matches the height of the logo alignment */
+    margin-top: 20px; 
+}
+
+        .nav-item { position: relative; padding: 10px 0; }
+        .nav-item > a { font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 5px; position: relative; transition: color 0.3s ease; text-decoration: none; }
+        .nav-item > a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--gold-highlight); transition: width 0.3s ease-in-out; }
+        .nav-item:hover > a { color: var(--gold-highlight); text-shadow: 0 0 10px rgba(255, 215, 0, 0.4); }
+        .nav-item:hover > a::after { width: 100%; }
+
+        .dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(15px); background: rgba(255, 255, 255, 0.95); min-width: 240px; padding: 15px 0; border-radius: 12px; box-shadow: 5px 10px 30px rgba(0,0,0,0.1); opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 1000; }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown li a { display: block; padding: 10px 20px 10px 30px; color: var(--text-dark); font-size: 13px; font-weight: 500; position: relative; transition: 0.3s ease; text-decoration: none; }
+        .dropdown li a::before { content: '\f043'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 10px; top: 50%; transform: translateY(-50%) scale(0); color: var(--blood-red); font-size: 14px; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); height: 16px; line-height: 16px; }
+        .dropdown li a:hover { color: var(--blood-red); transform: translateX(5px); background: transparent; }
+        .dropdown li a:hover::before { transform: translateY(-50%) scale(1); }
+        .dropdown li a.sos-link { color: #e63946; font-weight: 700; }
+
+        /* --- SCROLLING TICKER STYLES --- */
+        .scrolling-ticker {
+            width: 100%;
+            background: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
+            overflow: hidden;
+            padding: 12px 0;
+            position: relative;
+            z-index: 99;
+        }
+
+        .ticker-track {
+            display: flex;
+            width: fit-content;
+            animation: scroll-infinite 20s linear infinite;
+        }
+
+        .ticker-content {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .ticker-content span {
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-right: 50px;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll-infinite {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .hero-gradient {
+            background: var(--primary-gradient);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Update line 46 in your <style> */
+.hero-gradient::before {
+    background: radial-gradient(circle, rgba(44, 151, 134, 0.1) 0%, transparent 60%);
+}
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-red {
+            background: var(--blood-red);
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
+        }
+        .btn-red:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(230, 57, 70, 0.4);
+            background: #d63031;
+        }
+
+        .feature-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: var(--primary-teal);
+        }
+
+        .problem-card {
+    border-left: 5px solid #fecdd3; /* Rose 200 */
+}
+/* Icon color to match: text-[#e11d48] */
+        .solution-card {
+            border-left: 5px solid var(--primary-teal);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px dashed #cbd5e1;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: var(--primary-teal);
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 4px rgba(44, 151, 134, 0.2);
+        }
+
+
+        .stat-badge {
+            background: white;
+            border-radius: 50px;
+            padding: 10px 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+    </style>
+</head>
+<body class="relative">
+
+    
+        
+    <header class="header-bg">
+                <nav class="navbar">
+            <div class="logo">
+                <img src="../images/jeevandhara_logo_2.0.png" alt="Jeevandhara Logo">
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item"><a href="/frontend/pages/front_page.html">Home</a></li>
+                <li class="nav-item">
+                    <a href="#"><span data-key="about_main">About Jeevandhara</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">About Jeevandhara</a></li>
+                        <li><a href="#">Donation History Tracking</a></li>
+                        <li><a href="#">Badges and Rewards</a></li>
+                        <li><a href="#">Jeevandhara FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Donor Login</a></li>
+                        <li><a href="/frontend/pages/blood_availability.html">Blood Availability</a></li>
+                        <li><a href="#">Blood Center Directory</a></li>
+                        <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> SOS Emergency</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="donate_main">Want to Donate</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Blood Bank Appointment</a></li>
+                        <li><a href="#">AI Blood Matching</a></li>
+                        <li><a href="/frontend/pages/health_advice.html">Health Advice (Diet)</a></li>
+                        <li><a href="#">Register VBD Camp</a></li>
+                        <li><a href="/frontend/pages/camp.html" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#"><span data-key="center_login">Blood Center Login</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Jeevandhara Login</a></li>
+                        <li><a href="#">Add your Blood Center</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+
+        <div class="scrolling-ticker">
+            <div class="ticker-track">
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+                <div class="ticker-content">
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                    <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-gradient min-h-[80vh] flex items-center justify-center px-4 md:px-10 lg:px-20 relative">
+            <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10 w-full">
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold uppercase tracking-[0.2em] mb-6">
+                        <i class="fas fa-shield-alt text-[var(--gold-highlight)]"></i> Centralised Digital Bridge
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight tracking-tight">
+                        Bridging Lives <br>
+                        <span class="text-[var(--gold-highlight)]">Precisely</span> When It Matters.
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl font-medium leading-relaxed">
+                        Jeevandhara eliminates the critical gap in emergency healthcare with AI-driven donor matching and real-time visibility across hospitals and blood banks.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#stats" class="border-2 border-[var(--primary-teal)] text-[var(--primary-teal)] bg-white/50 backdrop-blur-md px-10 py-5 rounded-2xl font-bold text-lg hover:bg-[var(--primary-teal)] hover:text-white transition-all flex items-center justify-center gap-3">
+                            Explore Impact <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="/frontend/pages/jeevandhara_login.html" class="border-2 border-[var(--primary-teal)] text-[var(--primary-teal)] bg-white/50 backdrop-blur-md px-10 py-5 rounded-2xl font-bold text-lg hover:bg-[var(--primary-teal)] hover:text-white transition-all flex items-center justify-center gap-3">
+                            Join Our Network
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden lg:block relative">
+                    <div class="relative rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white/10 glass-panel">
+                        <img src="../images/blood donation camp simple image.jpg" alt="Medical Network" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#205c75] to-transparent opacity-60"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problem Statement -->
+        <section class="py-24 px-4 md:px-10 max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <span class="text-[var(--blood-red)] font-extrabold text-sm uppercase tracking-[0.3em] mb-3 block">Critical Challenges</span>
+                <h2 class="text-4xl md:text-5xl font-extrabold text-[var(--text-dark)]">Why Jeevandhara Matters</h2>
+                <div class="h-1.5 w-24 bg-[var(--blood-red)] mx-auto mt-6 rounded-full opacity-30"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass-panel p-10 rounded-[2.5rem] feature-card problem-card">
+                    <div class="w-16 h-16 bg-red-50 text-[var(--blood-red)] rounded-2xl flex items-center justify-center mb-8 text-2xl">
+                        <i class="fas fa-unlink"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">Fragmented Information</h4>
+                    <p class="text-[var(--text-light)] leading-relaxed text-sm">No centralised platform provides real-time stock levels, forcing hospitals to make inefficient, manual coordination calls during emergencies.</p>
+                </div>
+                <div class="glass-panel p-10 rounded-[2.5rem] feature-card problem-card">
+                    <div class="w-16 h-16 bg-red-50 text-[var(--blood-red)] rounded-2xl flex items-center justify-center mb-8 text-2xl">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">Emergency Delays</h4>
+                    <p class="text-[var(--text-light)] leading-relaxed text-sm">Finding compatible donors during life-or-death situations currently involves extreme manual effort, costing irreplaceable critical minutes.</p>
+                </div>
+                <div class="glass-panel p-10 rounded-[2.5rem] feature-card problem-card">
+                    <div class="w-16 h-16 bg-red-50 text-[var(--blood-red)] rounded-2xl flex items-center justify-center mb-8 text-2xl">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">Low Donor Motivation</h4>
+                    <p class="text-[var(--text-light)] leading-relaxed text-sm">Absence of engagement tools and incentivisation results in low repeat donation rates among voluntary donors across urban and rural sectors.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Solution Sections -->
+        <section id="solution" class="bg-slate-100/50 py-24 px-4 md:px-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-20 items-center mb-32">
+                    <div>
+                        <span class="text-[var(--primary-teal)] font-extrabold text-sm uppercase tracking-[0.3em] mb-3 block">Proposed Solution</span>
+                        <h2 class="text-4xl md:text-5xl font-extrabold text-[var(--text-dark)] mb-10 leading-tight">A Unified Vision for <br>Blood Management</h2>
+                        
+                        <div class="space-y-6">
+                            <div class="glass-panel p-6 rounded-3xl flex gap-6 items-start solution-card feature-card">
+                                <div class="w-12 h-12 bg-teal-50 text-[var(--primary-teal)] rounded-2xl flex items-center justify-center flex-shrink-0 text-xl shadow-inner">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-lg font-bold mb-2">Unified Web Portal</h5>
+                                    <p class="text-sm text-[var(--text-light)]">Fully responsive portal mapped to healthcare partners, accessible across all devices and network conditions.</p>
+                                </div>
+                            </div>
+                            <div class="glass-panel p-6 rounded-3xl flex gap-6 items-start solution-card feature-card">
+                                <div class="w-12 h-12 bg-teal-50 text-[var(--primary-teal)] rounded-2xl flex items-center justify-center flex-shrink-0 text-xl shadow-inner">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-lg font-bold mb-2">Real-Time Visibility</h5>
+                                    <p class="text-sm text-[var(--text-light)]">Instant transparency into blood stock levels across partnered blood banks, updated continuously through a decentralized sync.</p>
+                                </div>
+                            </div>
+                            <div class="glass-panel p-6 rounded-3xl flex gap-6 items-start solution-card feature-card">
+                                <div class="w-12 h-12 bg-red-50 text-[var(--blood-red)] rounded-2xl flex items-center justify-center flex-shrink-0 text-xl shadow-inner">
+                                    <i class="fas fa-broadcast-tower"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-lg font-bold mb-2">SOS Emergency Broadcast</h5>
+                                    <p class="text-sm text-[var(--text-light)]">Built-in SOS feature that sends instant, localised alerts to the nearest matching donors within seconds during crisis moments.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <img src="../images/blood donation and pacient.jpg" alt="SOS Alert UI" class="rounded-[4rem] shadow-2xl border-8 border-white">
+                        <div class="absolute -top-10 -right-10 w-48 h-48 bg-[var(--blood-red)] rounded-full blur-[80px] opacity-20 animate-pulse"></div>
+                    </div>
+                </div>
+
+                <!-- AI Innovation -->
+                <div class="grid lg:grid-cols-2 gap-20 items-center lg:flex-row-reverse">
+                    <div class="lg:order-2">
+                        <span class="text-[var(--accent-orange)] font-extrabold text-sm uppercase tracking-[0.3em] mb-3 block">Key Innovations</span>
+                        <h2 class="text-4xl md:text-5xl font-extrabold text-[var(--text-dark)] mb-10 leading-tight">Intelligence Meeting <br>Human Compassion</h2>
+                        
+                        <div class="space-y-10">
+                            <div class="timeline-item">
+                                <h5 class="text-xl font-bold mb-2">Emergency Blood Match AI</h5>
+                                <p class="text-[var(--text-light)] text-sm">Intelligently matches urgent patient needs with the nearest compatible donor in real time, dramatically reducing procurement time.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h5 class="text-xl font-bold mb-2">Smart Appointments</h5>
+                                <p class="text-[var(--text-light)] text-sm">Enables advance slot scheduling for donation or blood pickup, eliminating waiting lines and improving operational efficiency.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h5 class="text-xl font-bold mb-2">Bilingual Accessibility</h5>
+                                <p class="text-[var(--text-light)] text-sm">Native dual-language support (English & Marathi) ensures platform accessibility for both urban populations and rural communities.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative lg:order-1">
+                        <img src="../images/1.jpg" alt="AI Match Visualization" class="rounded-[4rem] shadow-2xl border-8 border-white">
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- USP & Gamification -->
+        <section class="py-24 px-4 md:px-10 max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row gap-16 items-center">
+                <div class="flex-1">
+                    <h3 class="text-3xl font-extrabold text-[var(--text-dark)] mb-8">Gamified Giving: <br><span class="text-[var(--primary-teal)]">Rewarding Every Hero.</span></h3>
+                    <p class="text-[var(--text-light)] leading-relaxed mb-8">
+                        Beyond simple matching, we transform a one-time charitable act into a tracked, rewarding, and repeatable habit. Our gamification approach ensures donors feel valued and inspired to return.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3 font-semibold text-[var(--text-dark)]">
+                            <i class="fas fa-check-circle text-[var(--primary-teal)]"></i> Transparent Donation History Tracking
+                        </li>
+                        <li class="flex items-center gap-3 font-semibold text-[var(--text-dark)]">
+                            <i class="fas fa-check-circle text-[var(--primary-teal)]"></i> Hero Badges & Milestone Rewards
+                        </li>
+                        <li class="flex items-center gap-3 font-semibold text-[var(--text-dark)]">
+                            <i class="fas fa-check-circle text-[var(--primary-teal)]"></i> Personalised Health Overview Reports
+                        </li>
+                        <li class="flex items-center gap-3 font-semibold text-[var(--text-dark)]">
+                            <i class="fas fa-check-circle text-[var(--primary-teal)]"></i> Pre-Donation Diet & Recovery Guidance
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex-1 grid grid-cols-2 gap-6 w-full">
+                    <div class="glass-panel p-8 rounded-3xl text-center feature-card border-b-4 border-yellow-400">
+                        <i class="fas fa-award text-4xl text-yellow-500 mb-4"></i>
+                        <h6 class="font-bold text-sm uppercase">Diamond Hero</h6>
+                        <p class="text-xs text-slate-400">50+ Donations</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-3xl text-center feature-card border-b-4 border-slate-400">
+                        <i class="fas fa-medal text-4xl text-slate-400 mb-4"></i>
+                        <h6 class="font-bold text-sm uppercase">Silver Lifesaver</h6>
+                        <p class="text-xs text-slate-400">10+ Donations</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-3xl text-center feature-card border-b-4 border-orange-400">
+                        <i class="fas fa-shield-heart text-4xl text-orange-500 mb-4"></i>
+                        <h6 class="font-bold text-sm uppercase">First Blood</h6>
+                        <p class="text-xs text-slate-400">Starter Badge</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-3xl text-center feature-card border-b-4 border-emerald-400">
+                        <i class="fas fa-leaf text-4xl text-emerald-500 mb-4"></i>
+                        <h6 class="font-bold text-sm uppercase">Health Guardian</h6>
+                        <p class="text-xs text-slate-400">Premium Profile</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+    </main>
+
+
+
+    <script>
+        // Navbar scroll effect
+        window.onscroll = function() {
+            var nav = document.getElementById('navbar');
+            if (window.pageYOffset > 50) {
+                nav.classList.add('py-2', 'mx-0', 'rounded-none', 'bg-white/90');
+                nav.parentElement.classList.add('px-0', 'py-0');
+            } else {
+                nav.classList.remove('py-2', 'mx-0', 'rounded-none', 'bg-white/90');
+                nav.parentElement.classList.remove('px-0', 'py-0');
+            }
+        };
+    </script>
+</body>
+</html>

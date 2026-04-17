@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeevandhara - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --primary-teal: #2c9786;
+            --primary-dark: #205c75;
+            --bg-grey: #f0f2f5;
+            --text-dark: #1f2937;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-grey); color: var(--text-dark); height: 100vh; }
+        
+        /* --- UTILITIES --- */
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.6s ease forwards; }
+
+        /* --- LOGIN WRAPPER --- */
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #2c9786 0%, #205c75 100%);
+            padding: 20px;
+        }
+
+        .login-card {
+            display: flex;
+            width: 900px;
+            max-width: 100%;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            min-height: 650px; /* Increased height to fit new fields */
+        }
+
+        /* Left Side (Visual) */
+        .login-visual {
+            flex: 1;
+            background: url('https://images.unsplash.com/photo-1615461066841-6116e61058f4?auto=format&fit=crop&q=80&w=800') center/cover no-repeat;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            color: white;
+        }
+        .login-visual::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(32, 92, 117, 0.9), rgba(44, 151, 134, 0.3));
+        }
+        .visual-content { position: relative; z-index: 2; }
+        .visual-content h2 { font-size: 32px; font-weight: 700; margin-bottom: 10px; }
+        .visual-content p { font-size: 14px; opacity: 0.9; }
+
+        /* Right Side (Form) */
+        .login-form-side {
+            flex: 1;
+            padding: 30px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        .brand-logo { 
+            font-size: 24px; font-weight: 700; color: var(--primary-teal); 
+            display: flex; align-items: center; gap: 10px; margin-bottom: 15px; 
+        }
+
+        .form-title { font-size: 24px; font-weight: 600; margin-bottom: 5px; }
+        .form-subtitle { color: #888; font-size: 14px; margin-bottom: 20px; }
+
+        .input-group { margin-bottom: 15px; position: relative; }
+        .input-group label { display: block; font-size: 12px; color: #666; margin-bottom: 5px; margin-left: 5px; font-weight: 500;}
+        .input-group i { position: absolute; left: 15px; top: 42px; color: #aaa; } 
+        .input-group.no-label i { top: 50%; transform: translateY(-50%); } 
+        
+        .input-field {
+            width: 100%; padding: 12px 12px 12px 45px;
+            border: 1px solid #e0e0e0; border-radius: 10px;
+            outline: none; transition: 0.3s; background: #f9f9f9;
+            font-family: inherit;
+        }
+        .input-field:focus { border-color: var(--primary-teal); background: white; box-shadow: 0 0 0 3px rgba(44, 151, 134, 0.1); }
+
+        /* --- NEW GENDER STYLING --- */
+        .gender-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .gender-option {
+            flex: 1;
+            position: relative;
+        }
+        .gender-option input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .gender-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .gender-option input:checked + .gender-label {
+            border-color: var(--primary-teal);
+            background: rgba(44, 151, 134, 0.1);
+            color: var(--primary-teal);
+            font-weight: 600;
+        }
+
+        .forgot-pass { text-align: right; margin-bottom: 15px; }
+        .forgot-pass a { color: var(--primary-teal); font-size: 13px; text-decoration: none; font-weight: 500; }
+        .forgot-pass a:hover { text-decoration: underline; }
+
+        .btn-primary {
+            width: 100%; padding: 14px; background: var(--primary-teal);
+            color: white; border: none; border-radius: 10px;
+            font-weight: 600; font-size: 15px; cursor: pointer; transition: 0.3s;
+            margin-top: 5px;
+        }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+        .links { margin-top: 20px; display: flex; justify-content: center; gap: 5px; font-size: 13px; }
+        .link-text { color: var(--text-dark); cursor: pointer; font-weight: 500; }
+        .link-text span { color: var(--primary-teal); font-weight: 700; }
+        .link-text:hover { text-decoration: underline; }
+
+        .success-msg {
+            background-color: #d1fae5; color: #065f46;
+            padding: 10px; border-radius: 8px; font-size: 13px;
+            margin-bottom: 15px; text-align: center; border: 1px solid #34d399;
+        }
+
+        @media (max-width: 900px) {
+            .login-card { flex-direction: column; width: 90%; min-height: auto; }
+            .login-visual { display: none; } 
+            .login-form-side { padding: 30px; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+        <div class="login-card fade-in">
+            <div class="login-visual">
+                <div class="visual-content">
+                    <h2>Save a Life Today.</h2>
+                    <p>Join the Jeevandhara network. Your donation matters.</p>
+                </div>
+            </div>
+
+            <div class="login-form-side">
+                <div class="brand-logo">
+                    <i class="fas fa-heartbeat"></i> Jeevandhara
+                </div>
+
+                <div id="form-login">
+                    <h2 class="form-title">Donor Login</h2>
+                    <p class="form-subtitle">Welcome back! Please enter your details.</p>
+
+                    <form onsubmit="handleLogin(event)">
+                        <div class="input-group no-label">
+                            <i class="far fa-envelope"></i>
+                            <input type="email" class="input-field" placeholder="Email Address" required>
+                        </div>
+                        <div class="input-group no-label">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class="input-field" placeholder="Password" required>
+                        </div>
+
+                        <div class="forgot-pass">
+                            <a href="#" onclick="alert('Forgot Password Logic goes here.')">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Sign In</button>
+                    </form>
+
+                    <div class="links">
+                        <span>New here?</span>
+                        <a class="link-text" onclick="toggleForms('register')"><span>Create Account</span></a>
+                    </div>
+                </div>
+                
+
+                <div id="form-register" class="hidden">
+                    <h2 class="form-title">Join Us</h2>
+                    <p class="form-subtitle">Enter details to check eligibility.</p>
+                    
+                    <div id="reg-success-msg" class="success-msg hidden">
+                        <i class="fas fa-check-circle"></i> Account Created! Redirecting...
+                    </div>
+
+                    <form onsubmit="handleRegister(event)">
+                        <div class="input-group no-label">
+                            <i class="far fa-user"></i>
+                            <input type="text" id="reg-name" class="input-field" placeholder="Full Name (First-Middle-Last)" required>
+                        </div>
+
+                        <div class="input-group no-label">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" id="reg-phone" class="input-field" placeholder="Phone Number" pattern="[0-9]{10}" title="Please enter 10 digits" required>
+                        </div>
+
+                        <div class="input-group no-label">
+                            <i class="far fa-envelope"></i>
+                            <input type="email" class="input-field" placeholder="Email Address" required>
+                        </div>
+
+                        <label style="font-size: 12px; color: #666; margin-left: 5px; font-weight: 500;">Gender</label>
+                        <div class="gender-container">
+                            <label class="gender-option">
+                                <input type="radio" name="gender" value="Male" required>
+                                <div class="gender-label"><i class="fas fa-mars"></i> Male</div>
+                            </label>
+                            <label class="gender-option">
+                                <input type="radio" name="gender" value="Female">
+                                <div class="gender-label"><i class="fas fa-venus"></i> Female</div>
+                            </label>
+                        </div>
+
+                        <div class="input-group no-label">
+                            <i class="fas fa-tint"></i>
+                            <select class="input-field" required>
+                                <option value="" disabled selected>Select Blood Group</option>
+                                <option value="A+">A+</option><option value="A-">A-</option>
+                                <option value="B+">B+</option><option value="B-">B-</option>
+                                <option value="O+">O+</option><option value="O-">O-</option>
+                                <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group no-label">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class="input-field" placeholder="Create Password" required>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Create Account</button>
+                    </form>
+
+                    
+
+                    <div class="links">
+                        <span>Have an account?</span>
+                        <a class="link-text" onclick="toggleForms('login')"><span>Login</span></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const MAIN_UI_PAGE = "donar_test.html"; 
+
+    function toggleForms(type) {
+        const loginForm = document.getElementById('form-login');
+        const regForm = document.getElementById('form-register');
+        const successMsg = document.getElementById('reg-success-msg');
+        
+        successMsg.classList.add('hidden');
+        loginForm.classList.add('hidden');
+        regForm.classList.add('hidden');
+
+        if(type === 'login') {
+            loginForm.classList.remove('hidden');
+            loginForm.classList.add('fade-in');
+        } else {
+            regForm.classList.remove('hidden');
+            regForm.classList.add('fade-in');
+        }
+    }
+
+function handleRegister(e) {
+    e.preventDefault();
+    
+    // 1. Get the values from the form
+    // Note: Removed the second 'const nameInput' declaration that was causing the error
+    const rawName = document.getElementById('reg-name').value.trim();
+    const phoneInput = document.getElementById('reg-phone').value;
+    const emailInput = e.target.querySelector('input[type="email"]').value;
+    const genderInput = document.querySelector('input[name="gender"]:checked').value;
+    const bloodInput = e.target.querySelector('select').value;
+
+    // 2. Break the name into First, Middle, and Last Name
+    const nameParts = rawName.split(/\s+/); 
+
+    let firstName = "";
+    let middleName = "";
+    let lastName = "";
+
+    if (nameParts.length === 1) {
+        firstName = nameParts[0];
+    } 
+    else if (nameParts.length === 2) {
+        firstName = nameParts[0];
+        lastName = nameParts[1];
+    } 
+    else if (nameParts.length >= 3) {
+        firstName = nameParts[0];
+        middleName = nameParts[1];
+        lastName = nameParts.slice(2).join(" "); 
+    }
+
+    // 3. Create the Data Object
+    const donorData = {
+        fname: firstName,
+        mname: middleName,
+        lname: lastName,
+        phone: phoneInput,
+        email: emailInput,
+        gender: genderInput,
+        bloodGroup: bloodInput,
+        address: "", 
+        dob: "",     
+        location: "Atlanta, USA",
+        zip: ""
+    };
+
+    // 4. Save to localStorage
+    localStorage.setItem('donorName', rawName); 
+    localStorage.setItem('donorData', JSON.stringify(donorData)); 
+
+    // 5. Show success and redirect
+    const successMsg = document.getElementById('reg-success-msg');
+    if(successMsg) successMsg.classList.remove('hidden');
+    
+    setTimeout(() => {
+        // Ensure this variable matches your actual filename (e.g., "index.html")
+        window.location.href =MAIN_UI_PAGE; 
+    }, 1500);
+}
+</script>
+</body>
+</html>
