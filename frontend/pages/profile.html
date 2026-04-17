@@ -20,6 +20,30 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .back-arrow-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--white);
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            text-decoration: none;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+            border: 1px solid #e6eceb;
+            z-index: 2000;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+        .back-arrow-btn:hover {
+            transform: translateY(-1px);
+            background-color: #f0faf7;
+            box-shadow: 0 10px 22px rgba(0,0,0,0.16);
+        }
         .container { display: flex; background: var(--white); width: 1000px; max-width: 100%; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden; flex-wrap: wrap; }
 
         /* Sidebar */
@@ -98,6 +122,13 @@
         }
 
         @media (max-width: 768px) {
+            .back-arrow-btn {
+                top: 14px;
+                left: 14px;
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+            }
             .container { flex-direction: column; }
             .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #eee; }
             .form-grid { grid-template-columns: 1fr; }
@@ -106,6 +137,10 @@
     </style>
 </head>
 <body>
+
+<a href="donar_test.html" class="back-arrow-btn" aria-label="Back to dashboard" title="Back">
+    <i class="fas fa-arrow-left"></i>
+</a>
 
 <div class="container">
     <div class="sidebar">
@@ -161,13 +196,6 @@
                         <option selected>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
                     </select>
                 </div>
-                <div class="form-group">
-    <label style="color: var(--primary-color); font-weight: 600;">Blood Group</label>
-    <select id="blood-group">
-        <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-        <option selected>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
-    </select>
-</div>
 
 <div class="form-group">
     <label style="color: var(--primary-color); font-weight: 600;">Donation History</label>
@@ -270,121 +298,337 @@
     </div>
 </div>
 
-<script>
-    // 1. Image Upload
-    function uploadImage(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('display-profile-pic').src = e.target.result;
-                localStorage.setItem('donorProfilePic', e.target.result);
-            }
-            reader.readAsDataURL(file);
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js';
+    import { firebaseConfig } from '../config/firebase-config.js';
+    import { getUserProfile, createUserProfile, updateUserProfile } from '../config/supabase-client.js';
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const DEMO_AUTH_MODE_KEY = 'authMode';
+    const DEMO_AUTH_MODE_VALUE = 'demo';
+    const DEMO_SESSION_KEY = 'demoAuthUser';
+
+    let currentAuthUser = null;
+    let lastLoadedProfileData = null;
+
+    function setSelectValue(selectId, value, fallbackValue = '') {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        const targetValue = value || fallbackValue;
+        if (!targetValue) return;
+
+        const options = Array.from(select.options || []);
+        const hasValue = options.some((opt) => opt.value === targetValue || opt.text === targetValue);
+        if (!hasValue) {
+            const option = document.createElement('option');
+            option.value = targetValue;
+            option.textContent = targetValue;
+            select.appendChild(option);
+        }
+
+        select.value = targetValue;
+    }
+
+    function splitName(name) {
+        const raw = String(name || '').trim();
+        if (!raw) return { fname: '', mname: '', lname: '' };
+
+        const parts = raw.split(/\s+/).filter(Boolean);
+        if (parts.length === 1) {
+            return { fname: parts[0], mname: '', lname: '' };
+        }
+
+        if (parts.length === 2) {
+            return { fname: parts[0], mname: '', lname: parts[1] };
+        }
+
+        return {
+            fname: parts[0],
+            mname: parts.slice(1, -1).join(' '),
+            lname: parts[parts.length - 1]
+        };
+    }
+
+    function composeFullName(data) {
+        return [data.fname, data.mname, data.lname]
+            .filter(Boolean)
+            .join(' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function getDemoSessionUser() {
+        if (localStorage.getItem(DEMO_AUTH_MODE_KEY) !== DEMO_AUTH_MODE_VALUE) {
+            return null;
+        }
+
+        const raw = localStorage.getItem(DEMO_SESSION_KEY);
+        if (!raw) return null;
+
+        try {
+            const parsed = JSON.parse(raw);
+            if (!parsed || !parsed.uid) return null;
+            return {
+                uid: parsed.uid,
+                email: parsed.email || '',
+                displayName: parsed.name || 'Demo Donor',
+                isDemo: true
+            };
+        } catch (error) {
+            return null;
         }
     }
 
-    // 2. Load Data (One single, clean version)
-    function loadProfileData() {
-        const savedImage = localStorage.getItem('donorProfilePic');
-        if (savedImage) document.getElementById('display-profile-pic').src = savedImage;
+    function normalizeProfileRecord(record, fallbackUser) {
+        const fullNameFromColumns = [record?.first_name, record?.middle_name, record?.last_name]
+            .filter(Boolean)
+            .join(' ')
+            .trim();
 
-        const savedData = localStorage.getItem('donorData');
-        if (savedData) {
-            const data = JSON.parse(savedData);
-            
-            document.getElementById('fname').value = data.fname || "";
-            document.getElementById('mname').value = data.mname || "";
-            document.getElementById('lname').value = data.lname || "";
-            document.getElementById('blood-group').value = data.bloodGroup || "A+";
-            document.getElementById('email').value = data.email || "";
-            document.getElementById('address').value = data.address || "";
-            document.getElementById('phone').value = data.phone || "";
-            document.getElementById('dob').value = data.dob || "";
-            document.getElementById('location').value = data.location || "";
-            document.getElementById('zip').value = data.zip || "";
-            
-            if(data.gender === 'Female') {
-                document.getElementById('gender-female').checked = true;
-            } else {
-                document.getElementById('gender-male').checked = true;
-            }
+        const fullName = record?.name || fullNameFromColumns || fallbackUser?.displayName || 'Donor';
+        const split = splitName(fullName);
 
-            // Update Sidebar Name
-            const fullName = (data.fname + " " + (data.mname || "") + " " + data.lname).replace(/\s+/g, ' ').trim();
-            document.getElementById('sidebar-name').innerText = fullName || "New Donor";
-            
-            updateLoginInfo();
+        return {
+            fname: record?.first_name || split.fname,
+            mname: record?.middle_name || split.mname,
+            lname: record?.last_name || split.lname,
+            bloodGroup: record?.blood_group || 'O+',
+            email: record?.email || fallbackUser?.email || '',
+            address: record?.address || '',
+            phone: record?.phone || record?.phone_number || '',
+            dob: record?.date_of_birth || '',
+            location: record?.location || 'Atlanta, USA',
+            zip: record?.postal_code || record?.zip_code || '',
+            gender: record?.gender || 'Male',
+            donationFrequency: record?.donation_frequency || 'multiple',
+            donationDate: record?.last_donation_date || ''
+        };
+    }
+
+    function applyProfileData(data) {
+        document.getElementById('fname').value = data.fname || '';
+        document.getElementById('mname').value = data.mname || '';
+        document.getElementById('lname').value = data.lname || '';
+        setSelectValue('blood-group', data.bloodGroup, 'O+');
+        document.getElementById('email').value = data.email || '';
+        document.getElementById('address').value = data.address || '';
+        document.getElementById('phone').value = data.phone || '';
+        document.getElementById('dob').value = data.dob || '';
+        setSelectValue('location', data.location, 'Atlanta, USA');
+        document.getElementById('zip').value = data.zip || '';
+
+        if ((data.gender || 'Male').toLowerCase() === 'female') {
+            document.getElementById('gender-female').checked = true;
+        } else {
+            document.getElementById('gender-male').checked = true;
+        }
+
+        setSelectValue('donation-frequency', data.donationFrequency || 'multiple', 'multiple');
+
+        const donationDateInput = document.getElementById('donation-date');
+        if (data.donationDate) {
+            donationDateInput.type = 'date';
+            donationDateInput.readOnly = false;
+            donationDateInput.style.backgroundColor = 'var(--input-bg)';
+            donationDateInput.value = data.donationDate;
+        } else {
+            donationDateInput.value = '';
+        }
+
+        toggleDonationDate();
+
+        const fullName = composeFullName(data) || 'New Donor';
+        document.getElementById('sidebar-name').innerText = fullName;
+        updateLoginInfo();
+    }
+
+    function collectFormData() {
+        const donationFrequency = document.getElementById('donation-frequency').value;
+        const donationDateRaw = document.getElementById('donation-date').value;
+        const donationDate = donationFrequency === 'first' ? null : (donationDateRaw || null);
+
+        return {
+            fname: document.getElementById('fname').value.trim(),
+            mname: document.getElementById('mname').value.trim(),
+            lname: document.getElementById('lname').value.trim(),
+            bloodGroup: document.getElementById('blood-group').value,
+            email: document.getElementById('email').value.trim(),
+            address: document.getElementById('address').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            dob: document.getElementById('dob').value,
+            location: document.getElementById('location').value,
+            zip: document.getElementById('zip').value.trim(),
+            gender: document.getElementById('gender-male').checked ? 'Male' : 'Female',
+            donationFrequency,
+            donationDate
+        };
+    }
+
+    function showMessage(elementId, html, timeoutMs = 2000) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+
+        element.innerHTML = html;
+        element.style.display = 'block';
+
+        if (timeoutMs > 0) {
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, timeoutMs);
         }
     }
-
-    // Toggle logic for First Time Donor
-function toggleDonationDate() {
-    const frequency = document.getElementById('donation-frequency').value;
-    const dateInput = document.getElementById('donation-date');
-
-    if (frequency === 'first') {
-        dateInput.type = 'text'; // Change to text to show string
-        dateInput.value = "First Time Donor";
-        dateInput.style.backgroundColor = "#e9ecef";
-        dateInput.readOnly = true;
-    } else {
-        dateInput.type = 'date';
-        dateInput.readOnly = false;
-        dateInput.style.backgroundColor = "var(--input-bg)";
-        // Set a default date if it was previously "First Time"
-        if (dateInput.value === "First Time Donor") dateInput.value = "";
-    }
-}
-
-// 3. Save Data (REPLACE YOUR EXISTING FUNCTION WITH THIS ONE)
-function saveProfileData() {
-    const data = {
-        fname: document.getElementById('fname').value.trim(),
-        mname: document.getElementById('mname').value.trim(),
-        lname: document.getElementById('lname').value.trim(),
-        bloodGroup: document.getElementById('blood-group').value,
-        email: document.getElementById('email').value.trim(),
-        address: document.getElementById('address').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        dob: document.getElementById('dob').value,
-        location: document.getElementById('location').value,
-        zip: document.getElementById('zip').value.trim(),
-        gender: document.getElementById('gender-male').checked ? 'Male' : 'Female'
-    };
-
-    // 1. Update the full data object
-    localStorage.setItem('donorData', JSON.stringify(data));
-    
-    // 2. CRITICAL FIX: Sync the 'donorName' key that your navbar uses
-    const fullName = (data.fname + " " + data.lname).replace(/\s+/g, ' ').trim();
-    localStorage.setItem('donorName', fullName); 
-
-    // Update Sidebar UI
-    document.getElementById('sidebar-name').innerText = fullName;
-
-    // Show Success Message
-    document.getElementById('save-msg').style.display = 'block';
-    setTimeout(() => {
-        document.getElementById('save-msg').style.display = 'none';
-        
-        // 3. CRITICAL FIX: Refresh to ensure home page sees the new data immediately
-        // This clears the "Incomplete Profile" alert instantly
-        window.location.href = "donar_test.html"; 
-    }, 1500);
-
-    updateLoginInfo();
-}
 
     function updateLoginInfo() {
         document.getElementById('login-email').value = document.getElementById('email').value;
         document.getElementById('login-phone').value = document.getElementById('phone').value;
     }
 
+    function persistLocalCache(formData) {
+        const fullName = composeFullName(formData) || 'Donor';
+
+        localStorage.setItem('donorData', JSON.stringify(formData));
+        localStorage.setItem('donorName', fullName);
+        localStorage.setItem('userId', currentAuthUser.uid);
+        localStorage.setItem('userEmail', formData.email || currentAuthUser.email || '');
+        localStorage.setItem('userData', JSON.stringify({
+            uid: currentAuthUser.uid,
+            name: fullName,
+            phone: formData.phone,
+            email: formData.email || currentAuthUser.email || '',
+            gender: formData.gender,
+            bloodGroup: formData.bloodGroup,
+            createdAt: new Date().toISOString()
+        }));
+    }
+
+    async function ensureProfileExistsFromDb() {
+        const existing = await getUserProfile(currentAuthUser.uid);
+        if (existing) {
+            return existing;
+        }
+
+        const fallbackDataRaw = localStorage.getItem('donorData');
+        let fallbackData = null;
+        try {
+            fallbackData = fallbackDataRaw ? JSON.parse(fallbackDataRaw) : null;
+        } catch (error) {
+            fallbackData = null;
+        }
+
+        const fullName = fallbackData
+            ? composeFullName(fallbackData)
+            : (currentAuthUser.displayName || 'Donor');
+
+        const payload = {
+            uid: currentAuthUser.uid,
+            name: fullName,
+            phone: (fallbackData && fallbackData.phone) || '',
+            email: currentAuthUser.email || (fallbackData && fallbackData.email) || '',
+            gender: (fallbackData && fallbackData.gender) || 'Male',
+            bloodGroup: (fallbackData && fallbackData.bloodGroup) || 'O+',
+            createdAt: new Date().toISOString()
+        };
+
+        return await createUserProfile(payload);
+    }
+
+    async function loadProfileData() {
+        const savedImage = localStorage.getItem('donorProfilePic');
+        if (savedImage) {
+            document.getElementById('display-profile-pic').src = savedImage;
+        }
+
+        const dbProfile = await ensureProfileExistsFromDb();
+        const normalized = normalizeProfileRecord(dbProfile, currentAuthUser);
+        lastLoadedProfileData = { ...normalized };
+        applyProfileData(normalized);
+    }
+
+    function toggleDonationDate() {
+        const frequency = document.getElementById('donation-frequency').value;
+        const dateInput = document.getElementById('donation-date');
+
+        if (frequency === 'first') {
+            dateInput.type = 'text';
+            dateInput.value = 'First Time Donor';
+            dateInput.style.backgroundColor = '#e9ecef';
+            dateInput.readOnly = true;
+        } else {
+            const existing = dateInput.value;
+            dateInput.type = 'date';
+            dateInput.readOnly = false;
+            dateInput.style.backgroundColor = 'var(--input-bg)';
+            if (existing === 'First Time Donor') {
+                dateInput.value = '';
+            }
+        }
+    }
+
+    async function saveProfileData() {
+        if (!currentAuthUser || !currentAuthUser.uid) {
+            showMessage('discard-msg', '<i class="fas fa-info-circle"></i> Please login first to update profile.', 2400);
+            return;
+        }
+
+        const formData = collectFormData();
+        const fullName = composeFullName(formData) || 'Donor';
+
+        const richUpdates = {
+            name: fullName,
+            first_name: formData.fname,
+            middle_name: formData.mname,
+            last_name: formData.lname,
+            email: formData.email || currentAuthUser.email || '',
+            phone: formData.phone,
+            phone_number: formData.phone,
+            gender: formData.gender,
+            blood_group: formData.bloodGroup,
+            date_of_birth: formData.dob || null,
+            location: formData.location,
+            postal_code: formData.zip,
+            address: formData.address,
+            donation_frequency: formData.donationFrequency,
+            last_donation_date: formData.donationDate
+        };
+
+        let updated = await updateUserProfile(currentAuthUser.uid, richUpdates);
+
+        if (!updated) {
+            const minimalUpdates = {
+                name: fullName,
+                email: formData.email || currentAuthUser.email || '',
+                phone: formData.phone,
+                phone_number: formData.phone,
+                gender: formData.gender,
+                blood_group: formData.bloodGroup
+            };
+            updated = await updateUserProfile(currentAuthUser.uid, minimalUpdates);
+        }
+
+        if (!updated) {
+            showMessage('discard-msg', '<i class="fas fa-info-circle"></i> Failed to save profile to database. Check Supabase schema/policies.', 2800);
+            return;
+        }
+
+        persistLocalCache(formData);
+        lastLoadedProfileData = { ...formData };
+        document.getElementById('sidebar-name').innerText = fullName;
+
+        showMessage('save-msg', '<i class="fas fa-check-circle"></i> Changes saved to database successfully!', 1500);
+        setTimeout(() => {
+            window.location.href = 'donar_test.html';
+        }, 1400);
+    }
+
     function discardChanges() {
-        loadProfileData();
-        document.getElementById('discard-msg').style.display = 'block';
-        setTimeout(() => document.getElementById('discard-msg').style.display = 'none', 3000);
+        if (lastLoadedProfileData) {
+            applyProfileData(lastLoadedProfileData);
+        }
+        showMessage('discard-msg', '<i class="fas fa-info-circle"></i> Changes discarded.', 1800);
     }
 
     function switchTab(tabName, element) {
@@ -394,7 +638,45 @@ function saveProfileData() {
         document.getElementById(tabName + '-section').classList.add('active');
     }
 
-    window.onload = loadProfileData;
+    function triggerPasswordUpdate() {
+        showMessage('msg-box', '<i class="fas fa-info-circle"></i> Password update can be managed using Firebase Auth reset flow from login page.', 2500);
+    }
+
+    function uploadImage(event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('display-profile-pic').src = e.target.result;
+            localStorage.setItem('donorProfilePic', e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    window.toggleDonationDate = toggleDonationDate;
+    window.saveProfileData = saveProfileData;
+    window.discardChanges = discardChanges;
+    window.switchTab = switchTab;
+    window.triggerPasswordUpdate = triggerPasswordUpdate;
+    window.uploadImage = uploadImage;
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            currentAuthUser = user;
+            await loadProfileData();
+            return;
+        }
+
+        const demoUser = getDemoSessionUser();
+        if (demoUser) {
+            currentAuthUser = demoUser;
+            await loadProfileData();
+            return;
+        }
+
+        window.location.href = 'main_donar_login.html';
+    });
 </script>
 
 </body>

@@ -164,6 +164,7 @@
             margin-left: auto;
             display: flex;
             align-items: center;
+            gap: 10px;
         }
 
         .top-login-btn {
@@ -171,7 +172,6 @@
             align-items: center;
             justify-content: center;
             padding: 12px 22px;
-            margin-left: 20px;
             border-radius: 30px;
             background: #ffd700;
             color: #0f172a;
@@ -184,6 +184,26 @@
         .top-login-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(34, 34, 34, 0.16);
+        }
+
+        .top-admin-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 13px;
+            text-decoration: none;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .top-admin-btn:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: translateY(-2px);
         }
 
          /* --- UPDATED NAV ITEM STYLES --- */
@@ -946,6 +966,7 @@
 
             <div class="nav-actions">
                 <a class="top-login-btn" href="main_donar_login.html">Donor Login</a>
+                <a class="top-admin-btn" href="admin_login.html">Admin Login</a>
             </div>
         </nav>
 

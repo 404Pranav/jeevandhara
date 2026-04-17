@@ -38,6 +38,21 @@
             overflow-x: hidden;
         }
 
+        body.auth-pending .hero-section {
+            min-height: auto;
+            padding-bottom: 0;
+        }
+
+        body.auth-pending .hero-slider,
+        body.auth-pending .hero-content,
+        body.auth-pending .services-section,
+        body.auth-pending .donate-section,
+        body.auth-pending .compatibility-section,
+        body.auth-pending .final-cta-section,
+        body.auth-pending #eligibilityModal {
+            display: none !important;
+        }
+
         a {
             text-decoration: none;
             color: inherit;
@@ -370,6 +385,587 @@
             color: var(--text-light);
             font-weight: 500;
             margin: 0;
+        }
+
+        /* --- DONOR DASHBOARD MODE --- */
+        body.dashboard-mode .hero-section {
+            min-height: auto;
+            padding-bottom: 0;
+        }
+
+        body.dashboard-mode .hero-slider,
+        body.dashboard-mode .hero-content,
+        body.dashboard-mode .services-section,
+        body.dashboard-mode .donate-section,
+        body.dashboard-mode .compatibility-section,
+        body.dashboard-mode .final-cta-section,
+        body.dashboard-mode #eligibilityModal {
+            display: none !important;
+        }
+
+        .donor-dashboard {
+            padding: 40px 50px 60px;
+            background: linear-gradient(180deg, #f5fbf9 0%, #ffffff 65%);
+        }
+
+        .dashboard-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: 24px;
+        }
+
+        .dashboard-note {
+            background: #fffbeb;
+            color: #92400e;
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .dashboard-hero-card {
+            background: var(--white);
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 10px 24px rgba(31, 41, 55, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-hero-copy h2 {
+            font-size: 34px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .dashboard-hero-copy p {
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        .dashboard-user-meta {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(160px, 1fr));
+            gap: 10px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .meta-chip {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+
+        .meta-chip small {
+            display: block;
+            color: var(--text-light);
+            font-size: 11px;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-chip strong {
+            color: var(--text-dark);
+            font-size: 14px;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .overview-card {
+            background: var(--white);
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 8px 20px rgba(31, 41, 55, 0.05);
+        }
+
+        .overview-card p {
+            color: var(--text-light);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .overview-card h3 {
+            color: var(--primary-teal);
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .overview-card.highlight {
+            background: linear-gradient(135deg, #2c9786 0%, #205c75 100%);
+            border-color: transparent;
+        }
+
+        .overview-card.highlight p,
+        .overview-card.highlight h3 {
+            color: #ffffff;
+        }
+
+        .overview-card .sub-line {
+            margin-top: 6px;
+            font-size: 11px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .overview-card.highlight .sub-line {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 18px;
+        }
+
+        .dashboard-grid.even {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .dashboard-card {
+            background: var(--white);
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(31, 41, 55, 0.05);
+        }
+
+        .dashboard-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .dashboard-card-head h4 {
+            font-size: 20px;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .history-table-wrap {
+            overflow-x: auto;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 680px;
+        }
+
+        .history-table th {
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-light);
+            padding: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .history-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #f1f5f9;
+            color: var(--text-dark);
+            font-size: 14px;
+        }
+
+        .table-empty {
+            text-align: center;
+            color: var(--text-light);
+            font-style: italic;
+            padding: 20px 10px !important;
+        }
+
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pill.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pill.pending {
+            background: #fff7ed;
+            color: #9a3412;
+        }
+
+        .status-pill.cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badges-grid-dashboard {
+            display: grid;
+            gap: 12px;
+        }
+
+        .badge-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            background: #f8fafc;
+        }
+
+        .badge-item.locked {
+            opacity: 0.65;
+            filter: grayscale(1);
+            background: #f8fafc;
+        }
+
+        .badge-item .badge-lock {
+            display: inline-block;
+            margin-top: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #92400e;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 999px;
+            padding: 2px 8px;
+        }
+
+        .badge-icon-box {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(44, 151, 134, 0.15);
+            color: var(--primary-teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .badge-item h5 {
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .badge-item p {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .badge-item small {
+            font-size: 11px;
+            color: #4b5563;
+        }
+
+        .rewards-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .reward-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px;
+            background: #ffffff;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .reward-item h5 {
+            margin-bottom: 4px;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .reward-item p {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .reward-pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .reward-pill.claimed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .reward-pill.active {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .points-summary {
+            background: linear-gradient(135deg, #205c75 0%, #2c9786 100%);
+            border-radius: 14px;
+            padding: 18px;
+            color: #ffffff;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.08);
+        }
+
+        .points-summary .label {
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.85;
+            margin-bottom: 6px;
+        }
+
+        .points-summary .value {
+            font-size: 36px;
+            line-height: 1;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .points-track {
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+
+        .points-track > div {
+            height: 100%;
+            width: 0;
+            background: #ffd166;
+            transition: width 0.8s ease;
+        }
+
+        .points-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .points-meta-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .points-mini {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 10px;
+            background: #f8fafc;
+        }
+
+        .points-mini p {
+            font-size: 11px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .points-mini h5 {
+            font-size: 16px;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .roadmap-line-dashboard {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            position: relative;
+            margin-top: 18px;
+        }
+
+        .roadmap-line-dashboard::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 24px;
+            right: 24px;
+            height: 3px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        .roadmap-step {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            text-align: center;
+        }
+
+        .roadmap-step .dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            border: 3px solid #e5e7eb;
+            background: #ffffff;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .roadmap-step.completed .dot {
+            border-color: var(--primary-teal);
+            background: var(--primary-teal);
+            color: #ffffff;
+        }
+
+        .roadmap-step.active .dot {
+            border-color: var(--primary-teal);
+            background: #ffffff;
+            color: var(--primary-teal);
+            box-shadow: 0 0 0 6px rgba(44, 151, 134, 0.15);
+        }
+
+        .roadmap-step .label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .roadmap-step.active .label,
+        .roadmap-step.completed .label {
+            color: var(--text-dark);
+        }
+
+        .points-history-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+        }
+
+        .points-history-table th {
+            text-align: left;
+            padding: 11px;
+            font-size: 12px;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .points-history-table td {
+            padding: 12px 11px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+            color: var(--text-dark);
+        }
+
+        .points-type {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .points-type.earned {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .points-type.redeemed {
+            color: #991b1b;
+            background: #fee2e2;
+        }
+
+        .points-value {
+            text-align: right;
+            font-weight: 700;
+        }
+
+        .points-value.plus {
+            color: #166534;
+        }
+
+        .points-value.minus {
+            color: #991b1b;
+        }
+
+        .empty-state {
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 13px;
+            background: #f8fafc;
+        }
+
+        @media (max-width: 1100px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid.even {
+                grid-template-columns: 1fr;
+            }
+
+            .roadmap-line-dashboard {
+                flex-wrap: wrap;
+                row-gap: 14px;
+            }
+
+            .roadmap-line-dashboard::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .donor-dashboard {
+                padding: 24px 16px 40px;
+            }
+
+            .dashboard-hero-copy h2 {
+                font-size: 28px;
+            }
+
+            .dashboard-user-meta {
+                grid-template-columns: 1fr;
+                max-width: 100%;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Search Widget */
@@ -1266,6 +1862,27 @@
             position: relative;
             display: flex;
             align-items: center;
+            gap: 12px;
+        }
+
+        .nav-logout-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            color: var(--white);
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.08);
+            transition: 0.2s ease;
+        }
+
+        .nav-logout-btn:hover {
+            background: #fff5f5;
+            color: var(--blood-red);
+            border-color: #fecaca;
         }
 
         /* The Circle Avatar */
@@ -1366,41 +1983,81 @@
             display: none !important;
         }
 
-        .cloud-alert {
+        .logout-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
             display: none;
-            position: absolute;
-            background: #fff3cd;
-            color: #856404;
-            padding: 8px 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 9999;
-            border: 1px solid #ffeeba;
-            font-size: 13px;
-            left: 100%; 
-            top: 50%;
-            transform: translateY(-50%); 
-            margin-left: 20px;
-            white-space: nowrap !important;
-            width: auto; 
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 4000;
         }
 
-        /* This makes the arrow point to the avatar below it */
-        .cloud-arrow {
-            position: absolute;
-            left: -8px;
-            /* Move to the left side of the box */
-            top: 50%;
-            transform: translateY(-50%);
-            border-top: 6px solid transparent;
-            border-bottom: 6px solid transparent;
-            /* This creates a triangle pointing left */
-            border-right: 8px solid #fff3cd;
+        .logout-modal.show {
+            display: flex;
+        }
+
+        .logout-modal-card {
+            width: min(420px, 100%);
+            background: var(--white);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.35);
+            border: 1px solid #e5e7eb;
+        }
+
+        .logout-modal-title {
+            margin: 0;
+            font-size: 20px;
+            color: #0f172a;
+        }
+
+        .logout-modal-message {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #475569;
+        }
+
+        .logout-modal-actions {
+            margin-top: 22px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .logout-modal-btn {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .logout-modal-btn.cancel {
+            background: #f8fafc;
+            color: #334155;
+            border: 1px solid #dbe2ea;
+        }
+
+        .logout-modal-btn.cancel:hover {
+            background: #eef2f7;
+        }
+
+        .logout-modal-btn.confirm {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        .logout-modal-btn.confirm:hover {
+            background: #b91c1c;
         }
     </style>
 </head>
 
-<body>
+<body class="auth-pending">
 
     <header class="hero-section">
         <div class="hero-slider">
@@ -1437,7 +2094,7 @@
                     <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down"
                             style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
-                        <li><a href="main_donar_login.html" data-key="donor_login">Donor Login</a></li>
+                    <li><a href="profile.html">Profile Edit</a></li>
                         <li><a href="blood_availability.html" data-key="availability_sub">Blood Availability</a></li>
                         <li><a href="#" data-key="directory_sub">Blood Center Directory</a></li>
                         <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> <span
@@ -1458,8 +2115,8 @@
                 </li>
 
                 <li class="nav-item" id="auth-section" style="margin-left: auto;">
-                    <a href="#" onclick="simulateLogin(event)">
-                        <i class="fas fa-user-circle"></i> Donor Login
+                    <a href="profile.html">
+                        <i class="fas fa-user-edit"></i> Profile Edit
                     </a>
                 </li>
 
@@ -1511,6 +2168,172 @@
         </div>
         
     </header>
+
+    <main id="donor-dashboard" class="donor-dashboard hidden">
+        <div class="dashboard-shell">
+            <div id="dashboard-mode-note" class="dashboard-note hidden"></div>
+
+            <section class="dashboard-hero-card">
+                <div class="dashboard-hero-copy">
+                    <h2 id="dashboard-welcome">Welcome back!</h2>
+                    <p>Your personalized donor dashboard with live impact and progress.</p>
+                </div>
+
+                <div class="dashboard-user-meta">
+                    <div class="meta-chip">
+                        <small>Name</small>
+                        <strong id="dashboard-user-name">-</strong>
+                    </div>
+                    <div class="meta-chip">
+                        <small>Email</small>
+                        <strong id="dashboard-user-email">-</strong>
+                    </div>
+                    <div class="meta-chip">
+                        <small>Phone</small>
+                        <strong id="dashboard-user-phone">-</strong>
+                    </div>
+                    <div class="meta-chip">
+                        <small>Blood Group</small>
+                        <strong id="dashboard-user-blood">-</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section class="overview-grid">
+                <article class="overview-card">
+                    <p>Total Donations</p>
+                    <h3 id="stat-total-donations">0</h3>
+                </article>
+                <article class="overview-card">
+                    <p>Badges Earned</p>
+                    <h3 id="stat-total-badges">0</h3>
+                </article>
+                <article class="overview-card">
+                    <p>Rewards</p>
+                    <h3 id="stat-total-rewards">0</h3>
+                </article>
+                <article class="overview-card">
+                    <p>Last Donation</p>
+                    <h3 id="stat-last-donation">-</h3>
+                </article>
+                <article class="overview-card highlight">
+                    <p>Current Life Points</p>
+                    <h3 id="stat-life-points">0</h3>
+                    <div class="sub-line" id="stat-life-points-next">0 to next tier</div>
+                </article>
+                <article class="overview-card">
+                    <p>Next Eligibility</p>
+                    <h3 id="stat-next-eligible">-</h3>
+                </article>
+            </section>
+
+            <section class="dashboard-grid">
+                <article class="dashboard-card">
+                    <div class="dashboard-card-head">
+                        <h4>Donation History</h4>
+                    </div>
+                    <div class="history-table-wrap">
+                        <table class="history-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Center</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                    <th>Next Eligible</th>
+                                </tr>
+                            </thead>
+                            <tbody id="donation-history-body">
+                                <tr>
+                                    <td colspan="5" class="table-empty">Loading donation history...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="dashboard-card">
+                    <div class="dashboard-card-head">
+                        <h4>Badges</h4>
+                    </div>
+                    <div id="badges-grid-content" class="badges-grid-dashboard">
+                        <div class="empty-state">Loading badges...</div>
+                    </div>
+                </article>
+            </section>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-head">
+                    <h4>Rewards</h4>
+                </div>
+                <div id="rewards-list-content" class="rewards-list">
+                    <div class="empty-state">Loading rewards...</div>
+                </div>
+            </article>
+
+            <section class="dashboard-grid even">
+                <article class="dashboard-card">
+                    <div class="dashboard-card-head">
+                        <h4>Achievement Roadmap</h4>
+                        <span id="roadmap-progress-text" style="font-size: 12px; color: var(--primary-teal); font-weight: 600;">Loading...</span>
+                    </div>
+                    <div id="roadmap-steps" class="roadmap-line-dashboard"></div>
+                </article>
+
+                <article class="dashboard-card">
+                    <div class="dashboard-card-head">
+                        <h4>Points Snapshot</h4>
+                    </div>
+
+                    <div class="points-summary">
+                        <div class="label">Current Balance</div>
+                        <div id="points-current-balance" class="value">0 LP</div>
+                        <div class="points-track">
+                            <div id="points-progress-fill"></div>
+                        </div>
+                        <div class="points-meta">
+                            <span id="points-progress-caption">0% to next tier</span>
+                            <span id="points-next-tier-caption">0 LP needed</span>
+                        </div>
+                    </div>
+
+                    <div class="points-meta-row">
+                        <div class="points-mini">
+                            <p>Total Earned</p>
+                            <h5 id="points-total-earned">0 LP</h5>
+                        </div>
+                        <div class="points-mini">
+                            <p>Total Redeemed</p>
+                            <h5 id="points-total-redeemed">0 LP</h5>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-head">
+                    <h4>Points History</h4>
+                </div>
+                <div class="history-table-wrap">
+                    <table class="points-history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Activity</th>
+                                <th>Type</th>
+                                <th style="text-align: right;">Points</th>
+                            </tr>
+                        </thead>
+                        <tbody id="points-history-body">
+                            <tr>
+                                <td colspan="4" class="table-empty">Loading points history...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </div>
+    </main>
 
     <section class="services-section">
         <h3 class="section-header" data-key="services_title">Our Services</h3>
@@ -1935,6 +2758,17 @@
 
     </script>
 
+    <div id="logout-confirm-modal" class="logout-modal" aria-hidden="true">
+        <div class="logout-modal-card" role="dialog" aria-modal="true" aria-labelledby="logout-modal-title">
+            <h3 id="logout-modal-title" class="logout-modal-title">Confirm Logout</h3>
+            <p class="logout-modal-message">Are you sure you want to logout?</p>
+            <div class="logout-modal-actions">
+                <button type="button" id="logout-modal-cancel" class="logout-modal-btn cancel">Cancel</button>
+                <button type="button" id="logout-modal-confirm" class="logout-modal-btn confirm">Logout</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js';
         import { 
@@ -1946,6 +2780,10 @@
         import { 
             getUserProfile, 
             createUserProfile, 
+            getUserDonationHistory,
+            getUserBadges,
+            getUserRewards,
+            getAllBadges,
             getUserDashboardStats,
             checkAndAwardBadges
         } from '../config/supabase-client.js';
@@ -1960,14 +2798,31 @@
         let currentUser = null;
         let userProfile = null;
         let dashboardStats = null;
+        let donationHistory = [];
+        let earnedBadges = [];
+        let rewardItems = [];
+        let allBadgesCatalog = [];
         const DEMO_AUTH_MODE_KEY = 'authMode';
         const DEMO_AUTH_MODE_VALUE = 'demo';
         const DEMO_SESSION_KEY = 'demoAuthUser';
+        const ROADMAP_STEPS = [
+            { key: 'first-drop', label: 'First Drop', requiredDonations: 1, icon: 'fa-seedling' },
+            { key: 'frequent-flyer', label: 'Frequent Flyer', requiredDonations: 3, icon: 'fa-tint' },
+            { key: 'master-donor', label: 'Master Donor', requiredDonations: 5, icon: 'fa-award' },
+            { key: 'guardian-angel', label: 'Guardian Angel', requiredDonations: 10, icon: 'fa-gem' },
+            { key: 'lifesaver-pro', label: 'Lifesaver Pro', requiredDonations: 20, icon: 'fa-crown' }
+        ];
+        const POINTS_PER_DONATION = 500;
+        let logoutConfirmResolver = null;
 
         // 1. MAIN INITIALIZATION
         document.addEventListener('DOMContentLoaded', () => {
+            initializeLogoutConfirmModal();
+
             const demoSession = localStorage.getItem(DEMO_SESSION_KEY);
             const authMode = localStorage.getItem(DEMO_AUTH_MODE_KEY);
+
+            setDashboardMode(false);
 
             if (demoSession && authMode === DEMO_AUTH_MODE_VALUE) {
                 initializeDemoAuth(demoSession);
@@ -1979,6 +2834,208 @@
 
         function isDemoSessionActive() {
             return localStorage.getItem(DEMO_AUTH_MODE_KEY) === DEMO_AUTH_MODE_VALUE;
+        }
+
+        function initializeLogoutConfirmModal() {
+            const modal = document.getElementById('logout-confirm-modal');
+            const confirmBtn = document.getElementById('logout-modal-confirm');
+            const cancelBtn = document.getElementById('logout-modal-cancel');
+
+            if (!modal || !confirmBtn || !cancelBtn) return;
+
+            confirmBtn.addEventListener('click', () => resolveLogoutConfirm(true));
+            cancelBtn.addEventListener('click', () => resolveLogoutConfirm(false));
+
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    resolveLogoutConfirm(false);
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && modal.classList.contains('show')) {
+                    resolveLogoutConfirm(false);
+                }
+            });
+        }
+
+        function openLogoutConfirmModal() {
+            const modal = document.getElementById('logout-confirm-modal');
+            const confirmBtn = document.getElementById('logout-modal-confirm');
+
+            if (!modal) {
+                return Promise.resolve(true);
+            }
+
+            modal.classList.add('show');
+            modal.setAttribute('aria-hidden', 'false');
+
+            if (confirmBtn) {
+                confirmBtn.focus();
+            }
+
+            return new Promise((resolve) => {
+                logoutConfirmResolver = resolve;
+            });
+        }
+
+        function resolveLogoutConfirm(confirmed) {
+            const modal = document.getElementById('logout-confirm-modal');
+            if (modal) {
+                modal.classList.remove('show');
+                modal.setAttribute('aria-hidden', 'true');
+            }
+
+            if (logoutConfirmResolver) {
+                const resolver = logoutConfirmResolver;
+                logoutConfirmResolver = null;
+                resolver(confirmed);
+            }
+        }
+
+        function setDashboardMode(enabled) {
+            const dashboardRoot = document.getElementById('donor-dashboard');
+            if (!dashboardRoot) return;
+
+            if (enabled) {
+                document.body.classList.remove('auth-pending');
+                document.body.classList.add('dashboard-mode');
+                dashboardRoot.classList.remove('hidden');
+            } else {
+                document.body.classList.remove('dashboard-mode');
+                dashboardRoot.classList.add('hidden');
+            }
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function formatDisplayDate(value) {
+            if (!value) return '-';
+            const parsedDate = new Date(value);
+            if (Number.isNaN(parsedDate.getTime())) return '-';
+            return parsedDate.toLocaleDateString();
+        }
+
+        function parsePointValue(rawValue) {
+            if (rawValue === null || rawValue === undefined) return 0;
+            if (typeof rawValue === 'number') return Number.isFinite(rawValue) ? Math.abs(rawValue) : 0;
+
+            const normalized = String(rawValue);
+            const matched = normalized.match(/\d+/);
+            if (!matched) return 0;
+
+            const value = Number(matched[0]);
+            return Number.isFinite(value) ? Math.abs(value) : 0;
+        }
+
+        function getDonationPoints(entry) {
+            if (!entry) return POINTS_PER_DONATION;
+            const explicit = entry.points_earned ?? entry.life_points ?? entry.reward_points;
+            const parsed = parsePointValue(explicit);
+            return parsed > 0 ? parsed : POINTS_PER_DONATION;
+        }
+
+        function getRewardRedeemedPoints(reward) {
+            if (!reward || reward.is_claimed !== true) return 0;
+
+            const explicit = reward.points_used ?? reward.points_redeemed;
+            const parsedExplicit = parsePointValue(explicit);
+            if (parsedExplicit > 0) return parsedExplicit;
+
+            return parsePointValue(reward.reward_value);
+        }
+
+        function buildPointsHistoryEntries() {
+            const donationEntries = (donationHistory || []).map((entry) => {
+                const centerName = entry.blood_center_name || entry.blood_bank || entry.blood_center_location || 'Blood Donation';
+                return {
+                    date: entry.donation_date || entry.created_at,
+                    activity: `Donation at ${centerName}`,
+                    type: 'earned',
+                    points: getDonationPoints(entry)
+                };
+            });
+
+            const rewardEntries = (rewardItems || [])
+                .filter((reward) => reward.is_claimed === true)
+                .map((reward) => ({
+                    date: reward.claimed_date || reward.updated_at || reward.created_at,
+                    activity: `${reward.reward_type || 'Reward'} Redemption`,
+                    type: 'redeemed',
+                    points: getRewardRedeemedPoints(reward)
+                }));
+
+            return [...donationEntries, ...rewardEntries]
+                .sort((a, b) => {
+                    const timeA = a.date ? new Date(a.date).getTime() : 0;
+                    const timeB = b.date ? new Date(b.date).getTime() : 0;
+                    return timeB - timeA;
+                });
+        }
+
+        function getPointsSummary() {
+            const totalEarned = (donationHistory || []).reduce((sum, entry) => sum + getDonationPoints(entry), 0);
+            const totalRedeemed = (rewardItems || []).reduce((sum, reward) => sum + getRewardRedeemedPoints(reward), 0);
+            const currentBalance = Math.max(totalEarned - totalRedeemed, 0);
+
+            const totalDonations = (donationHistory || []).length;
+            const nextMilestone = ROADMAP_STEPS.find((step) => step.requiredDonations > totalDonations) || null;
+            const nextTierGoal = nextMilestone ? nextMilestone.requiredDonations * POINTS_PER_DONATION : (totalDonations + 5) * POINTS_PER_DONATION;
+
+            const progressPercent = nextTierGoal > 0
+                ? Math.max(0, Math.min(100, (currentBalance / nextTierGoal) * 100))
+                : 100;
+
+            return {
+                totalEarned,
+                totalRedeemed,
+                currentBalance,
+                nextTierGoal,
+                progressPercent,
+                nextTierRemaining: Math.max(nextTierGoal - currentBalance, 0)
+            };
+        }
+
+        function getLatestDonationEntry() {
+            if (!donationHistory || donationHistory.length === 0) return null;
+
+            const sorted = [...donationHistory].sort((a, b) => {
+                const timeA = a.donation_date ? new Date(a.donation_date).getTime() : 0;
+                const timeB = b.donation_date ? new Date(b.donation_date).getTime() : 0;
+                return timeB - timeA;
+            });
+
+            return sorted[0] || null;
+        }
+
+        function getNextEligibilityDate() {
+            const latestDonation = getLatestDonationEntry();
+            if (!latestDonation) return null;
+
+            if (latestDonation.next_eligible_date) {
+                const explicitDate = new Date(latestDonation.next_eligible_date);
+                if (!Number.isNaN(explicitDate.getTime())) {
+                    return explicitDate;
+                }
+            }
+
+            if (latestDonation.donation_date) {
+                const donationDate = new Date(latestDonation.donation_date);
+                if (!Number.isNaN(donationDate.getTime())) {
+                    const calculated = new Date(donationDate);
+                    calculated.setDate(calculated.getDate() + 90);
+                    return calculated;
+                }
+            }
+
+            return null;
         }
 
         function initializeDemoAuth(serializedSession) {
@@ -2007,6 +3064,19 @@
                     lastDonation: null
                 };
 
+                donationHistory = [];
+                earnedBadges = [];
+                rewardItems = [];
+                allBadgesCatalog = [];
+
+                setDashboardMode(true);
+
+                const modeNote = document.getElementById('dashboard-mode-note');
+                if (modeNote) {
+                    modeNote.classList.remove('hidden');
+                    modeNote.textContent = 'Demo mode is active. Live donation history, badges, and rewards will appear from Supabase once available.';
+                }
+
                 updateAuthUI();
                 updateDashboardUI();
             } catch (error) {
@@ -2033,6 +3103,27 @@
                             userProfile = await createUserProfile(parsedData);
                         }
                     }
+
+                    if (!userProfile) {
+                        const localData = localStorage.getItem('userData');
+                        if (localData) {
+                            const parsedData = JSON.parse(localData);
+                            userProfile = {
+                                name: parsedData.name || 'Donor',
+                                email: parsedData.email || user.email || '',
+                                phone: parsedData.phone || '',
+                                blood_group: parsedData.bloodGroup || ''
+                            };
+                        }
+                    }
+
+                    setDashboardMode(true);
+
+                    const modeNote = document.getElementById('dashboard-mode-note');
+                    if (modeNote) {
+                        modeNote.classList.add('hidden');
+                        modeNote.textContent = '';
+                    }
                     
                     updateAuthUI();
                     loadDashboardData();
@@ -2041,6 +3132,11 @@
                     currentUser = null;
                     userProfile = null;
                     dashboardStats = null;
+                    donationHistory = [];
+                    earnedBadges = [];
+                    rewardItems = [];
+                    allBadgesCatalog = [];
+                    setDashboardMode(false);
                     updateAuthUI();
                     // Redirect to login if not authenticated
                     if (!window.location.pathname.includes('main_donar_login.html')) {
@@ -2052,9 +3148,15 @@
 
         // 3. UI UPDATE FUNCTION
         function updateAuthUI() {
-            if (currentUser && userProfile) {
+            if (currentUser) {
                 // A. RENDER AVATAR & DROPDOWN
-                const names = userProfile.name.trim().split(' ');
+                const safeName = (
+                    userProfile?.name ||
+                    currentUser.displayName ||
+                    currentUser.email ||
+                    'Donor'
+                ).trim();
+                const names = safeName.split(' ');
                 let initials = names[0].charAt(0);
                 if (names.length > 1) initials += names[names.length - 1].charAt(0);
 
@@ -2063,21 +3165,17 @@
                     <div class="profile-avatar" id="avatarBtn">
                         ${initials.toUpperCase()}
                     </div>
+                    <a href="#" onclick="logoutUser(event)" class="nav-logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
                     <div class="profile-dropdown-menu" id="profileMenu">
                         <div style="padding: 10px 20px; font-size: 11px; color: #888; border-bottom: 1px solid #eee;">
-                            Signed in as <br> <strong style="color: #333;">${userProfile.name}</strong>
+                            Signed in as <br> <strong style="color: #333;">${escapeHtml(safeName)}</strong>
                         </div>
                         <a href="profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
                         <a href="#" onclick="logoutUser(event)" class="logout-btn">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
-                    </div>
-                    <div id="profile-alert" class="cloud-alert">
-                        <div class="cloud-content">
-                            <span>Please complete your profile.🩸</span>
-                                <a href="profile.html">Edit</a>
-                        </div>
-                        <div class="cloud-arrow"></div>
                     </div>
                 </div>
             `;
@@ -2088,41 +3186,13 @@
                     document.getElementById('profileMenu').classList.toggle('show');
                 };
 
-                // B. CHECK PROFILE COMPLETENESS FOR ALERT BAR
-                checkProfileCompleteness();
-
             } else {
-                // RENDER LOGIN BUTTON IF NO USER
+                // RENDER PROFILE EDIT LINK ON DASHBOARD NAVBAR
                 authContainer.innerHTML = `
-                <a href="main_donar_login.html">
-                    <i class="fas fa-user-circle"></i> Donor Login
+                <a href="profile.html">
+                    <i class="fas fa-user-edit"></i> Profile Edit
                 </a>
             `;
-            }
-        }
-
-        // 4. PROFILE COMPLETENESS CHECKER
-        function checkProfileCompleteness() {
-            const alertBar = document.getElementById('profile-alert');
-            if (!alertBar || !userProfile) return;
-
-            let isMissing = false;
-            
-            // Check critical fields
-            const checks = [
-                !userProfile.phone || userProfile.phone.trim() === "",
-                !userProfile.blood_group || userProfile.blood_group.trim() === "",
-                !userProfile.email || userProfile.email.trim() === ""
-            ];
-            
-            isMissing = checks.some(condition => condition === true);
-
-            if (isMissing) {
-                alertBar.classList.remove('hidden');
-                alertBar.style.setProperty('display', 'flex', 'important');
-            } else {
-                alertBar.classList.add('hidden');
-                alertBar.style.setProperty('display', 'none', 'important');
             }
         }
 
@@ -2131,13 +3201,29 @@
             if (!currentUser || isDemoSessionActive()) return;
 
             try {
-                dashboardStats = await getUserDashboardStats(currentUser.uid);
-                
-                if (dashboardStats) {
-                    updateDashboardUI();
-                    // Check and award badges
-                    await checkAndAwardBadges(currentUser.uid);
-                }
+                await checkAndAwardBadges(currentUser.uid);
+
+                const [stats, history, badges, rewards, badgeCatalog] = await Promise.all([
+                    getUserDashboardStats(currentUser.uid),
+                    getUserDonationHistory(currentUser.uid),
+                    getUserBadges(currentUser.uid),
+                    getUserRewards(currentUser.uid),
+                    getAllBadges()
+                ]);
+
+                donationHistory = history || [];
+                earnedBadges = badges || [];
+                rewardItems = rewards || [];
+                allBadgesCatalog = badgeCatalog || [];
+
+                dashboardStats = stats || {
+                    totalDonations: donationHistory.length,
+                    badges: earnedBadges.length,
+                    rewards: rewardItems.length,
+                    lastDonation: donationHistory[0] || null
+                };
+
+                updateDashboardUI();
             } catch (error) {
                 console.error('Error loading dashboard data:', error);
             }
@@ -2145,38 +3231,96 @@
 
         // 6. DASHBOARD UI UPDATE
         function updateDashboardUI() {
-            if (!dashboardStats) return;
+            if (!userProfile) return;
 
-            // Update welcome message
-            const welcomeElement = document.querySelector('.hero-title');
-            if (welcomeElement && userProfile) {
-                welcomeElement.innerHTML = `Welcome back, ${userProfile.name.split(' ')[0]}!`;
+            const welcomeElement = document.getElementById('dashboard-welcome');
+            const userName = userProfile.name || 'Donor';
+            const firstName = userName.split(' ')[0] || 'Donor';
+            if (welcomeElement) {
+                welcomeElement.innerHTML = `Welcome back, ${escapeHtml(firstName)}!`;
             }
 
-            // Update stats in the hero section or create a stats section
+            const nameElement = document.getElementById('dashboard-user-name');
+            const emailElement = document.getElementById('dashboard-user-email');
+            const phoneElement = document.getElementById('dashboard-user-phone');
+            const bloodElement = document.getElementById('dashboard-user-blood');
+
+            if (nameElement) nameElement.textContent = userProfile.name || '-';
+            if (emailElement) emailElement.textContent = userProfile.email || '-';
+            if (phoneElement) phoneElement.textContent = userProfile.phone || '-';
+            if (bloodElement) bloodElement.textContent = userProfile.blood_group || '-';
+
             updateDashboardStats(dashboardStats);
+            renderDonationHistory();
+            renderBadges();
+            renderRewards();
+            renderRoadmap();
+            renderPointsHistory();
         }
 
         // 7. DASHBOARD STATS DISPLAY
         function updateDashboardStats(stats) {
-            // Update stats in the dashboard
+            const safeStats = stats || {
+                totalDonations: donationHistory.length,
+                badges: earnedBadges.length,
+                rewards: rewardItems.length,
+                lastDonation: donationHistory[0] || null
+            };
+
+            const lastDonationSource = safeStats.lastDonation || getLatestDonationEntry();
+            const lastDonationText = lastDonationSource
+                ? formatDisplayDate(lastDonationSource.donation_date)
+                : 'No donations yet';
+            const nextEligibilityDate = getNextEligibilityDate();
+            const nextEligibilityText = nextEligibilityDate ? formatDisplayDate(nextEligibilityDate) : '-';
+
+            const pointsSummary = getPointsSummary();
+            const progressPercent = Math.round(pointsSummary.progressPercent);
+
+            const totalDonationsCard = document.getElementById('stat-total-donations');
+            const totalBadgesCard = document.getElementById('stat-total-badges');
+            const totalRewardsCard = document.getElementById('stat-total-rewards');
+            const lastDonationCard = document.getElementById('stat-last-donation');
+            const lifePointsCard = document.getElementById('stat-life-points');
+            const lifePointsNextCard = document.getElementById('stat-life-points-next');
+            const nextEligibleCard = document.getElementById('stat-next-eligible');
+
+            const pointsCurrentBalance = document.getElementById('points-current-balance');
+            const pointsProgressFill = document.getElementById('points-progress-fill');
+            const pointsProgressCaption = document.getElementById('points-progress-caption');
+            const pointsNextTierCaption = document.getElementById('points-next-tier-caption');
+            const pointsTotalEarned = document.getElementById('points-total-earned');
+            const pointsTotalRedeemed = document.getElementById('points-total-redeemed');
+
+            if (totalDonationsCard) totalDonationsCard.textContent = String(safeStats.totalDonations ?? 0);
+            if (totalBadgesCard) totalBadgesCard.textContent = String(safeStats.badges ?? 0);
+            if (totalRewardsCard) totalRewardsCard.textContent = String(safeStats.rewards ?? 0);
+            if (lastDonationCard) lastDonationCard.textContent = lastDonationText;
+            if (lifePointsCard) lifePointsCard.textContent = pointsSummary.currentBalance.toLocaleString();
+            if (lifePointsNextCard) lifePointsNextCard.textContent = `${pointsSummary.nextTierRemaining.toLocaleString()} to next tier`;
+            if (nextEligibleCard) nextEligibleCard.textContent = nextEligibilityText;
+
+            if (pointsCurrentBalance) pointsCurrentBalance.textContent = `${pointsSummary.currentBalance.toLocaleString()} LP`;
+            if (pointsProgressFill) pointsProgressFill.style.width = `${progressPercent}%`;
+            if (pointsProgressCaption) pointsProgressCaption.textContent = `${progressPercent}% to next tier`;
+            if (pointsNextTierCaption) pointsNextTierCaption.textContent = `${pointsSummary.nextTierRemaining.toLocaleString()} LP needed`;
+            if (pointsTotalEarned) pointsTotalEarned.textContent = `${pointsSummary.totalEarned.toLocaleString()} LP`;
+            if (pointsTotalRedeemed) pointsTotalRedeemed.textContent = `${pointsSummary.totalRedeemed.toLocaleString()} LP`;
+
+            // Keep legacy stats block in sync when present
             const statsContainer = document.getElementById('dashboard-stats');
             if (statsContainer) {
-                const lastDonationText = stats.lastDonation 
-                    ? new Date(stats.lastDonation.donation_date).toLocaleDateString()
-                    : 'No donations yet';
-                
                 statsContainer.innerHTML = `
                     <div class="stat-item">
-                        <h3>${stats.totalDonations}</h3>
+                        <h3>${safeStats.totalDonations ?? 0}</h3>
                         <p>Total Donations</p>
                     </div>
                     <div class="stat-item">
-                        <h3>${stats.badges}</h3>
+                        <h3>${safeStats.badges ?? 0}</h3>
                         <p>Badges Earned</p>
                     </div>
                     <div class="stat-item">
-                        <h3>${stats.rewards}</h3>
+                        <h3>${safeStats.rewards ?? 0}</h3>
                         <p>Rewards</p>
                     </div>
                     <div class="stat-item">
@@ -2187,35 +3331,236 @@
             }
         }
 
+        function renderDonationHistory() {
+            const tableBody = document.getElementById('donation-history-body');
+            if (!tableBody) return;
+
+            if (!donationHistory || donationHistory.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="table-empty">No donation history found yet.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tableBody.innerHTML = donationHistory.map((entry) => {
+                const centerName = entry.blood_center_name || entry.blood_bank || entry.blood_center_location || 'Unknown Center';
+                const quantity = entry.blood_quantity_ml
+                    ? `${entry.blood_quantity_ml} ml`
+                    : (entry.units_donated ? `${entry.units_donated} unit(s)` : '-');
+                const status = (entry.donation_status || 'Completed').toString();
+                const statusKey = status.toLowerCase().includes('pending')
+                    ? 'pending'
+                    : (status.toLowerCase().includes('cancel') ? 'cancelled' : 'completed');
+
+                return `
+                    <tr>
+                        <td>${escapeHtml(formatDisplayDate(entry.donation_date))}</td>
+                        <td>${escapeHtml(centerName)}</td>
+                        <td>${escapeHtml(quantity)}</td>
+                        <td><span class="status-pill ${statusKey}">${escapeHtml(status)}</span></td>
+                        <td>${escapeHtml(formatDisplayDate(entry.next_eligible_date))}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderBadges() {
+            const badgesContainer = document.getElementById('badges-grid-content');
+            if (!badgesContainer) return;
+
+            const earnedBadgeMap = new Map();
+            (earnedBadges || []).forEach((entry) => {
+                const badgeId = entry.badge_id || (entry.badges && entry.badges.id);
+                if (badgeId) {
+                    earnedBadgeMap.set(String(badgeId), entry);
+                }
+            });
+
+            const catalog = (allBadgesCatalog && allBadgesCatalog.length > 0)
+                ? allBadgesCatalog
+                : (earnedBadges || []).map((entry) => ({
+                    ...(entry.badges || {}),
+                    id: entry.badge_id || (entry.badges && entry.badges.id)
+                }));
+
+            if (!catalog || catalog.length === 0) {
+                badgesContainer.innerHTML = `<div class="empty-state">No badges found in database yet.</div>`;
+                return;
+            }
+
+            const donationCount = (donationHistory || []).length;
+
+            badgesContainer.innerHTML = catalog.map((badgeInfo) => {
+                const badgeId = badgeInfo.id ? String(badgeInfo.id) : '';
+                const earnedEntry = badgeId ? earnedBadgeMap.get(badgeId) : null;
+                const isEarned = Boolean(earnedEntry);
+
+                const badgeName = badgeInfo.name || badgeInfo.badge_name || 'Achievement Badge';
+                const badgeDescription = badgeInfo.description || badgeInfo.badge_description || 'Badge earned for your contribution.';
+                const earnedDate = earnedEntry ? (earnedEntry.earned_at || earnedEntry.earned_date || earnedEntry.created_at) : null;
+
+                const criteriaRaw = String(badgeInfo.criteria || badgeInfo.achievement_criteria || '').toLowerCase();
+                let requiredDonations = 0;
+                if (criteriaRaw.includes('first')) requiredDonations = 1;
+                if (criteriaRaw.includes('regular')) requiredDonations = 3;
+                if (criteriaRaw.includes('five') || criteriaRaw.includes('5')) requiredDonations = 5;
+                if (criteriaRaw.includes('ten') || criteriaRaw.includes('10')) requiredDonations = 10;
+
+                const lockHint = requiredDonations > 0
+                    ? `Need ${requiredDonations} donations (${donationCount}/${requiredDonations})`
+                    : 'Complete more donor milestones to unlock';
+
+                const iconName = badgeInfo.icon || badgeInfo.badge_icon_url || 'fa-award';
+                const iconClass = iconName.includes('fa-') ? iconName : 'fa-award';
+
+                return `
+                    <div class="badge-item ${isEarned ? '' : 'locked'}">
+                        <div class="badge-icon-box">
+                            <i class="fas ${escapeHtml(iconClass)}"></i>
+                        </div>
+                        <div>
+                            <h5>${escapeHtml(badgeName)}</h5>
+                            <p>${escapeHtml(badgeDescription)}</p>
+                            ${isEarned
+                                ? `<small>Earned: ${escapeHtml(formatDisplayDate(earnedDate))}</small>`
+                                : `<span class="badge-lock">${escapeHtml(lockHint)}</span>`}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderRewards() {
+            const rewardsContainer = document.getElementById('rewards-list-content');
+            if (!rewardsContainer) return;
+
+            if (!rewardItems || rewardItems.length === 0) {
+                rewardsContainer.innerHTML = `<div class="empty-state">No rewards available yet. Complete more donations to earn rewards.</div>`;
+                return;
+            }
+
+            rewardsContainer.innerHTML = rewardItems.map((reward) => {
+                const rewardType = reward.reward_type || 'Reward';
+                const rewardValue = reward.reward_value || 'Pending';
+                const rewardDescription = reward.reward_description || 'Reward added for your donor activity.';
+                const expiryText = reward.expiry_date ? `Expires: ${formatDisplayDate(reward.expiry_date)}` : 'No expiry date';
+                const isClaimed = reward.is_claimed === true;
+
+                return `
+                    <div class="reward-item">
+                        <div>
+                            <h5>${escapeHtml(rewardType)} - ${escapeHtml(rewardValue)}</h5>
+                            <p>${escapeHtml(rewardDescription)}</p>
+                            <p>${escapeHtml(expiryText)}</p>
+                        </div>
+                        <span class="reward-pill ${isClaimed ? 'claimed' : 'active'}">${isClaimed ? 'Claimed' : 'Active'}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderRoadmap() {
+            const roadmapContainer = document.getElementById('roadmap-steps');
+            const progressText = document.getElementById('roadmap-progress-text');
+            if (!roadmapContainer) return;
+
+            const totalDonations = (donationHistory || []).length;
+            const completedCount = ROADMAP_STEPS.filter((step) => totalDonations >= step.requiredDonations).length;
+            const activeIndex = completedCount >= ROADMAP_STEPS.length
+                ? ROADMAP_STEPS.length - 1
+                : completedCount;
+            const nextStep = ROADMAP_STEPS.find((step) => totalDonations < step.requiredDonations) || null;
+
+            roadmapContainer.innerHTML = ROADMAP_STEPS.map((step, index) => {
+                const isCompleted = totalDonations >= step.requiredDonations;
+                const isActive = index === activeIndex;
+                const stateClass = isCompleted ? 'completed' : (isActive ? 'active' : '');
+
+                return `
+                    <div class="roadmap-step ${stateClass}">
+                        <div class="dot">
+                            <i class="fas ${escapeHtml(step.icon)}"></i>
+                        </div>
+                        <div class="label">${escapeHtml(step.label)}</div>
+                    </div>
+                `;
+            }).join('');
+
+            if (progressText) {
+                if (nextStep) {
+                    const remaining = Math.max(nextStep.requiredDonations - totalDonations, 0);
+                    progressText.textContent = `${remaining} donation(s) to ${nextStep.label}`;
+                } else {
+                    progressText.textContent = 'All milestone tiers unlocked';
+                }
+            }
+        }
+
+        function renderPointsHistory() {
+            const historyBody = document.getElementById('points-history-body');
+            if (!historyBody) return;
+
+            const entries = buildPointsHistoryEntries();
+            if (!entries || entries.length === 0) {
+                historyBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="table-empty">No points activity yet. Complete a donation to start earning points.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            historyBody.innerHTML = entries.slice(0, 20).map((entry) => {
+                const type = entry.type === 'redeemed' ? 'redeemed' : 'earned';
+                const sign = type === 'redeemed' ? '-' : '+';
+                const valueClass = type === 'redeemed' ? 'minus' : 'plus';
+                const label = type === 'redeemed' ? 'REDEEMED' : 'EARNED';
+                const points = Number(entry.points || 0);
+
+                return `
+                    <tr>
+                        <td>${escapeHtml(formatDisplayDate(entry.date))}</td>
+                        <td>${escapeHtml(entry.activity || 'Donor activity')}</td>
+                        <td><span class="points-type ${type}">${label}</span></td>
+                        <td class="points-value ${valueClass}">${sign}${escapeHtml(points.toLocaleString())}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
         // 8. LOGOUT FUNCTION
         async function logoutUser(event) {
             event.preventDefault();
-            if (confirm("Are you sure you want to logout?")) {
-                const keysToClear = [
-                    'userId',
-                    'userEmail',
-                    'userData',
-                    'donorName',
-                    DEMO_SESSION_KEY,
-                    DEMO_AUTH_MODE_KEY
-                ];
+            const shouldLogout = await openLogoutConfirmModal();
+            if (!shouldLogout) {
+                return;
+            }
 
-                if (isDemoSessionActive()) {
-                    keysToClear.forEach((key) => localStorage.removeItem(key));
-                    window.location.href = 'front_page.html';
-                    return;
-                }
+            const keysToClear = [
+                'userId',
+                'userEmail',
+                'userData',
+                'donorName',
+                DEMO_SESSION_KEY,
+                DEMO_AUTH_MODE_KEY
+            ];
 
-                try {
-                    await signOut(auth);
-                    // Clear local storage
-                    keysToClear.forEach((key) => localStorage.removeItem(key));
-                    // Redirect to home page
-                    window.location.href = 'front_page.html';
-                } catch (error) {
-                    console.error('Error signing out:', error);
-                    alert('Error signing out. Please try again.');
-                }
+            if (isDemoSessionActive()) {
+                keysToClear.forEach((key) => localStorage.removeItem(key));
+                window.location.href = 'front_page.html';
+                return;
+            }
+
+            try {
+                await signOut(auth);
+                // Clear local storage
+                keysToClear.forEach((key) => localStorage.removeItem(key));
+                // Redirect to home page
+                window.location.href = 'front_page.html';
+            } catch (error) {
+                console.error('Error signing out:', error);
             }
         }
 

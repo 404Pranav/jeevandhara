@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeevandhara - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --teal: #2c9786;
+            --teal-dark: #205c75;
+            --blue-soft: #e0f2fe;
+            --bg: #f4f8fb;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --muted: #64748b;
+            --line: #e2e8f0;
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+            --error-bg: #fee2e2;
+            --error-text: #991b1b;
+            --warning-bg: #fff7ed;
+            --warning-text: #9a3412;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, #f8fbfd 0%, #eef6fa 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            background: linear-gradient(115deg, #205c75, #2c9786);
+            color: #ffffff;
+            padding: 16px 24px;
+            box-shadow: 0 8px 20px rgba(32, 92, 117, 0.2);
+        }
+
+        .brand-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-wrap i {
+            font-size: 21px;
+        }
+
+        .brand-title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        .session-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .session-meta {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.85);
+            text-align: right;
+        }
+
+        .session-meta strong {
+            display: block;
+            font-size: 13px;
+            color: #ffffff;
+        }
+
+        .btn-logout {
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            background: transparent;
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 9px 13px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .page {
+            max-width: 1380px;
+            margin: 20px auto 30px;
+            padding: 0 18px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .status-bar {
+            border-radius: 12px;
+            border: 1px solid transparent;
+            padding: 10px 12px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .status-bar.info {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            color: #1d4ed8;
+        }
+
+        .status-bar.success {
+            background: var(--success-bg);
+            border-color: #86efac;
+            color: var(--success-text);
+        }
+
+        .status-bar.error {
+            background: var(--error-bg);
+            border-color: #fca5a5;
+            color: var(--error-text);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(160px, 1fr));
+            gap: 14px;
+        }
+
+        .summary-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+        }
+
+        .summary-card .label {
+            font-size: 12px;
+            letter-spacing: 0.6px;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .summary-card .value {
+            font-size: 30px;
+            line-height: 1;
+            font-weight: 700;
+            color: var(--teal-dark);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.25fr 1fr;
+            gap: 14px;
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+            overflow: hidden;
+            display: grid;
+            align-content: start;
+        }
+
+        .panel-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border-bottom: 1px solid var(--line);
+            background: #f8fbfd;
+        }
+
+        .panel-head h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .head-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .search-input {
+            width: 280px;
+            max-width: 52vw;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 9px 10px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(44, 151, 134, 0.12);
+        }
+
+        .btn {
+            border: 1px solid #cbd5e1;
+            background: #ffffff;
+            color: #0f172a;
+            border-radius: 10px;
+            padding: 9px 11px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #f8fafc;
+        }
+
+        .btn.primary {
+            background: linear-gradient(120deg, #2c9786, #205c75);
+            border: none;
+            color: #ffffff;
+        }
+
+        .table-wrap {
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 820px;
+        }
+
+        th {
+            text-align: left;
+            font-size: 11px;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 11px;
+            border-bottom: 1px solid var(--line);
+            background: #f8fafc;
+        }
+
+        td {
+            padding: 11px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+            color: var(--text);
+            vertical-align: top;
+        }
+
+        tr.user-row {
+            cursor: pointer;
+        }
+
+        tr.user-row:hover {
+            background: #f8fafc;
+        }
+
+        tr.user-row.active {
+            background: #ecfeff;
+        }
+
+        .badge-soft {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 999px;
+            padding: 3px 9px;
+            color: #0f766e;
+            background: #ccfbf1;
+        }
+
+        .empty {
+            padding: 20px;
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .detail-body {
+            padding: 14px;
+            display: grid;
+            gap: 14px;
+        }
+
+        .detail-placeholder {
+            border: 1px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            background: #f8fafc;
+        }
+
+        .section {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 12px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .section h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .input-grid.single {
+            grid-template-columns: 1fr;
+        }
+
+        .field {
+            display: grid;
+            gap: 5px;
+        }
+
+        .field label {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            padding: 8px 9px;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            background: #ffffff;
+        }
+
+        .field textarea {
+            min-height: 66px;
+            resize: vertical;
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            border-color: var(--teal);
+            box-shadow: 0 0 0 3px rgba(44, 151, 134, 0.12);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .mini-list {
+            display: grid;
+            gap: 8px;
+            max-height: 190px;
+            overflow: auto;
+        }
+
+        .mini-item {
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: #f8fafc;
+            padding: 8px 9px;
+            font-size: 12px;
+            display: grid;
+            gap: 2px;
+        }
+
+        .mini-item strong {
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .mini-muted {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .status-pill.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pill.pending {
+            background: #fff7ed;
+            color: #9a3412;
+        }
+
+        .status-pill.cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-pill.claimed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pill.active {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .warning-note {
+            font-size: 12px;
+            color: var(--warning-text);
+            background: var(--warning-bg);
+            border: 1px solid #fed7aa;
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        @media (max-width: 1220px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, minmax(160px, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel-head {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .head-actions {
+                width: 100%;
+            }
+
+            .search-input {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 14px;
+            }
+
+            .brand-title {
+                font-size: 17px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand-wrap">
+            <i class="fas fa-shield-heart"></i>
+            <div>
+                <div class="brand-title">Jeevandhara Admin Dashboard</div>
+                <div style="font-size: 11px; color: rgba(255,255,255,0.8);">Live data from Supabase</div>
+            </div>
+        </div>
+
+        <div class="session-wrap">
+            <div class="session-meta" id="session-meta">
+                <strong>Admin</strong>
+                <span>Session active</span>
+            </div>
+            <button class="btn-logout" id="logout-btn">Logout</button>
+        </div>
+    </header>
+
+    <main class="page">
+        <div id="status-bar" class="status-bar info">Loading admin dashboard from database...</div>
+
+        <section class="summary-grid">
+            <article class="summary-card">
+                <div class="label">Total Users</div>
+                <div class="value" id="stat-users">0</div>
+            </article>
+            <article class="summary-card">
+                <div class="label">Donation Records</div>
+                <div class="value" id="stat-donations">0</div>
+            </article>
+            <article class="summary-card">
+                <div class="label">Badge Awards</div>
+                <div class="value" id="stat-badges">0</div>
+            </article>
+            <article class="summary-card">
+                <div class="label">Rewards</div>
+                <div class="value" id="stat-rewards">0</div>
+            </article>
+        </section>
+
+        <section class="content-grid">
+            <article class="panel">
+                <div class="panel-head">
+                    <h2>All Users</h2>
+                    <div class="head-actions">
+                        <input id="user-search" class="search-input" type="text" placeholder="Search by name, email, phone, blood group">
+                        <button class="btn" id="refresh-users-btn"><i class="fas fa-rotate"></i> Refresh</button>
+                    </div>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Blood</th>
+                                <th>Donations</th>
+                                <th>Badges</th>
+                                <th>Rewards</th>
+                                <th>Joined</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <tr>
+                                <td colspan="8" class="empty">Loading users...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="panel">
+                <div class="panel-head">
+                    <h2 id="detail-title">User Details</h2>
+                </div>
+
+                <div class="detail-body">
+                    <div id="detail-placeholder" class="detail-placeholder">Select a user to manage profile, badges, donations, and rewards.</div>
+
+                    <div id="detail-content" class="hidden">
+                        <section class="section">
+                            <h3>Profile Update</h3>
+                            <form id="profile-form">
+                                <div class="input-grid">
+                                    <div class="field">
+                                        <label for="edit-name">Name</label>
+                                        <input id="edit-name" type="text" required>
+                                    </div>
+                                    <div class="field">
+                                        <label for="edit-email">Email</label>
+                                        <input id="edit-email" type="email" required>
+                                    </div>
+                                    <div class="field">
+                                        <label for="edit-phone">Phone</label>
+                                        <input id="edit-phone" type="text" placeholder="10-digit phone">
+                                    </div>
+                                    <div class="field">
+                                        <label for="edit-blood">Blood Group</label>
+                                        <select id="edit-blood">
+                                            <option value="">Select</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn primary">Save Profile</button>
+                                </div>
+                            </form>
+                        </section>
+
+                        <section class="section">
+                            <h3>Assign Badge</h3>
+                            <form id="badge-form">
+                                <div class="input-grid single">
+                                    <div class="field">
+                                        <label for="assign-badge-select">Badge</label>
+                                        <select id="assign-badge-select" required>
+                                            <option value="">Select badge</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn primary">Assign Badge</button>
+                                </div>
+                            </form>
+                        </section>
+
+                        <section class="section">
+                            <h3>Create Reward</h3>
+                            <form id="reward-form">
+                                <div class="input-grid">
+                                    <div class="field">
+                                        <label for="reward-type">Reward Type</label>
+                                        <input id="reward-type" type="text" placeholder="discount_coupon" required>
+                                    </div>
+                                    <div class="field">
+                                        <label for="reward-value">Reward Value</label>
+                                        <input id="reward-value" type="text" placeholder="10% OFF" required>
+                                    </div>
+                                    <div class="field">
+                                        <label for="reward-expiry">Expiry Date</label>
+                                        <input id="reward-expiry" type="date">
+                                    </div>
+                                    <div class="field">
+                                        <label for="reward-description">Description</label>
+                                        <textarea id="reward-description" placeholder="Short reward description"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn primary">Create Reward</button>
+                                </div>
+                            </form>
+                        </section>
+
+                        <section class="section">
+                            <h3>Donation History</h3>
+                            <div id="donation-list" class="mini-list"></div>
+                        </section>
+
+                        <section class="section">
+                            <h3>Assigned Badges</h3>
+                            <div id="assigned-badges-list" class="mini-list"></div>
+                        </section>
+
+                        <section class="section">
+                            <h3>Rewards</h3>
+                            <div id="rewards-list" class="mini-list"></div>
+                        </section>
+
+                        <div class="warning-note">All actions on this panel are directly writing to Supabase database tables.</div>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js';
+        import { firebaseConfig } from '../config/firebase-config.js';
+        import {
+            getAdminDashboardData,
+            getAdminUserDetails,
+            getAllBadges,
+            assignBadgeToUser,
+            updateUserProfileByIdentifier,
+            createRewardForUser
+        } from '../config/supabase-client.js';
+
+        const firebaseApp = initializeApp(firebaseConfig);
+        const auth = getAuth(firebaseApp);
+
+        const ADMIN_AUTH_MODE_KEY = 'adminAuthMode';
+        const ADMIN_SESSION_KEY = 'adminSession';
+        const ADMIN_PROFILE_KEY = 'adminProfile';
+        const ADMIN_MODE_DEMO = 'demo';
+        const ADMIN_MODE_FIREBASE = 'firebase';
+
+        let allUsers = [];
+        let filteredUsers = [];
+        let selectedUser = null;
+        let selectedDetails = null;
+        let badgeCatalog = [];
+
+        const statusBar = document.getElementById('status-bar');
+        const usersTableBody = document.getElementById('users-table-body');
+        const searchInput = document.getElementById('user-search');
+
+        function setStatus(kind, message) {
+            statusBar.className = `status-bar ${kind}`;
+            statusBar.textContent = message;
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function formatDate(value) {
+            if (!value) return '-';
+            const parsed = new Date(value);
+            if (Number.isNaN(parsed.getTime())) return '-';
+            return parsed.toLocaleDateString();
+        }
+
+        function getUserKey(user) {
+            if (!user) return '';
+            return String(user.firebase_uid || user.id || '');
+        }
+
+        function getAdminSession() {
+            try {
+                const raw = localStorage.getItem(ADMIN_SESSION_KEY);
+                if (!raw) return null;
+                const parsed = JSON.parse(raw);
+                return parsed && parsed.email ? parsed : null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function clearAdminSession() {
+            localStorage.removeItem(ADMIN_AUTH_MODE_KEY);
+            localStorage.removeItem(ADMIN_SESSION_KEY);
+            localStorage.removeItem(ADMIN_PROFILE_KEY);
+        }
+
+        function waitForAuthState() {
+            return new Promise((resolve) => {
+                const unsub = onAuthStateChanged(auth, (user) => {
+                    unsub();
+                    resolve(user);
+                });
+            });
+        }
+
+        async function guardAdminSession() {
+            const session = getAdminSession();
+            if (!session) {
+                window.location.href = 'admin_login.html';
+                return null;
+            }
+
+            const mode = localStorage.getItem(ADMIN_AUTH_MODE_KEY);
+            if (mode !== ADMIN_MODE_DEMO && mode !== ADMIN_MODE_FIREBASE) {
+                clearAdminSession();
+                window.location.href = 'admin_login.html';
+                return null;
+            }
+
+            if (mode === ADMIN_MODE_FIREBASE) {
+                const user = auth.currentUser || await waitForAuthState();
+                if (!user || user.uid !== session.id) {
+                    clearAdminSession();
+                    window.location.href = 'admin_login.html';
+                    return null;
+                }
+            }
+
+            const sessionMeta = document.getElementById('session-meta');
+            sessionMeta.innerHTML = `<strong>${escapeHtml(session.name || 'Admin')}</strong><span>${escapeHtml(session.email)} (${escapeHtml(session.role || 'admin')})</span>`;
+
+            return session;
+        }
+
+        function renderSummary(totals) {
+            document.getElementById('stat-users').textContent = String(totals?.users ?? 0);
+            document.getElementById('stat-donations').textContent = String(totals?.donations ?? 0);
+            document.getElementById('stat-badges').textContent = String(totals?.badges ?? 0);
+            document.getElementById('stat-rewards').textContent = String(totals?.rewards ?? 0);
+        }
+
+        function applyUserFilter() {
+            const query = searchInput.value.trim().toLowerCase();
+            if (!query) {
+                filteredUsers = [...allUsers];
+            } else {
+                filteredUsers = allUsers.filter((user) => {
+                    const pool = [
+                        user.name,
+                        user.email,
+                        user.phone,
+                        user.blood_group,
+                        user.firebase_uid,
+                        user.id
+                    ].join(' ').toLowerCase();
+
+                    return pool.includes(query);
+                });
+            }
+            renderUsersTable();
+        }
+
+        function renderUsersTable() {
+            if (!filteredUsers.length) {
+                usersTableBody.innerHTML = `<tr><td colspan="8" class="empty">No users found in database.</td></tr>`;
+                return;
+            }
+
+            const selectedKey = getUserKey(selectedUser);
+            usersTableBody.innerHTML = filteredUsers.map((user) => {
+                const rowKey = getUserKey(user);
+                const activeClass = selectedKey && selectedKey === rowKey ? 'active' : '';
+                return `
+                    <tr class="user-row ${activeClass}" data-user-key="${escapeHtml(rowKey)}">
+                        <td><strong>${escapeHtml(user.name || 'Unknown')}</strong></td>
+                        <td>${escapeHtml(user.email || '-')}</td>
+                        <td>${escapeHtml(user.phone || '-')}</td>
+                        <td><span class="badge-soft">${escapeHtml(user.blood_group || '-')}</span></td>
+                        <td>${escapeHtml(String(user.totalDonations ?? 0))}</td>
+                        <td>${escapeHtml(String(user.totalBadges ?? 0))}</td>
+                        <td>${escapeHtml(String(user.totalRewards ?? 0))}</td>
+                        <td>${escapeHtml(formatDate(user.created_at))}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderBadgeOptions() {
+            const select = document.getElementById('assign-badge-select');
+            if (!select) return;
+
+            if (!badgeCatalog.length) {
+                select.innerHTML = '<option value="">No badges available</option>';
+                return;
+            }
+
+            select.innerHTML = ['<option value="">Select badge</option>']
+                .concat(
+                    badgeCatalog.map((badge) => {
+                        const name = badge.name || badge.badge_name || 'Badge';
+                        return `<option value="${escapeHtml(String(badge.id || ''))}">${escapeHtml(name)}</option>`;
+                    })
+                )
+                .join('');
+        }
+
+        function renderDetailCollections(details) {
+            const donationList = document.getElementById('donation-list');
+            const badgesList = document.getElementById('assigned-badges-list');
+            const rewardsList = document.getElementById('rewards-list');
+
+            const donations = details?.donations || [];
+            const badges = details?.badges || [];
+            const rewards = details?.rewards || [];
+
+            if (!donations.length) {
+                donationList.innerHTML = '<div class="empty">No donations found for this user.</div>';
+            } else {
+                donationList.innerHTML = donations.slice(0, 12).map((entry) => {
+                    const status = String(entry.donation_status || 'Completed').toLowerCase();
+                    const statusClass = status.includes('pending') ? 'pending' : (status.includes('cancel') ? 'cancelled' : 'completed');
+                    const centerName = entry.blood_center_name || entry.blood_bank || entry.blood_center_location || 'Unknown Center';
+                    return `
+                        <div class="mini-item">
+                            <strong>${escapeHtml(formatDate(entry.donation_date))} - ${escapeHtml(centerName)}</strong>
+                            <span class="mini-muted">Quantity: ${escapeHtml(String(entry.blood_quantity_ml || entry.units_donated || '-'))}</span>
+                            <span class="status-pill ${statusClass}">${escapeHtml(entry.donation_status || 'Completed')}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            if (!badges.length) {
+                badgesList.innerHTML = '<div class="empty">No badge assignments found.</div>';
+            } else {
+                badgesList.innerHTML = badges.map((entry) => {
+                    const badge = entry.badges || {};
+                    const name = badge.name || badge.badge_name || 'Badge';
+                    const desc = badge.description || badge.badge_description || 'Badge achievement';
+                    return `
+                        <div class="mini-item">
+                            <strong>${escapeHtml(name)}</strong>
+                            <span class="mini-muted">${escapeHtml(desc)}</span>
+                            <span class="mini-muted">Earned: ${escapeHtml(formatDate(entry.earned_at || entry.earned_date || entry.created_at))}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            if (!rewards.length) {
+                rewardsList.innerHTML = '<div class="empty">No rewards found for this user.</div>';
+            } else {
+                rewardsList.innerHTML = rewards.map((entry) => {
+                    const claimed = entry.is_claimed === true;
+                    return `
+                        <div class="mini-item">
+                            <strong>${escapeHtml(entry.reward_type || 'Reward')} - ${escapeHtml(entry.reward_value || '')}</strong>
+                            <span class="mini-muted">${escapeHtml(entry.reward_description || 'No description')}</span>
+                            <span class="mini-muted">Expiry: ${escapeHtml(formatDate(entry.expiry_date))}</span>
+                            <span class="status-pill ${claimed ? 'claimed' : 'active'}">${claimed ? 'Claimed' : 'Active'}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function fillProfileForm(user) {
+            document.getElementById('edit-name').value = user.name || '';
+            document.getElementById('edit-email').value = user.email || '';
+            document.getElementById('edit-phone').value = user.phone || '';
+            document.getElementById('edit-blood').value = user.blood_group || '';
+        }
+
+        function renderSelectedUserDetails() {
+            const placeholder = document.getElementById('detail-placeholder');
+            const content = document.getElementById('detail-content');
+
+            if (!selectedUser || !selectedDetails) {
+                placeholder.classList.remove('hidden');
+                content.classList.add('hidden');
+                return;
+            }
+
+            placeholder.classList.add('hidden');
+            content.classList.remove('hidden');
+
+            const user = selectedDetails.user || selectedUser;
+            document.getElementById('detail-title').textContent = `User Details: ${user.name || user.email || 'User'}`;
+            fillProfileForm(user);
+            renderDetailCollections(selectedDetails);
+        }
+
+        async function selectUserByKey(userKey) {
+            if (!userKey) {
+                selectedUser = null;
+                selectedDetails = null;
+                renderUsersTable();
+                renderSelectedUserDetails();
+                return;
+            }
+
+            const target = allUsers.find((user) => getUserKey(user) === userKey);
+            if (!target) {
+                selectedUser = null;
+                selectedDetails = null;
+                renderUsersTable();
+                renderSelectedUserDetails();
+                return;
+            }
+
+            selectedUser = target;
+            renderUsersTable();
+            setStatus('info', `Loading details for ${target.name || target.email}...`);
+
+            try {
+                selectedDetails = await getAdminUserDetails(userKey);
+                if (!selectedDetails) {
+                    selectedDetails = { user: target, donations: [], badges: [], rewards: [] };
+                    setStatus('error', 'Could not fetch detailed user records. Check Supabase table permissions.');
+                } else {
+                    setStatus('success', `Loaded details for ${target.name || target.email}.`);
+                }
+                renderSelectedUserDetails();
+            } catch (error) {
+                console.error('Error selecting user:', error);
+                selectedDetails = { user: target, donations: [], badges: [], rewards: [] };
+                renderSelectedUserDetails();
+                setStatus('error', 'Error loading user details from database.');
+            }
+        }
+
+        async function loadDashboard(preferredKey = '') {
+            setStatus('info', 'Fetching users and metrics directly from database...');
+            try {
+                const [dashboardData, badges] = await Promise.all([
+                    getAdminDashboardData(),
+                    getAllBadges()
+                ]);
+
+                allUsers = dashboardData.users || [];
+                badgeCatalog = badges || [];
+
+                renderSummary(dashboardData.totals || {
+                    users: 0,
+                    donations: 0,
+                    badges: 0,
+                    rewards: 0
+                });
+
+                renderBadgeOptions();
+                applyUserFilter();
+
+                let nextKey = preferredKey;
+                if (!nextKey && selectedUser) {
+                    nextKey = getUserKey(selectedUser);
+                }
+                if (!nextKey && filteredUsers.length > 0) {
+                    nextKey = getUserKey(filteredUsers[0]);
+                }
+
+                await selectUserByKey(nextKey);
+
+                if (!allUsers.length) {
+                    setStatus('error', 'No users found in database. Please verify users table data and RLS policies.');
+                }
+            } catch (error) {
+                console.error('Error loading admin dashboard:', error);
+                setStatus('error', 'Failed to fetch admin dashboard data from database. Check Supabase connection and policies.');
+            }
+        }
+
+        function bindEvents() {
+            document.getElementById('refresh-users-btn').addEventListener('click', async () => {
+                const key = selectedUser ? getUserKey(selectedUser) : '';
+                await loadDashboard(key);
+            });
+
+            searchInput.addEventListener('input', () => {
+                applyUserFilter();
+            });
+
+            usersTableBody.addEventListener('click', async (event) => {
+                const row = event.target.closest('tr.user-row');
+                if (!row) return;
+                const userKey = row.getAttribute('data-user-key');
+                await selectUserByKey(userKey);
+            });
+
+            document.getElementById('profile-form').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                if (!selectedUser) {
+                    setStatus('error', 'Select a user before updating profile.');
+                    return;
+                }
+
+                const userKey = getUserKey(selectedUser);
+                const updates = {
+                    name: document.getElementById('edit-name').value.trim(),
+                    email: document.getElementById('edit-email').value.trim(),
+                    phone: document.getElementById('edit-phone').value.trim(),
+                    phone_number: document.getElementById('edit-phone').value.trim(),
+                    blood_group: document.getElementById('edit-blood').value
+                };
+
+                setStatus('info', 'Updating user profile in database...');
+                const result = await updateUserProfileByIdentifier(userKey, updates);
+                if (!result) {
+                    setStatus('error', 'Failed to update profile. Check users table write permissions.');
+                    return;
+                }
+
+                setStatus('success', 'Profile updated successfully.');
+                await loadDashboard(userKey);
+            });
+
+            document.getElementById('badge-form').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                if (!selectedUser) {
+                    setStatus('error', 'Select a user before assigning badge.');
+                    return;
+                }
+
+                const badgeId = document.getElementById('assign-badge-select').value;
+                if (!badgeId) {
+                    setStatus('error', 'Select a badge to assign.');
+                    return;
+                }
+
+                const userKey = getUserKey(selectedUser);
+                setStatus('info', 'Assigning badge in database...');
+                const result = await assignBadgeToUser(userKey, badgeId);
+
+                if (!result || !result.success) {
+                    setStatus('error', result?.error || 'Badge assignment failed.');
+                    return;
+                }
+
+                if (result.alreadyAssigned) {
+                    setStatus('info', 'This badge is already assigned to the selected user.');
+                } else {
+                    setStatus('success', 'Badge assigned successfully.');
+                }
+
+                await loadDashboard(userKey);
+            });
+
+            document.getElementById('reward-form').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                if (!selectedUser) {
+                    setStatus('error', 'Select a user before creating reward.');
+                    return;
+                }
+
+                const rewardType = document.getElementById('reward-type').value.trim();
+                const rewardValue = document.getElementById('reward-value').value.trim();
+                const rewardDescription = document.getElementById('reward-description').value.trim();
+                const rewardExpiry = document.getElementById('reward-expiry').value;
+
+                if (!rewardType || !rewardValue) {
+                    setStatus('error', 'Reward type and value are required.');
+                    return;
+                }
+
+                const userKey = getUserKey(selectedUser);
+                setStatus('info', 'Creating reward in database...');
+
+                const created = await createRewardForUser(userKey, {
+                    reward_type: rewardType,
+                    reward_value: rewardValue,
+                    reward_description: rewardDescription,
+                    expiry_date: rewardExpiry || null
+                });
+
+                if (!created) {
+                    setStatus('error', 'Failed to create reward. Check rewards table write permissions.');
+                    return;
+                }
+
+                setStatus('success', 'Reward created successfully.');
+                document.getElementById('reward-form').reset();
+                await loadDashboard(userKey);
+            });
+
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                const mode = localStorage.getItem(ADMIN_AUTH_MODE_KEY);
+
+                if (mode === ADMIN_MODE_FIREBASE) {
+                    try {
+                        await signOut(auth);
+                    } catch (error) {
+                        console.error('Error signing out admin Firebase session:', error);
+                    }
+                }
+
+                clearAdminSession();
+                window.location.href = 'admin_login.html';
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            const session = await guardAdminSession();
+            if (!session) return;
+
+            bindEvents();
+            await loadDashboard();
+        });
+    </script>
+</body>
+</html>
