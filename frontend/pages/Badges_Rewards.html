@@ -578,7 +578,7 @@
             </div>
             
             <ul class="nav-links">
-                <li class="nav-item"><a href="/frontend/pages/front_page.html">Home</a></li>
+                <li class="nav-item"><a href="front_page.html">Home</a></li>
                 <li class="nav-item">
                     <a href="#"><span data-key="about_main">About Jeevandhara</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
@@ -594,7 +594,7 @@
                     <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
                         <li><a href="#">Donor Login</a></li>
-                        <li><a href="/frontend/pages/blood_availability.html">Blood Availability</a></li>
+                        <li><a href="blood_availability.html">Blood Availability</a></li>
                         <li><a href="#">Blood Center Directory</a></li>
                         <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> SOS Emergency</a></li>
                     </ul>
@@ -605,7 +605,7 @@
                     <ul class="dropdown">
                         <li><a href="#">Blood Bank Appointment</a></li>
                         <li><a href="#">AI Blood Matching</a></li>
-                        <li><a href="/frontend/pages/health_advice.html">Health Advice (Diet)</a></li>
+                        <li><a href="health_advice.html">Health Advice (Diet)</a></li>
                         <li><a href="#">Register VBD Camp</a></li>
                         <li><a href="#" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
                     </ul>
@@ -1043,15 +1043,15 @@ window.addEventListener('load', () => {
                             <div style="padding: 10px 20px; font-size: 11px; color: #888; border-bottom: 1px solid #eee;">
                                 Signed in as <br> <strong style="color: #333;">${storedUser}</strong>
                             </div>
-                             <a href="/frontend/pages/profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
-                             <a href="/frontend/pages/front_page.html" onclick="logoutDonor(event)" class="logout-btn">
+                             <a href="profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
+                             <a href="front_page.html" onclick="logoutDonor(event)" class="logout-btn">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                         </div>
                         <div id="profile-alert" class="cloud-alert">
                             <div class="cloud-content">
                                 <span>Please complete your profile.🩸</span>
-                                 <a href="/frontend/pages/profile.html">Edit</a>
+                                 <a href="profile.html">Edit</a>
                             </div>
                             <div class="cloud-arrow"></div>
                         </div>
@@ -1066,7 +1066,7 @@ window.addEventListener('load', () => {
                 checkProfileCompleteness(dataStr);
             } else {
                 authContainer.innerHTML = `
-                             <a href="/frontend/pages/front_page.html" onclick="simulateLogin(event)">
+                             <a href="front_page.html" onclick="simulateLogin(event)">
                         <i class="fas fa-user-circle"></i> Donor Login
                     </a>
                 `;

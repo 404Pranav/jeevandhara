@@ -1384,7 +1384,7 @@
 
             <ul class="nav-links">
         <li class="nav-item">
-            <a href="/frontend/pages/front_page.html"><span data-key="home">Home</span></a>
+            <a href="front_page.html"><span data-key="home">Home</span></a>
         </li>
 
 
@@ -1394,8 +1394,8 @@
                             style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
                         <li><a href="#" data-key="about_sub">About Jeevandhara</a></li>
-                        <li><a href="/frontend/pages/history_tracker.html" data-key="history">Donation History Tracking</a></li>
-                        <li><a href="/frontend/pages/Badges_Rewards.html" data-key="rewards">Badges and Rewards</a></li>
+                        <li><a href="history_tracker.html" data-key="history">Donation History Tracking</a></li>
+                        <li><a href="Badges_Rewards.html" data-key="rewards">Badges and Rewards</a></li>
                         <li><a href="#" data-key="jeev_faq">Jeevandhara FAQ</a></li>
                         <li><a href="#" data-key="contact">Contact Us</a></li>
                     </ul>
@@ -1406,7 +1406,7 @@
                             style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
                         <li><a href="#" data-key="donor_login">Donor Login</a></li>
-                        <li><a href="/frontend/pages/blood_availability.html" data-key="availability_sub">Blood Availability</a></li>
+                        <li><a href="blood_availability.html" data-key="availability_sub">Blood Availability</a></li>
                         <li><a href="#" data-key="directory_sub">Blood Center Directory</a></li>
                         <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> <span
                                     data-key="sos">SOS Emergency</span></a></li>
@@ -1418,8 +1418,8 @@
                             style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
                         <li><a href="#" data-key="appointment_sub">Blood Bank Appointment</a></li>
-                        <li><a href="/frontend/pages/AI.html" data-key="ai_match">AI Blood Matching</a></li>
-                        <li><a href="/frontend/pages/health_advice.html" data-key="health_advice">Health Advice (Diet)</a></li>
+                        <li><a href="AI.html" data-key="ai_match">AI Blood Matching</a></li>
+                        <li><a href="health_advice.html" data-key="health_advice">Health Advice (Diet)</a></li>
                         <li><a href="#" data-key="register_camp">Register VBD Camp</a></li>
                         <li><a href="#" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
                     </ul>
@@ -1461,7 +1461,7 @@
         <h3 class="section-header" data-key="services_title">Our Services</h3>
         <div class="services-grid">
 
-            <a href="/frontend/pages/blood_availability.html" class="service-card clickable-card">
+            <a href="blood_availability.html" class="service-card clickable-card">
                 <div class="service-img-box">
                     <img src="https://images.unsplash.com/photo-1536856136534-bb679c52a9aa?auto=format&fit=crop&w=600&q=80"
                         alt="Blood Availability">
@@ -1487,7 +1487,7 @@
                 </div>
             </a>
 
-            <a href="/frontend/pages/AI.html" class="service-card clickable-card">
+            <a href="AI.html" class="service-card clickable-card">
                 <div class="service-img-box">
                     <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=600&q=80"
                         alt="AI Matching">
@@ -1500,7 +1500,7 @@
                 </div>
             </a>
 
-            <a href="/frontend/pages/health_advice.html" class="service-card clickable-card">
+            <a href="health_advice.html" class="service-card clickable-card">
                 <div class="service-img-box">
                     <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=600&q=80"
                         alt="Health Diet">
@@ -1641,7 +1641,7 @@
                 <p data-key="cta_desc">Your small contribution can save a life. Join the Jeevandhara network today and
                     become a hero in your community. Safe, simple, and impactful.</p>
                 <button class="btn-primary" data-key="register"
-                    onclick="window.location.href='/frontend/pages/main_donar_login.html'">Register as Donor</button>
+                    onclick="window.location.href='main_donar_login.html'">Register as Donor</button>
             </div>
             <div class="cta-image-box">
                 <img src="../images/0e419862ed7d603f67d4006dc8e814a0.jpg" alt="Blood Donation Illustration">
@@ -1910,15 +1910,15 @@
                         <div style="padding: 10px 20px; font-size: 11px; color: #888; border-bottom: 1px solid #eee;">
                             Signed in as <br> <strong style="color: #333;">${storedUser}</strong>
                         </div>
-                        <a href="/frontend/pages/profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
-                        <a href="/frontend/pages/front_page.html" onclick="logoutDonor(event)" class="logout-btn">
+                        <a href="profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
+                        <a href="front_page.html" onclick="logoutDonor(event)" class="logout-btn">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
                     </div>
                     <div id="profile-alert" class="cloud-alert">
                         <div class="cloud-content">
                             <span>Please complete your profile.🩸</span>
-                                <a href="/frontend/pages/profile.html">Edit</a>
+                                <a href="profile.html">Edit</a>
                         </div>
                         <div class="cloud-arrow"></div>
                     </div>
@@ -1937,7 +1937,7 @@
             } else {
                 // RENDER LOGIN BUTTON IF NO USER
                 authContainer.innerHTML = `
-                <a href="/frontend/pages/front_page.html" onclick="simulateLogin(event)">
+                <a href="front_page.html" onclick="simulateLogin(event)">
                     <i class="fas fa-user-circle"></i> Donor Login
                 </a>
             `;
