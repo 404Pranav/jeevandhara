@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeevandhara - Admin Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-teal: #2c9786;
+            --primary-dark: #205c75;
+            --surface: #ffffff;
+            --bg: #eef4f8;
+            --text: #1f2937;
+            --muted: #64748b;
+            --warning-bg: #fff7ed;
+            --warning-border: #fdba74;
+            --warning-text: #9a3412;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #205c75 0%, #2c9786 50%, #89d4c9 100%);
+            min-height: 100vh;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .login-shell {
+            width: min(980px, 100%);
+            background: rgba(255, 255, 255, 0.94);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 55px rgba(14, 32, 52, 0.28);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .admin-visual {
+            background: linear-gradient(155deg, rgba(24, 70, 95, 0.96), rgba(44, 151, 134, 0.92));
+            color: #ffffff;
+            padding: 46px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: 12px;
+            position: relative;
+        }
+
+        .admin-visual::before,
+        .admin-visual::after {
+            content: '';
+            position: absolute;
+            border-radius: 999px;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .admin-visual::before {
+            width: 220px;
+            height: 220px;
+            top: -70px;
+            right: -70px;
+            background: #ffffff;
+        }
+
+        .admin-visual::after {
+            width: 150px;
+            height: 150px;
+            bottom: 24px;
+            right: 30px;
+            background: #ffd166;
+        }
+
+        .admin-visual h1 {
+            font-size: 34px;
+            line-height: 1.15;
+            letter-spacing: 0.3px;
+            max-width: 280px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .admin-visual p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            max-width: 320px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .admin-form {
+            background: var(--surface);
+            padding: 38px 42px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-teal);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .admin-tag {
+            display: inline-block;
+            margin-bottom: 16px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #0f766e;
+            background: #ccfbf1;
+            border: 1px solid #99f6e4;
+            padding: 5px 10px;
+            border-radius: 999px;
+        }
+
+        .title {
+            font-size: 27px;
+            margin-bottom: 6px;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .notice {
+            background: var(--warning-bg);
+            border: 1px solid var(--warning-border);
+            color: var(--warning-text);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 13px;
+            line-height: 1.55;
+            margin-bottom: 16px;
+        }
+
+        .alert {
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 14px;
+            font-size: 13px;
+        }
+
+        .alert.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .alert.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .field {
+            margin-bottom: 14px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap i {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .input-wrap input {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 12px 12px 12px 40px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            background: #f8fafc;
+        }
+
+        .input-wrap input:focus {
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 3px rgba(44, 151, 134, 0.12);
+            background: #ffffff;
+        }
+
+        .btn {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 13px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn.primary {
+            background: linear-gradient(120deg, #2c9786, #205c75);
+            color: #ffffff;
+            box-shadow: 0 10px 20px rgba(32, 92, 117, 0.25);
+            margin-top: 6px;
+        }
+
+        .btn.secondary {
+            background: #ffffff;
+            color: #205c75;
+            border: 1px solid #bfdbfe;
+            margin-top: 10px;
+        }
+
+        .btn.google {
+            background: #ffffff;
+            color: #202124;
+            border: 1px solid #dadce0;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+        }
+
+        .btn.google i {
+            color: #4285f4;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .footer-links {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .footer-links a {
+            color: var(--primary-teal);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 880px) {
+            .login-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-visual {
+                min-height: 220px;
+                justify-content: center;
+            }
+
+            .admin-form {
+                padding: 28px 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-shell">
+        <section class="admin-visual">
+            <h1>Admin Control Center</h1>
+            <p>Manage donor records, assign badges, and track rewards directly from your Jeevandhara database.</p>
+        </section>
+
+        <section class="admin-form">
+            <div class="brand">
+                <i class="fas fa-shield-heart"></i>
+                <span>Jeevandhara</span>
+            </div>
+            <span class="admin-tag">Admin Access</span>
+            <h2 class="title">Sign In as Admin</h2>
+            <p class="subtitle">Use Firebase auth (email/password or Google) or use demo credentials.</p>
+
+            <div class="notice">
+                Demo admin login: <strong>demo.admin@jeevandhara.test</strong> / <strong>Admin@123</strong><br>
+                Firebase admin email restriction is optional via localStorage key <strong>adminAllowedEmails</strong>.
+            </div>
+
+            <div id="error-msg" class="alert error hidden"></div>
+            <div id="success-msg" class="alert success hidden">Login successful. Redirecting to admin dashboard...</div>
+
+            <form id="admin-login-form">
+                <div class="field">
+                    <label for="admin-email">Admin Email</label>
+                    <div class="input-wrap">
+                        <i class="far fa-envelope"></i>
+                        <input id="admin-email" type="email" placeholder="Enter admin email" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="admin-password">Password</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock"></i>
+                        <input id="admin-password" type="password" placeholder="Enter password" required>
+                    </div>
+                </div>
+
+                <button class="btn primary" type="submit">Enter Admin Dashboard</button>
+                <button class="btn secondary" type="button" id="use-demo-btn">Use Demo Admin</button>
+                <button class="btn google" type="button" id="google-admin-btn">
+                    <i class="fab fa-google"></i>
+                    Continue with Google
+                </button>
+            </form>
+
+            <p class="footer-links">
+                Donor login instead? <a href="main_donar_login.html">Go to Donor Login</a>
+            </p>
+        </section>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js';
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            signInWithPopup,
+            GoogleAuthProvider,
+            onAuthStateChanged,
+            signOut
+        } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js';
+        import { firebaseConfig } from '../config/firebase-config.js';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const ADMIN_DASHBOARD_PAGE = 'admin_dashboard.html';
+        const ADMIN_AUTH_MODE_KEY = 'adminAuthMode';
+        const ADMIN_SESSION_KEY = 'adminSession';
+        const ADMIN_PROFILE_KEY = 'adminProfile';
+        const ADMIN_ALLOWED_EMAILS_KEY = 'adminAllowedEmails';
+        const ADMIN_MODE_DEMO = 'demo';
+        const ADMIN_MODE_FIREBASE = 'firebase';
+
+        const DEMO_ADMIN = {
+            id: 'admin-demo-001',
+            role: 'super_admin',
+            name: 'Demo Admin',
+            email: 'demo.admin@jeevandhara.test',
+            password: 'Admin@123'
+        };
+
+        function setAdminSession(adminProfile, mode = ADMIN_MODE_DEMO) {
+            localStorage.setItem(ADMIN_AUTH_MODE_KEY, mode);
+            localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({
+                id: adminProfile.id,
+                email: adminProfile.email,
+                role: adminProfile.role,
+                name: adminProfile.name,
+                authProvider: adminProfile.authProvider || mode,
+                loginAt: new Date().toISOString()
+            }));
+            localStorage.setItem(ADMIN_PROFILE_KEY, JSON.stringify(adminProfile));
+        }
+
+        function clearAdminSession() {
+            localStorage.removeItem(ADMIN_AUTH_MODE_KEY);
+            localStorage.removeItem(ADMIN_SESSION_KEY);
+            localStorage.removeItem(ADMIN_PROFILE_KEY);
+        }
+
+        function getAllowedAdminEmails() {
+            const raw = localStorage.getItem(ADMIN_ALLOWED_EMAILS_KEY);
+            if (!raw || !raw.trim()) {
+                return [];
+            }
+
+            return raw
+                .split(',')
+                .map((entry) => entry.trim().toLowerCase())
+                .filter(Boolean);
+        }
+
+        function isAuthorizedAdminEmail(email) {
+            if (!email) return false;
+
+            const allowed = getAllowedAdminEmails();
+            if (allowed.length === 0) {
+                // Development-friendly default: no allowlist means any authenticated email can access admin.
+                return true;
+            }
+
+            return allowed.includes(String(email).toLowerCase());
+        }
+
+        function showAlert(type, message) {
+            const errorEl = document.getElementById('error-msg');
+            const successEl = document.getElementById('success-msg');
+
+            if (type === 'error') {
+                errorEl.textContent = message;
+                errorEl.classList.remove('hidden');
+                successEl.classList.add('hidden');
+            } else {
+                successEl.textContent = message;
+                successEl.classList.remove('hidden');
+                errorEl.classList.add('hidden');
+            }
+        }
+
+        function clearAlerts() {
+            document.getElementById('error-msg').classList.add('hidden');
+            document.getElementById('success-msg').classList.add('hidden');
+        }
+
+        function fillDemoCredentials() {
+            document.getElementById('admin-email').value = DEMO_ADMIN.email;
+            document.getElementById('admin-password').value = DEMO_ADMIN.password;
+        }
+
+        function isDemoLogin(email, password) {
+            return (
+                String(email || '').trim().toLowerCase() === DEMO_ADMIN.email.toLowerCase() &&
+                String(password || '').trim() === DEMO_ADMIN.password
+            );
+        }
+
+        function performDemoLogin() {
+            setAdminSession({ ...DEMO_ADMIN, authProvider: 'demo' }, ADMIN_MODE_DEMO);
+            showAlert('success', 'Login successful. Redirecting to admin dashboard...');
+            setTimeout(() => {
+                window.location.href = ADMIN_DASHBOARD_PAGE;
+            }, 700);
+        }
+
+        function buildFirebaseAdminProfile(user, providerName = 'firebase') {
+            const safeEmail = user.email || '';
+            const derivedName = user.displayName || safeEmail.split('@')[0] || 'Admin User';
+            return {
+                id: user.uid,
+                role: 'admin',
+                name: derivedName,
+                email: safeEmail,
+                authProvider: providerName
+            };
+        }
+
+        async function completeFirebaseLogin(user, providerName) {
+            const email = (user && user.email) ? user.email : '';
+            if (!isAuthorizedAdminEmail(email)) {
+                await signOut(auth);
+                clearAdminSession();
+                showAlert('error', 'Account authenticated but not authorized as admin. Set localStorage adminAllowedEmails to allow specific admin emails.');
+                return;
+            }
+
+            const profile = buildFirebaseAdminProfile(user, providerName);
+            setAdminSession(profile, ADMIN_MODE_FIREBASE);
+            showAlert('success', 'Firebase auth successful. Redirecting to admin dashboard...');
+
+            setTimeout(() => {
+                window.location.href = ADMIN_DASHBOARD_PAGE;
+            }, 700);
+        }
+
+        function mapAuthError(error) {
+            switch (error && error.code) {
+                case 'auth/user-not-found':
+                    return 'No admin account found with this email.';
+                case 'auth/wrong-password':
+                    return 'Incorrect password.';
+                case 'auth/invalid-email':
+                    return 'Invalid email address.';
+                case 'auth/popup-closed-by-user':
+                    return 'Google sign-in was canceled.';
+                case 'auth/cancelled-popup-request':
+                    return 'Google sign-in is already in progress.';
+                case 'auth/operation-not-allowed':
+                    return 'Enable this provider in Firebase Authentication settings.';
+                default:
+                    return 'Authentication failed. Please try again.';
+            }
+        }
+
+        function waitForAuthState() {
+            return new Promise((resolve) => {
+                const unsub = onAuthStateChanged(auth, (user) => {
+                    unsub();
+                    resolve(user);
+                });
+            });
+        }
+
+        function getExistingAdminSession() {
+            try {
+                const raw = localStorage.getItem(ADMIN_SESSION_KEY);
+                if (!raw) return null;
+                const parsed = JSON.parse(raw);
+                return parsed && parsed.email ? parsed : null;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        document.getElementById('admin-login-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            clearAlerts();
+
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+
+            if (!isDemoLogin(email, password)) {
+                clearAdminSession();
+
+                try {
+                    const credentials = await signInWithEmailAndPassword(auth, email, password);
+                    await completeFirebaseLogin(credentials.user, 'firebase-email-password');
+                } catch (error) {
+                    console.error('Admin Firebase login error:', error);
+                    showAlert('error', mapAuthError(error));
+                }
+                return;
+            }
+
+            performDemoLogin();
+        });
+
+        document.getElementById('use-demo-btn').addEventListener('click', () => {
+            clearAlerts();
+            fillDemoCredentials();
+            performDemoLogin();
+        });
+
+        document.getElementById('google-admin-btn').addEventListener('click', async () => {
+            clearAlerts();
+            clearAdminSession();
+
+            try {
+                const provider = new GoogleAuthProvider();
+                const credentials = await signInWithPopup(auth, provider);
+                await completeFirebaseLogin(credentials.user, 'firebase-google');
+            } catch (error) {
+                console.error('Admin Google login error:', error);
+                showAlert('error', mapAuthError(error));
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            fillDemoCredentials();
+            const existingSession = getExistingAdminSession();
+
+            if (!existingSession) {
+                return;
+            }
+
+            const mode = localStorage.getItem(ADMIN_AUTH_MODE_KEY);
+            if (mode === ADMIN_MODE_DEMO) {
+                window.location.href = ADMIN_DASHBOARD_PAGE;
+                return;
+            }
+
+            if (mode === ADMIN_MODE_FIREBASE) {
+                const user = auth.currentUser || await waitForAuthState();
+                if (user && user.uid === existingSession.id) {
+                    window.location.href = ADMIN_DASHBOARD_PAGE;
+                    return;
+                }
+
+                clearAdminSession();
+            }
+        });
+    </script>
+</body>
+</html>
