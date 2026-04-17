@@ -1960,12 +1960,62 @@
         let currentUser = null;
         let userProfile = null;
         let dashboardStats = null;
+        const DEMO_AUTH_MODE_KEY = 'authMode';
+        const DEMO_AUTH_MODE_VALUE = 'demo';
+        const DEMO_SESSION_KEY = 'demoAuthUser';
 
         // 1. MAIN INITIALIZATION
         document.addEventListener('DOMContentLoaded', () => {
+            const demoSession = localStorage.getItem(DEMO_SESSION_KEY);
+            const authMode = localStorage.getItem(DEMO_AUTH_MODE_KEY);
+
+            if (demoSession && authMode === DEMO_AUTH_MODE_VALUE) {
+                initializeDemoAuth(demoSession);
+                return;
+            }
+
             initializeAuth();
-            loadDashboardData();
         });
+
+        function isDemoSessionActive() {
+            return localStorage.getItem(DEMO_AUTH_MODE_KEY) === DEMO_AUTH_MODE_VALUE;
+        }
+
+        function initializeDemoAuth(serializedSession) {
+            try {
+                const demoUser = JSON.parse(serializedSession);
+                const rawLocalProfile = localStorage.getItem('userData');
+                const localProfile = rawLocalProfile ? JSON.parse(rawLocalProfile) : null;
+
+                currentUser = {
+                    uid: demoUser.uid,
+                    email: demoUser.email,
+                    isDemo: true
+                };
+
+                userProfile = {
+                    name: (localProfile && localProfile.name) || demoUser.name || 'Demo Donor',
+                    email: (localProfile && localProfile.email) || demoUser.email || '',
+                    phone: (localProfile && localProfile.phone) || demoUser.phone || '',
+                    blood_group: (localProfile && localProfile.bloodGroup) || demoUser.bloodGroup || ''
+                };
+
+                dashboardStats = {
+                    totalDonations: 0,
+                    badges: 0,
+                    rewards: 0,
+                    lastDonation: null
+                };
+
+                updateAuthUI();
+                updateDashboardUI();
+            } catch (error) {
+                console.error('Invalid demo session. Redirecting to login.', error);
+                localStorage.removeItem(DEMO_SESSION_KEY);
+                localStorage.removeItem(DEMO_AUTH_MODE_KEY);
+                window.location.href = 'main_donar_login.html';
+            }
+        }
 
         // 2. AUTHENTICATION SETUP
         function initializeAuth() {
@@ -2078,7 +2128,7 @@
 
         // 5. DASHBOARD DATA LOADING
         async function loadDashboardData() {
-            if (!currentUser) return;
+            if (!currentUser || isDemoSessionActive()) return;
 
             try {
                 dashboardStats = await getUserDashboardStats(currentUser.uid);
@@ -2141,12 +2191,25 @@
         async function logoutUser(event) {
             event.preventDefault();
             if (confirm("Are you sure you want to logout?")) {
+                const keysToClear = [
+                    'userId',
+                    'userEmail',
+                    'userData',
+                    'donorName',
+                    DEMO_SESSION_KEY,
+                    DEMO_AUTH_MODE_KEY
+                ];
+
+                if (isDemoSessionActive()) {
+                    keysToClear.forEach((key) => localStorage.removeItem(key));
+                    window.location.href = 'front_page.html';
+                    return;
+                }
+
                 try {
                     await signOut(auth);
                     // Clear local storage
-                    localStorage.removeItem('userId');
-                    localStorage.removeItem('userEmail');
-                    localStorage.removeItem('userData');
+                    keysToClear.forEach((key) => localStorage.removeItem(key));
                     // Redirect to home page
                     window.location.href = 'front_page.html';
                 } catch (error) {

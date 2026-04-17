@@ -175,6 +175,9 @@
                 <div id="form-login">
                     <h2 class="form-title">Donor Login</h2>
                     <p class="form-subtitle">Welcome back! Please enter your details.</p>
+                    <div class="success-msg" style="display: block; background: #fff7ed; color: #9a3412; border-color: #fdba74;">
+                        Demo login for testing: <strong>demo.donor@jeevandhara.test</strong> / <strong>Donor@123</strong>
+                    </div>
                     
                     <div id="login-error-msg" class="error-msg hidden"></div>
                     <div id="login-success-msg" class="success-msg hidden">
@@ -196,6 +199,9 @@
                         </div>
 
                         <button type="submit" class="btn-primary">Sign In</button>
+                        <button type="button" class="btn-google" onclick="useDemoLogin()">
+                            <i class="fas fa-vial"></i> Use Demo Account
+                        </button>
                         <button type="button" class="btn-google" onclick="handleGoogleSignIn()">
                             <i class="fab fa-google"></i> Sign in with Google
                         </button>
@@ -289,6 +295,80 @@
         const auth = getAuth(app);
 
         const MAIN_UI_PAGE = "donar_test.html";
+        const DEMO_AUTH_MODE_KEY = 'authMode';
+        const DEMO_AUTH_MODE_VALUE = 'demo';
+        const DEMO_SESSION_KEY = 'demoAuthUser';
+        const DEMO_DONOR = {
+            uid: 'demo-donor-001',
+            name: 'Demo Donor',
+            email: 'demo.donor@jeevandhara.test',
+            password: 'Donor@123',
+            phone: '9999999999',
+            gender: 'Male',
+            bloodGroup: 'O+'
+        };
+
+        function setSessionData(sessionUser, profileData = null) {
+            localStorage.setItem('userId', sessionUser.uid);
+            localStorage.setItem('userEmail', sessionUser.email);
+            if (sessionUser.name) {
+                localStorage.setItem('donorName', sessionUser.name);
+            }
+            if (profileData) {
+                localStorage.setItem('userData', JSON.stringify(profileData));
+            }
+        }
+
+        function seedDemoCredentials() {
+            const emailInput = document.getElementById('login-email');
+            const passwordInput = document.getElementById('login-password');
+            if (emailInput && passwordInput) {
+                emailInput.value = DEMO_DONOR.email;
+                passwordInput.value = DEMO_DONOR.password;
+            }
+        }
+
+        function isDemoEmail(email) {
+            return email.trim().toLowerCase() === DEMO_DONOR.email.toLowerCase();
+        }
+
+        function isDemoLogin(email, password) {
+            return (
+                isDemoEmail(email) &&
+                password.trim().toLowerCase() === DEMO_DONOR.password.toLowerCase()
+            );
+        }
+
+        function completeDemoLogin() {
+            const demoProfile = {
+                uid: DEMO_DONOR.uid,
+                name: DEMO_DONOR.name,
+                phone: DEMO_DONOR.phone,
+                email: DEMO_DONOR.email,
+                gender: DEMO_DONOR.gender,
+                bloodGroup: DEMO_DONOR.bloodGroup,
+                createdAt: new Date().toISOString()
+            };
+
+            localStorage.setItem(DEMO_AUTH_MODE_KEY, DEMO_AUTH_MODE_VALUE);
+            localStorage.setItem(DEMO_SESSION_KEY, JSON.stringify(DEMO_DONOR));
+            setSessionData(DEMO_DONOR, demoProfile);
+        }
+
+        function useDemoLogin() {
+            const errorMsg = document.getElementById('login-error-msg');
+            const successMsg = document.getElementById('login-success-msg');
+
+            seedDemoCredentials();
+            completeDemoLogin();
+
+            errorMsg.classList.add('hidden');
+            successMsg.classList.remove('hidden');
+
+            setTimeout(() => {
+                window.location.href = MAIN_UI_PAGE;
+            }, 700);
+        }
 
         function toggleForms(type) {
             document.getElementById('form-login').classList.toggle('hidden', type === 'register');
@@ -302,6 +382,27 @@
             const errorMsg = document.getElementById('login-error-msg');
             const successMsg = document.getElementById('login-success-msg');
 
+            if (isDemoEmail(email) && !isDemoLogin(email, password)) {
+                errorMsg.innerText = 'For demo login use password: Donor@123';
+                errorMsg.classList.remove('hidden');
+                successMsg.classList.add('hidden');
+                return;
+            }
+
+            if (isDemoLogin(email, password)) {
+                completeDemoLogin();
+                errorMsg.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+
+                setTimeout(() => {
+                    window.location.href = MAIN_UI_PAGE;
+                }, 700);
+                return;
+            }
+
+            localStorage.removeItem(DEMO_AUTH_MODE_KEY);
+            localStorage.removeItem(DEMO_SESSION_KEY);
+
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
@@ -310,11 +411,11 @@
                 successMsg.classList.remove('hidden');
                 
                 // Store user info in localStorage for dashboard
-                localStorage.setItem('userId', user.uid);
-                localStorage.setItem('userEmail', user.email);
-                if (user.displayName) {
-                    localStorage.setItem('donorName', user.displayName);
-                }
+                setSessionData({
+                    uid: user.uid,
+                    email: user.email,
+                    name: user.displayName || ''
+                });
                 
                 setTimeout(() => {
                     window.location.href = MAIN_UI_PAGE;
@@ -337,6 +438,9 @@
                     case 'auth/user-disabled':
                         errorMessage = 'This account has been disabled.';
                         break;
+                    default:
+                        errorMessage = 'Login failed. Use demo credentials for testing.';
+                        break;
                 }
                 
                 errorMsg.innerText = errorMessage;
@@ -357,11 +461,14 @@
                 errorMsg.classList.add('hidden');
                 successMsg.classList.remove('hidden');
 
-                localStorage.setItem('userId', user.uid);
-                localStorage.setItem('userEmail', user.email);
-                if (user.displayName) {
-                    localStorage.setItem('donorName', user.displayName);
-                }
+                localStorage.removeItem(DEMO_AUTH_MODE_KEY);
+                localStorage.removeItem(DEMO_SESSION_KEY);
+
+                setSessionData({
+                    uid: user.uid,
+                    email: user.email,
+                    name: user.displayName || ''
+                });
 
                 setTimeout(() => {
                     window.location.href = MAIN_UI_PAGE;
@@ -394,6 +501,9 @@
                 // Create Firebase user
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
+
+                localStorage.removeItem(DEMO_AUTH_MODE_KEY);
+                localStorage.removeItem(DEMO_SESSION_KEY);
                 
                 // Store additional user data in localStorage (will be synced to Supabase later)
                 const userData = {
@@ -406,9 +516,11 @@
                     createdAt: new Date().toISOString()
                 };
                 
-                localStorage.setItem('userData', JSON.stringify(userData));
-                localStorage.setItem('userId', user.uid);
-                localStorage.setItem('userEmail', user.email);
+                setSessionData({
+                    uid: user.uid,
+                    email: user.email,
+                    name: rawName
+                }, userData);
                 
                 document.getElementById('reg-success-msg').classList.remove('hidden');
                 
@@ -447,16 +559,27 @@
 
         // Check if user is already logged in
         onAuthStateChanged(auth, (user) => {
+            const demoSession = localStorage.getItem(DEMO_SESSION_KEY);
+            const authMode = localStorage.getItem(DEMO_AUTH_MODE_KEY);
+            if (demoSession && authMode === DEMO_AUTH_MODE_VALUE) {
+                window.location.href = MAIN_UI_PAGE;
+                return;
+            }
+
             if (user && window.location.pathname.includes('main_donar_login.html')) {
                 // User is already logged in, redirect to dashboard
                 window.location.href = MAIN_UI_PAGE;
             }
         });
 
+        seedDemoCredentials();
+
         // Make functions global
         window.toggleForms = toggleForms;
         window.handleLogin = handleLogin;
+        window.handleGoogleSignIn = handleGoogleSignIn;
         window.handleRegister = handleRegister;
+        window.useDemoLogin = useDemoLogin;
     </script>
 </body>
 </html>
