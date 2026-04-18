@@ -85,9 +85,10 @@
         /* Navbar Styling */
             .navbar {
                 display: flex;
-                /* justify-content: space-between;  <-- We removed this line */
                 align-items: center;
-                padding: 0 50px;
+                gap: 20px;
+                padding: 10px 40px 14px;
+                min-height: 108px;
                 position: relative;
                 z-index: 100;
                 background: linear-gradient(100deg, #2c9786 0%, #205c75 100%);
@@ -100,7 +101,7 @@
     padding: 12px 0; /* Vertical padding */
     position: relative;
     z-index: 99;
-    margin-top: 0px; 
+    margin-top: 0;
 }
 
 /* The long track holding both sets of text */
@@ -142,14 +143,15 @@
         .logo {
             display: flex;
             align-items: center;
-            margin-left: 10px;
-            margin-top: 20px; 
+            margin: 0;
+            flex-shrink: 0;
         }
         
         .logo img {
-            height: 100px;
+            height: 88px;
             width: auto; 
             object-fit: contain;
+            display: block;
         }
 
         /* Navigation Links */
@@ -157,14 +159,16 @@
         display: flex; 
         gap: 25px; 
         align-items: center; 
-        margin-top: 20px;
+        margin-top: 0;
+        flex: 1;
+        justify-content: center;
         }
 
         .nav-actions {
-            margin-left: auto;
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-shrink: 0;
         }
 
         .top-login-btn {
@@ -779,8 +783,10 @@
 
 
         @media (max-width: 1000px) {
-            .navbar { flex-direction: column; gap: 20px; }
-            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .navbar { flex-direction: column; gap: 16px; padding: 12px 20px; min-height: auto; }
+            .logo img { height: 76px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
+            .nav-actions { margin-left: 0; }
             .hero-section { min-height: auto; padding-bottom: 50px; }
             .search-widget { flex-direction: column; border-radius: 20px; }
             .input-group { width: 100%; border-right: none; border-bottom: 1px solid #eee; }
