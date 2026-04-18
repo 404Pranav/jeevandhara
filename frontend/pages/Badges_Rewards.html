@@ -582,32 +582,32 @@
                 <li class="nav-item">
                     <a href="#"><span data-key="about_main">About Jeevandhara</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
-                        <li><a href="#">About Jeevandhara</a></li>
-                        <li><a href="#">Donation History Tracking</a></li>
-                        <li><a href="#">Badges and Rewards</a></li>
-                        <li><a href="#">Jeevandhara FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="about_jeevandhara.html" data-key="about_sub">About Jeevandhara</a></li>
+                        <li><a href="history_tracker.html" data-key="history">Donation History Tracking</a></li>
+                        <li><a href="Badges_Rewards.html" data-key="rewards">Badges and Rewards</a></li>
+                        <li><a href="FAQ.html" data-key="jeev_faq">Jeevandhara FAQ</a></li>
+                        <li><a href="about_jeevandhara.html" data-key="contact">Contact Us</a></li>
                     </ul>
                 </li>
                 
                 <li class="nav-item">
                     <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
-                        <li><a href="#">Donor Login</a></li>
-                        <li><a href="blood_availability.html">Blood Availability</a></li>
-                        <li><a href="#">Blood Center Directory</a></li>
-                        <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> SOS Emergency</a></li>
+                        <li><a href="main_donar_login.html" data-key="donor_login">Donor Login</a></li>
+                        <li><a href="blood_availability.html" data-key="availability_sub">Blood Availability</a></li>
+                        <li><a href="blood_center_directory.html" data-key="directory_sub">Blood Center Directory</a></li>
+                        <li><a href="blood_center.html" class="sos-link"><i class="fas fa-exclamation-circle"></i> <span data-key="sos">SOS Emergency</span></a></li>
                     </ul>
                 </li>
 
                 <li class="nav-item">
                     <a href="#"><span data-key="donate_main">Want to Donate</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
-                        <li><a href="#">Blood Bank Appointment</a></li>
-                        <li><a href="#">AI Blood Matching</a></li>
-                        <li><a href="health_advice.html">Health Advice (Diet)</a></li>
-                        <li><a href="#">Register VBD Camp</a></li>
-                        <li><a href="#" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
+                        <li><a href="BBA.html" data-key="appointment_sub">Blood Bank Appointment</a></li>
+                        <li><a href="AI.html" data-key="ai_match">AI Blood Matching</a></li>
+                        <li><a href="health_advice.html" data-key="health_advice">Health Advice (Diet)</a></li>
+                        <li><a href="VBD.html" data-key="register_camp">Register VBD Camp</a></li>
+                        <li><a href="camp.html" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
                     </ul>
                 </li>
 
@@ -741,6 +741,10 @@ function animateAllCounters() {
 
 // 4. Execution
 window.addEventListener('load', () => {
+    if (window.__BADGES_REWARDS_SKIP_MOCK_INIT__ === true) {
+        return;
+    }
+
     initDashboard(donorData);
 
     // Intersection Observer for "Reveal" effect
@@ -799,7 +803,7 @@ window.addEventListener('load', () => {
                 style="background: var(--white); padding: 25px; border-radius: 20px; box-shadow: var(--card-shadow); text-align: center;">
                 <i class="fas fa-heartbeat" style="font-size: 30px; color: var(--blood-red); margin-bottom: 10px;"></i>
                 <h4 style="font-size: 14px; color: var(--text-light);">Lives Impacted</h4>
-                <span class="metric-val counter" data-target="36"
+                <span id="metric-lives-impacted" class="metric-val counter" data-target="36"
                     style="font-size: 24px; font-weight: 700; color: var(--primary-dark);">0</span><span
                     style="font-size: 24px; font-weight: 700; color: var(--primary-dark);"> Lives</span>
             </div>
@@ -807,7 +811,7 @@ window.addEventListener('load', () => {
                 style="background: var(--white); padding: 25px; border-radius: 20px; box-shadow: var(--card-shadow); text-align: center;">
                 <i class="fas fa-flask" style="font-size: 30px; color: var(--primary-teal); margin-bottom: 10px;"></i>
                 <h4 style="font-size: 14px; color: var(--text-light);">Total Units</h4>
-                <span class="metric-val counter" data-target="12"
+                <span id="metric-total-units" class="metric-val counter" data-target="12"
                     style="font-size: 24px; font-weight: 700; color: var(--primary-dark);">0</span><span
                     style="font-size: 24px; font-weight: 700; color: var(--primary-dark);"> Units</span>
             </div>
@@ -816,7 +820,7 @@ window.addEventListener('load', () => {
                 <i class="fas fa-calendar-check"
                     style="font-size: 30px; color: var(--accent-orange); margin-bottom: 10px;"></i>
                 <h4 style="font-size: 14px; color: var(--text-light);">Donor Since</h4>
-                <span style="font-size: 24px; font-weight: 700; color: var(--primary-dark);">1.5 Years</span>
+                <span id="metric-donor-since" style="font-size: 24px; font-weight: 700; color: var(--primary-dark);">1.5 Years</span>
             </div>
         </div>
 
@@ -830,7 +834,7 @@ window.addEventListener('load', () => {
                             donations to move forward!</span>
                     </div>
                 </h2>
-                <span style="font-size: 12px; color: var(--primary-teal); font-weight: 600;">80% to Platinum Tier</span>
+                <span id="roadmap-progress-caption" style="font-size: 12px; color: var(--primary-teal); font-weight: 600;">80% to Platinum Tier</span>
             </div>
 
             <div class="roadmap-line">
@@ -861,7 +865,7 @@ window.addEventListener('load', () => {
             <h2>Your Earned Badges</h2>
         </section>
 
-        <div class="badges-grid reveal">
+        <div id="earned-badges-grid" class="badges-grid reveal">
             <div class="badge-card tier-gold">
                 <div class="badge-icon"><i class="fas fa-medal"></i></div>
                 <h3 style="font-size: 18px; margin-bottom: 5px;">Master Donor</h3>
@@ -894,7 +898,7 @@ window.addEventListener('load', () => {
             <h2>Available Rewards</h2>
         </section>
 
-        <div class="reveal"
+        <div id="available-rewards-grid" class="reveal"
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
             <div class="badge-card"
                 style="text-align: left; display: flex; align-items: center; gap: 20px; padding: 20px;">
@@ -937,7 +941,7 @@ window.addEventListener('load', () => {
                         <th style="padding: 15px; color: var(--text-light); text-align: right;">Points</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="points-history-body">
                     <tr style="border-bottom: 1px solid #f1f5f9;">
                         <td style="padding: 15px;">15 Jan 2026</td>
                         <td style="padding: 15px;">Whole Blood Donation</td>
@@ -1018,146 +1022,525 @@ window.addEventListener('load', () => {
             animateCounters();
         };
     </script>
-    <script>
-        const authContainer = document.getElementById('auth-section');
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js';
+        import { firebaseConfig } from '../config/firebase-config.js';
+        import {
+            getUserProfile,
+            getUserDonationHistory,
+            getUserBadges,
+            getUserRewards,
+            getAllBadges,
+            checkAndAwardBadges
+        } from '../config/supabase-client.js';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            updateAuthUI();
-        });
+        window.__BADGES_REWARDS_SKIP_MOCK_INIT__ = true;
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const authContainer = document.getElementById('auth-section');
+        const DEMO_AUTH_MODE_KEY = 'authMode';
+        const DEMO_AUTH_MODE_VALUE = 'demo';
+        const DEMO_SESSION_KEY = 'demoAuthUser';
+        const POINTS_PER_DONATION = 500;
+        const ROADMAP_STEPS = [
+            { label: 'First Drop', requiredDonations: 1 },
+            { label: 'Frequent Flyer', requiredDonations: 3 },
+            { label: 'Master Donor', requiredDonations: 5 },
+            { label: 'Guardian Angel', requiredDonations: 10 },
+            { label: 'Lifesaver Pro', requiredDonations: 20 }
+        ];
+
+        let activeUser = null;
+        let activeProfile = null;
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function formatDisplayDate(value) {
+            if (!value) return '-';
+            const parsed = new Date(value);
+            if (Number.isNaN(parsed.getTime())) return '-';
+            return parsed.toLocaleDateString();
+        }
+
+        function formatMonthYear(value) {
+            if (!value) return '---';
+            const parsed = new Date(value);
+            if (Number.isNaN(parsed.getTime())) return '---';
+            return parsed.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        }
+
+        function parsePointValue(rawValue) {
+            if (rawValue === null || rawValue === undefined) return 0;
+            if (typeof rawValue === 'number') return Number.isFinite(rawValue) ? Math.abs(rawValue) : 0;
+            const matched = String(rawValue).match(/\d+/);
+            if (!matched) return 0;
+            const parsed = Number(matched[0]);
+            return Number.isFinite(parsed) ? Math.abs(parsed) : 0;
+        }
+
+        function getDonationPoints(entry) {
+            const explicit = entry?.points_earned ?? entry?.life_points ?? entry?.reward_points;
+            const parsed = parsePointValue(explicit);
+            return parsed > 0 ? parsed : POINTS_PER_DONATION;
+        }
+
+        function getRedeemedPoints(reward) {
+            if (!reward || reward.is_claimed !== true) return 0;
+            const explicit = reward.points_used ?? reward.points_redeemed;
+            const parsed = parsePointValue(explicit);
+            if (parsed > 0) return parsed;
+            return parsePointValue(reward.reward_value);
+        }
+
+        function getTotalUnits(donations) {
+            return (donations || []).reduce((sum, entry) => {
+                const units = Number(entry?.units_donated);
+                if (Number.isFinite(units) && units > 0) return sum + units;
+                return sum + 1;
+            }, 0);
+        }
+
+        function getPointsSummary(donations, rewards) {
+            const totalEarned = (donations || []).reduce((sum, entry) => sum + getDonationPoints(entry), 0);
+            const totalRedeemed = (rewards || []).reduce((sum, reward) => sum + getRedeemedPoints(reward), 0);
+            const currentBalance = Math.max(totalEarned - totalRedeemed, 0);
+
+            const donationCount = (donations || []).length;
+            const nextMilestone = ROADMAP_STEPS.find((step) => donationCount < step.requiredDonations) || null;
+            const nextTierGoal = nextMilestone
+                ? nextMilestone.requiredDonations * POINTS_PER_DONATION
+                : (donationCount + 5) * POINTS_PER_DONATION;
+
+            const progressPercent = nextTierGoal > 0
+                ? Math.max(0, Math.min(100, (currentBalance / nextTierGoal) * 100))
+                : 100;
+
+            return {
+                totalEarned,
+                totalRedeemed,
+                currentBalance,
+                nextTierGoal,
+                progressPercent,
+                nextTierRemaining: Math.max(nextTierGoal - currentBalance, 0)
+            };
+        }
+
+        function buildFallbackProfile(user) {
+            const raw = localStorage.getItem('userData');
+            let parsed = null;
+            try {
+                parsed = raw ? JSON.parse(raw) : null;
+            } catch (error) {
+                parsed = null;
+            }
+
+            return {
+                name: parsed?.name || user?.displayName || localStorage.getItem('donorName') || 'Donor',
+                email: parsed?.email || user?.email || localStorage.getItem('userEmail') || '',
+                blood_group: parsed?.bloodGroup || 'O+',
+                created_at: parsed?.createdAt || null
+            };
+        }
+
+        function getRankLabel(donationCount) {
+            if (donationCount >= 20) return 'Lifesaver Pro';
+            if (donationCount >= 10) return 'Guardian Angel';
+            if (donationCount >= 5) return 'Master Donor';
+            if (donationCount >= 3) return 'Frequent Flyer';
+            if (donationCount >= 1) return 'First Drop';
+            return 'Verified Guardian';
+        }
 
         function updateAuthUI() {
-            const storedUser = localStorage.getItem('donorName');
-            const dataStr = localStorage.getItem('donorData');
+            if (!authContainer) return;
 
-            if (storedUser && storedUser.trim() !== "") {
-                const names = storedUser.trim().split(' ');
-                let initials = names[0].charAt(0);
-                if (names.length > 1) initials += names[names.length - 1].charAt(0);
+            if (activeUser) {
+                const safeName = (activeProfile?.name || activeUser.displayName || activeUser.email || 'Donor').trim();
+                const parts = safeName.split(' ').filter(Boolean);
+                const initials = `${parts[0]?.[0] || 'D'}${parts.length > 1 ? parts[parts.length - 1][0] : ''}`.toUpperCase();
 
                 authContainer.innerHTML = `
                     <div class="auth-wrapper">
-                        <div class="profile-avatar" id="avatarBtn">
-                            ${initials.toUpperCase()}
-                        </div>
+                        <div class="profile-avatar" id="avatarBtn">${escapeHtml(initials)}</div>
                         <div class="profile-dropdown-menu" id="profileMenu">
                             <div style="padding: 10px 20px; font-size: 11px; color: #888; border-bottom: 1px solid #eee;">
-                                Signed in as <br> <strong style="color: #333;">${storedUser}</strong>
+                                Signed in as <br> <strong style="color: #333;">${escapeHtml(safeName)}</strong>
                             </div>
-                             <a href="profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
-                             <a href="front_page.html" onclick="logoutDonor(event)" class="logout-btn">
+                            <a href="profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
+                            <a href="#" onclick="logoutDonor(event)" class="logout-btn">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
-                        </div>
-                        <div id="profile-alert" class="cloud-alert">
-                            <div class="cloud-content">
-                                <span>Please complete your profile.🩸</span>
-                                 <a href="profile.html">Edit</a>
-                            </div>
-                            <div class="cloud-arrow"></div>
                         </div>
                     </div>
                 `;
 
-                document.getElementById('avatarBtn').onclick = (e) => {
-                    e.stopPropagation();
-                    document.getElementById('profileMenu').classList.toggle('show');
-                };
-
-                checkProfileCompleteness(dataStr);
-            } else {
-                authContainer.innerHTML = `
-                             <a href="front_page.html" onclick="simulateLogin(event)">
-                        <i class="fas fa-user-circle"></i> Donor Login
-                    </a>
-                `;
+                const avatarBtn = document.getElementById('avatarBtn');
+                if (avatarBtn) {
+                    avatarBtn.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        const menu = document.getElementById('profileMenu');
+                        if (menu) menu.classList.toggle('show');
+                    });
+                }
+                return;
             }
+
+            authContainer.innerHTML = `
+                <a href="profile.html">
+                    <i class="fas fa-user-edit"></i> Profile Edit
+                </a>
+            `;
         }
 
-        function checkProfileCompleteness(dataStr) {
-            const alertBar = document.getElementById('profile-alert');
-            if (!alertBar) return;
-            let isMissing = false;
-            if (!dataStr) {
-                isMissing = true;
-            } else {
-                const data = JSON.parse(dataStr);
-                const checks = [
-                    !data.phone || data.phone.trim() === "" || data.phone.includes("555-0128"),
-                    !data.bloodGroup || data.bloodGroup.trim() === "",
-                    !data.email || data.email.trim() === "",
-                    !data.address || data.address.trim() === ""
-                ];
-                isMissing = checks.some(condition => condition === true);
+        async function logoutDonor(event) {
+            event.preventDefault();
+
+            const keysToClear = ['userId', 'userEmail', 'userData', 'donorName', DEMO_SESSION_KEY, DEMO_AUTH_MODE_KEY];
+
+            if (localStorage.getItem(DEMO_AUTH_MODE_KEY) === DEMO_AUTH_MODE_VALUE) {
+                keysToClear.forEach((key) => localStorage.removeItem(key));
+                window.location.href = 'front_page.html';
+                return;
             }
 
-            if (isMissing) {
-                alertBar.classList.remove('hidden');
-                alertBar.style.setProperty('display', 'flex', 'important');
-            } else {
-                alertBar.classList.add('hidden');
-                alertBar.style.setProperty('display', 'none', 'important');
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error('Error signing out from badges page:', error);
             }
+
+            keysToClear.forEach((key) => localStorage.removeItem(key));
+            window.location.href = 'front_page.html';
         }
 
-        function simulateLogin(e) {
-            e.preventDefault();
-            const name = prompt("Enter Full Name:");
-            if (name) {
-                localStorage.setItem('donorName', name);
-                updateAuthUI();
-            }
-        }
+        window.logoutDonor = logoutDonor;
 
-        function logoutDonor(e) {
-            e.preventDefault();
-            if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem('donorName');
-                localStorage.removeItem('donorData');
-                window.location.reload();
-            }
-        }
+        function renderRoadmap(donationCount, pointsSummary) {
+            const steps = Array.from(document.querySelectorAll('.roadmap-step'));
+            const caption = document.getElementById('roadmap-progress-caption');
 
-        window.onclick = () => {
-            const menu = document.getElementById('profileMenu');
-            if (menu) menu.classList.remove('show');
-        };
+            const completedCount = ROADMAP_STEPS.filter((step) => donationCount >= step.requiredDonations).length;
+            const activeIndex = completedCount >= ROADMAP_STEPS.length
+                ? ROADMAP_STEPS.length - 1
+                : completedCount;
 
-        function refreshUserUI() {
-            const name = localStorage.getItem('donorName');
-            const dataStr = localStorage.getItem('donorData');
-            const authContainer = document.getElementById('auth-section');
-            const alertBar = document.getElementById('profile-alert');
+            steps.forEach((step, index) => {
+                step.classList.remove('completed', 'active');
+                if (donationCount >= (ROADMAP_STEPS[index]?.requiredDonations || Number.MAX_SAFE_INTEGER)) {
+                    step.classList.add('completed');
+                } else if (index === activeIndex) {
+                    step.classList.add('active');
+                }
+            });
 
-            if (name && authContainer) {
-                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-                authContainer.innerHTML = `<div style="width:40px; height:40px; background:#2c9786; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">${initials}</div>`;
-            }
-
-            if (alertBar) {
-                let showNotice = false;
-                if (!dataStr) {
-                    showNotice = true;
+            if (caption) {
+                const nextStep = ROADMAP_STEPS.find((step) => donationCount < step.requiredDonations) || null;
+                if (!nextStep) {
+                    caption.textContent = 'All milestone tiers unlocked';
                 } else {
-                    const data = JSON.parse(dataStr);
-                    const isPhoneMissing = !data.phone || data.phone.trim() === "" || data.phone === "(405) 555-0128";
-                    const isBloodMissing = !data.bloodGroup || data.bloodGroup.trim() === "";
-                    const isEmailMissing = !data.email || data.email.trim() === "";
-                    const isAddressMissing = !data.address || data.address.trim() === "";
-                    const isLocationMissing = !location.email || data.location.trim() === "";
-                    const isPostol_codeMissing = !posatl_code.email || data.postal_code.trim() === "";
-                    if (isPhoneMissing || isBloodMissing || isEmailMissing || isAddressMissing || isLocationMissing || isPostol_codeMissing) {
-                        showNotice = true;
+                    const remaining = Math.max(nextStep.requiredDonations - donationCount, 0);
+                    caption.textContent = `${remaining} donation(s) to ${nextStep.label}`;
+                }
+            }
+
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
+                progressBar.style.width = `${Math.round(pointsSummary.progressPercent)}%`;
+            }
+        }
+
+        function renderEarnedBadges(userBadges, allBadges, donationCount) {
+            const grid = document.getElementById('earned-badges-grid');
+            if (!grid) return;
+
+            const earnedMap = new Map();
+            (userBadges || []).forEach((entry) => {
+                const badgeId = entry.badge_id || entry?.badges?.id;
+                if (badgeId) earnedMap.set(String(badgeId), entry);
+            });
+
+            const catalog = (allBadges && allBadges.length > 0)
+                ? allBadges
+                : (userBadges || []).map((entry) => ({ ...(entry.badges || {}), id: entry.badge_id || entry?.badges?.id }));
+
+            if (!catalog || catalog.length === 0) {
+                grid.innerHTML = '<div class="badge-card tier-locked"><h3 style="font-size: 16px; margin-bottom: 6px;">No badges found</h3><p style="font-size: 13px; color: var(--text-light);">Complete donations to unlock milestones.</p></div>';
+                return;
+            }
+
+            grid.innerHTML = catalog.map((badge) => {
+                const badgeId = badge.id ? String(badge.id) : '';
+                const earnedEntry = badgeId ? earnedMap.get(badgeId) : null;
+                const isEarned = Boolean(earnedEntry);
+
+                const badgeName = badge.name || badge.badge_name || 'Achievement Badge';
+                const badgeDescription = badge.description || badge.badge_description || 'Awarded for donor milestones.';
+                const iconName = badge.icon || badge.badge_icon_url || 'fa-award';
+                const iconClass = iconName.includes('fa-') ? iconName : 'fa-award';
+                const earnedDate = earnedEntry ? (earnedEntry.earned_at || earnedEntry.earned_date || earnedEntry.created_at) : null;
+
+                const criteriaRaw = String(badge.criteria || badge.achievement_criteria || '').toLowerCase();
+                let requiredDonations = 0;
+                if (criteriaRaw.includes('first')) requiredDonations = 1;
+                if (criteriaRaw.includes('regular')) requiredDonations = 3;
+                if (criteriaRaw.includes('five') || criteriaRaw.includes('5')) requiredDonations = 5;
+                if (criteriaRaw.includes('ten') || criteriaRaw.includes('10')) requiredDonations = 10;
+
+                const cardClass = isEarned ? 'badge-card tier-gold' : 'badge-card tier-locked';
+                const progressBar = !isEarned && requiredDonations > 0
+                    ? `<div style="height: 6px; background: #f1f5f9; border-radius: 3px; margin: 10px 0; overflow: hidden;"><div style="width: ${Math.min(100, Math.round((donationCount / requiredDonations) * 100))}%; height: 100%; background: var(--accent-orange);"></div></div>`
+                    : '';
+
+                return `
+                    <div class="${cardClass}">
+                        <div class="badge-icon"><i class="fas ${escapeHtml(iconClass)}"></i></div>
+                        <h3 style="font-size: 18px; margin-bottom: 5px;">${escapeHtml(badgeName)}</h3>
+                        <p style="font-size: 13px; color: var(--text-light); margin-bottom: 10px;">${escapeHtml(badgeDescription)}</p>
+                        ${isEarned
+                            ? `<span style="font-size: 10px; font-weight: 700; color: #166534; background: #dcfce7; padding: 4px 10px; border-radius: 10px;">EARNED ${escapeHtml(formatDisplayDate(earnedDate))}</span>`
+                            : `${progressBar}<span style="font-size: 10px; font-weight: 700; color: var(--text-light);">${requiredDonations > 0 ? `LOCKED (${donationCount}/${requiredDonations})` : 'LOCKED'}</span>`}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderRewards(rewards) {
+            const grid = document.getElementById('available-rewards-grid');
+            if (!grid) return;
+
+            if (!rewards || rewards.length === 0) {
+                grid.innerHTML = `
+                    <div class="badge-card" style="text-align: left; display: flex; align-items: center; gap: 20px; padding: 20px;">
+                        <div class="badge-icon" style="margin: 0; width: 60px; height: 60px; line-height: 60px;"><i class="fas fa-gift" style="color: var(--accent-orange);"></i></div>
+                        <div>
+                            <h4 style="font-size: 16px;">No rewards yet</h4>
+                            <p style="font-size: 12px; color: var(--text-light);">Complete more donations to unlock rewards.</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = rewards.map((reward) => {
+                const rewardType = reward.reward_type || 'Reward';
+                const rewardValue = reward.reward_value || 'Pending';
+                const rewardDescription = reward.reward_description || 'Reward issued for donor milestones.';
+                const badgeClass = reward.is_claimed === true
+                    ? 'color: #991b1b; background: #fee2e2;'
+                    : 'color: #166534; background: #dcfce7;';
+                const badgeLabel = reward.is_claimed === true ? 'CLAIMED' : 'ACTIVE';
+
+                return `
+                    <div class="badge-card" style="text-align: left; display: flex; align-items: center; gap: 20px; padding: 20px;">
+                        <div class="badge-icon" style="margin: 0; width: 60px; height: 60px; line-height: 60px;"><i class="fas fa-gift" style="color: var(--accent-orange);"></i></div>
+                        <div>
+                            <h4 style="font-size: 16px;">${escapeHtml(rewardType)} - ${escapeHtml(rewardValue)}</h4>
+                            <p style="font-size: 12px; color: var(--text-light);">${escapeHtml(rewardDescription)}</p>
+                            <span style="display: inline-block; margin-top: 6px; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 10px; ${badgeClass}">${badgeLabel}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderPointsHistory(donations, rewards) {
+            const body = document.getElementById('points-history-body');
+            if (!body) return;
+
+            const donationRows = (donations || []).map((entry) => {
+                const center = entry.blood_center_name || entry.blood_bank || entry.blood_center_location || 'Donation Activity';
+                return {
+                    date: entry.donation_date || entry.created_at,
+                    activity: `Donation at ${center}`,
+                    type: 'earned',
+                    points: getDonationPoints(entry)
+                };
+            });
+
+            const rewardRows = (rewards || [])
+                .filter((reward) => reward.is_claimed === true)
+                .map((reward) => ({
+                    date: reward.claimed_date || reward.updated_at || reward.created_at,
+                    activity: `${reward.reward_type || 'Reward'} Redemption`,
+                    type: 'redeemed',
+                    points: getRedeemedPoints(reward)
+                }));
+
+            const rows = [...donationRows, ...rewardRows].sort((a, b) => {
+                const timeA = a.date ? new Date(a.date).getTime() : 0;
+                const timeB = b.date ? new Date(b.date).getTime() : 0;
+                return timeB - timeA;
+            });
+
+            if (!rows.length) {
+                body.innerHTML = `
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td colspan="4" style="padding: 15px; text-align: center; color: var(--text-light);">No points activity yet.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            body.innerHTML = rows.slice(0, 20).map((entry) => {
+                const isRedeemed = entry.type === 'redeemed';
+                const chipStyle = isRedeemed
+                    ? 'color: #991b1b; background: #fee2e2;'
+                    : 'color: #166534; background: #dcfce7;';
+                const valueStyle = isRedeemed ? 'color: #991b1b;' : 'color: #166534;';
+                const sign = isRedeemed ? '-' : '+';
+
+                return `
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 15px;">${escapeHtml(formatDisplayDate(entry.date))}</td>
+                        <td style="padding: 15px;">${escapeHtml(entry.activity)}</td>
+                        <td style="padding: 15px;"><span style="${chipStyle} padding: 4px 10px; border-radius: 10px; font-size: 11px;">${isRedeemed ? 'REDEEMED' : 'EARNED'}</span></td>
+                        <td style="padding: 15px; text-align: right; font-weight: 600; ${valueStyle}">${sign}${escapeHtml(Number(entry.points || 0).toLocaleString())}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderDashboard(profile, donations, userBadges, rewards, allBadges) {
+            const donationCount = (donations || []).length;
+            const pointsSummary = getPointsSummary(donations, rewards);
+            const totalUnits = getTotalUnits(donations);
+            const donorName = profile?.name || activeUser?.displayName || activeUser?.email || 'Donor';
+            const donorId = activeUser?.uid
+                ? `JV-${String(activeUser.uid).slice(-6).toUpperCase()}`
+                : 'JV-00000';
+            const createdAt = profile?.created_at || profile?.updated_at || null;
+
+            const nameEl = document.getElementById('donor-name');
+            const idEl = document.getElementById('donor-id');
+            const rankEl = document.getElementById('donor-rank-label');
+            const joinDateEl = document.getElementById('join-date');
+            const pointsEl = document.getElementById('current-points');
+            const livesEl = document.getElementById('metric-lives-impacted');
+            const unitsEl = document.getElementById('metric-total-units');
+            const sinceEl = document.getElementById('metric-donor-since');
+
+            if (nameEl) nameEl.textContent = donorName;
+            if (idEl) idEl.textContent = `ID: #${donorId}`;
+            if (rankEl) rankEl.textContent = getRankLabel(donationCount);
+            if (joinDateEl) joinDateEl.textContent = formatMonthYear(createdAt);
+
+            if (pointsEl) {
+                pointsEl.setAttribute('data-target', String(pointsSummary.currentBalance));
+                pointsEl.textContent = '0';
+            }
+
+            if (livesEl) {
+                livesEl.setAttribute('data-target', String(totalUnits * 3));
+                livesEl.textContent = '0';
+            }
+
+            if (unitsEl) {
+                unitsEl.setAttribute('data-target', String(totalUnits));
+                unitsEl.textContent = '0';
+            }
+
+            if (sinceEl) {
+                if (!createdAt) {
+                    sinceEl.textContent = '-';
+                } else {
+                    const created = new Date(createdAt);
+                    if (Number.isNaN(created.getTime())) {
+                        sinceEl.textContent = '-';
+                    } else {
+                        const years = Math.max(0, (Date.now() - created.getTime()) / (1000 * 60 * 60 * 24 * 365));
+                        sinceEl.textContent = `${years.toFixed(1)} Years`;
                     }
                 }
-                if (showNotice) {
-                    alertBar.style.display = 'flex';
-                } else {
-                    alertBar.style.display = 'none';
-                }
+            }
+
+            renderRoadmap(donationCount, pointsSummary);
+            renderEarnedBadges(userBadges, allBadges, donationCount);
+            renderRewards(rewards);
+            renderPointsHistory(donations, rewards);
+
+            const counterAnimator = window.animateCounters || window.animateAllCounters;
+            if (typeof counterAnimator === 'function') {
+                setTimeout(() => counterAnimator(), 60);
             }
         }
 
-        document.addEventListener('DOMContentLoaded', updateAuthUI);
+        function getDemoSessionUser() {
+            if (localStorage.getItem(DEMO_AUTH_MODE_KEY) !== DEMO_AUTH_MODE_VALUE) {
+                return null;
+            }
+
+            const raw = localStorage.getItem(DEMO_SESSION_KEY);
+            if (!raw) return null;
+
+            try {
+                const parsed = JSON.parse(raw);
+                if (!parsed || !parsed.uid) return null;
+                return {
+                    uid: parsed.uid,
+                    email: parsed.email || '',
+                    displayName: parsed.name || 'Demo Donor',
+                    isDemo: true
+                };
+            } catch (error) {
+                return null;
+            }
+        }
+
+        async function hydratePage(userLike) {
+            activeUser = userLike;
+            if (!userLike || !userLike.uid) {
+                window.location.href = 'main_donar_login.html';
+                return;
+            }
+
+            const fallbackProfile = buildFallbackProfile(userLike);
+
+            if (!userLike.isDemo) {
+                await checkAndAwardBadges(userLike.uid);
+            }
+
+            const [profile, donations, userBadges, rewards, allBadges] = await Promise.all([
+                getUserProfile(userLike.uid),
+                getUserDonationHistory(userLike.uid),
+                getUserBadges(userLike.uid),
+                getUserRewards(userLike.uid),
+                getAllBadges()
+            ]);
+
+            activeProfile = profile || fallbackProfile;
+            updateAuthUI();
+            renderDashboard(activeProfile, donations || [], userBadges || [], rewards || [], allBadges || []);
+        }
+
+        document.addEventListener('click', () => {
+            const menu = document.getElementById('profileMenu');
+            if (menu) menu.classList.remove('show');
+        });
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                await hydratePage(user);
+                return;
+            }
+
+            const demoUser = getDemoSessionUser();
+            if (demoUser) {
+                await hydratePage(demoUser);
+                return;
+            }
+
+            window.location.href = 'main_donar_login.html';
+        });
     </script>
 </body>
 </html>

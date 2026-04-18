@@ -856,31 +856,31 @@
                 <li class="nav-item">
                     <a href="#"><span data-key="about_main">About Jeevandhara</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
-                        <li><a href="#">About Jeevandhara</a></li>
-                        <li><a href="#">Donation History Tracking</a></li>
-                        <li><a href="#">Badges and Rewards</a></li>
-                        <li><a href="#">Jeevandhara FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="about_jeevandhara.html" data-key="about_sub">About Jeevandhara</a></li>
+                        <li><a href="history_tracker.html" data-key="history">Donation History Tracking</a></li>
+                        <li><a href="Badges_Rewards.html" data-key="rewards">Badges and Rewards</a></li>
+                        <li><a href="FAQ.html" data-key="jeev_faq">Jeevandhara FAQ</a></li>
+                        <li><a href="about_jeevandhara.html" data-key="contact">Contact Us</a></li>
                     </ul>
                 </li>
                 
                 <li class="nav-item">
                     <a href="#"><span data-key="looking_main">Looking for Blood</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
-                        <li><a href="#">Donor Login</a></li>
-                        <li><a href="blood_availability.html">Blood Availability</a></li>
-                        <li><a href="#">Blood Center Directory</a></li>
-                        <li><a href="#" class="sos-link"><i class="fas fa-exclamation-circle"></i> SOS Emergency</a></li>
+                        <li><a href="main_donar_login.html" data-key="donor_login">Donor Login</a></li>
+                        <li><a href="blood_availability.html" data-key="availability_sub">Blood Availability</a></li>
+                        <li><a href="blood_center_directory.html" data-key="directory_sub">Blood Center Directory</a></li>
+                        <li><a href="blood_center.html" class="sos-link"><i class="fas fa-exclamation-circle"></i> <span data-key="sos">SOS Emergency</span></a></li>
                     </ul>
                 </li>
 
                 <li class="nav-item">
                     <a href="#"><span data-key="donate_main">Want to Donate</span> <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
                     <ul class="dropdown">
-                        <li><a href="#">Blood Bank Appointment</a></li>
-                        <li><a href="#">AI Blood Matching</a></li>
-                        <li><a href="health_advice.html">Health Advice (Diet)</a></li>
-                        <li><a href="#">Register VBD Camp</a></li>
+                        <li><a href="BBA.html" data-key="appointment_sub">Blood Bank Appointment</a></li>
+                        <li><a href="AI.html" data-key="ai_match">AI Blood Matching</a></li>
+                        <li><a href="health_advice.html" data-key="health_advice">Health Advice (Diet)</a></li>
+                        <li><a href="VBD.html" data-key="register_camp">Register VBD Camp</a></li>
                         <li><a href="camp.html" data-key="Blood Donation Camps">Blood Donation Camps</a></li>
                     </ul>
                 </li>
@@ -940,7 +940,7 @@
                 </div>
                 <div class="node-text">
                     <span class="node-label">Verified Life-Saver</span>
-                    <h1 class="node-value">Bhushan Sonawane</h1>
+                    <h1 class="node-value" id="history-donor-name">Bhushan Sonawane</h1>
                 </div>
             </div>
         </div>
@@ -960,12 +960,12 @@
 
         <div class="hud-node-final">
             <div class="blood-badge-slim">
-                <span class="blood-type">O+</span>
+                <span class="blood-type" id="history-blood-type-badge">O+</span>
             </div>
             <div class="node-text">
                 <span class="node-label">Legacy</span>
                 <div class="hero-bar-slim">
-                    <div class="hero-fill"></div>
+                    <div class="hero-fill" id="history-legacy-fill"></div>
                 </div>
             </div>
         </div>
@@ -978,17 +978,17 @@
             <div class="summary-grid">
                 <div class="stats-mini-card">
                     <i class="fas fa-tint mini-icon"></i>
-                    <span class="mini-val">12</span>
+                    <span class="mini-val" id="history-total-units">12</span>
                     <span class="mini-label">Total Units</span>
                 </div>
                 <div class="stats-mini-card">
                     <i class="fas fa-vial mini-icon" style="color: var(--blood-red);"></i>
-                    <span class="mini-val">O+</span>
+                    <span class="mini-val" id="history-blood-type-summary">O+</span>
                     <span class="mini-label">Blood Type</span>
                 </div>
                 <div class="stats-mini-card">
                     <i class="fas fa-trophy mini-icon" style="color: var(--accent-orange);"></i>
-                    <span class="mini-val">2.4k</span>
+                    <span class="mini-val" id="history-life-points">2.4k</span>
                     <span class="mini-label">Life Points</span>
                 </div>
             </div>
@@ -1066,7 +1066,7 @@
                             </tr>
                         </thead>
                         
-                        <tbody>
+                        <tbody id="history-transactions-body">
                             <tr>
                                 <td><strong>15 Jan 2026</strong></td>
                                 <td>Jehangir Hospital, Pune</td>
@@ -1118,12 +1118,12 @@
                                 style="stroke-dashoffset: 140;"></circle>
                         </svg>
                         <div class="progress-ring-text">
-                            <span class="days-left">53</span>
+                            <span class="days-left" id="history-days-left">53</span>
                             <span class="days-label">Days to go</span>
                         </div>
                     </div>
                     <p style="font-size: 13px; color: var(--text-light);">You'll be eligible to save more lives on
-                        <br><strong>15 April 2026</strong>
+                        <br><strong id="history-eligible-date">15 April 2026</strong>
                     </p>
                     <button
                         style="margin-top: 15px; background: none; border: 1px solid var(--primary-teal); color: var(--primary-teal); padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer;">Set
@@ -1260,7 +1260,7 @@
 
 <script>
 /* --- CONFIGURATION --- */
-const donorStats = {
+let donorStats = {
     name: "BHUSHAN",
     donations: 3 // Set this to the actual donation count from your database
 };
@@ -1275,6 +1275,16 @@ const allMilestones = [
 /* --- LOGIC --- */
 let activeUnlocked = allMilestones.filter(m => donorStats.donations >= m.req);
 let currentRotateIdx = 0;
+
+function updateMilestoneState(name, donationCount) {
+    donorStats.name = String(name || 'DONOR').toUpperCase();
+    donorStats.donations = Number(donationCount) || 0;
+    activeUnlocked = allMilestones.filter(m => donorStats.donations >= m.req);
+    currentRotateIdx = 0;
+    rotateSpotlight();
+}
+
+window.updateMilestoneState = updateMilestoneState;
 
 function rotateSpotlight() {
     const spotlight = document.getElementById('jd-spotlight');
@@ -1359,10 +1369,13 @@ function closeFullView() { document.getElementById('jd-full-viewer').style.displ
             alert("Reminder Set! We will notify you on 15 April 2026 via SMS and Email to save another life. Thank you for your commitment!");
         }
 
-        // Add flip sound effect feel or just visual cue
-        document.querySelector('.id-card-inner').addEventListener('click', function () {
-            this.style.transform = this.style.transform === 'rotateY(180deg)' ? 'rotateY(0deg)' : 'rotateY(180deg)';
-        });
+        // Add flip visual cue only when the card exists on the page
+        const idCardInner = document.querySelector('.id-card-inner');
+        if (idCardInner) {
+            idCardInner.addEventListener('click', function () {
+                this.style.transform = this.style.transform === 'rotateY(180deg)' ? 'rotateY(0deg)' : 'rotateY(180deg)';
+            });
+        }
 
         function viewDetails(date, location, organization, units, ref, doctor) {
     const modal = document.getElementById("donationModal");
@@ -1400,146 +1413,392 @@ window.onclick = function(event) {
 
     </script>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js';
+        import { firebaseConfig } from '../config/firebase-config.js';
+        import { getUserProfile, getUserDonationHistory, getUserRewards, checkAndAwardBadges } from '../config/supabase-client.js';
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const authContainer = document.getElementById('auth-section');
 
-        document.addEventListener('DOMContentLoaded', () => {
-            updateAuthUI();
-        });
+        const DEMO_AUTH_MODE_KEY = 'authMode';
+        const DEMO_AUTH_MODE_VALUE = 'demo';
+        const DEMO_SESSION_KEY = 'demoAuthUser';
+
+        let activeUser = null;
+        let activeProfile = null;
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function escapeAttr(value) {
+            return escapeHtml(value).replace(/`/g, '&#096;');
+        }
+
+        function formatDisplayDate(value) {
+            if (!value) return '-';
+            const parsed = new Date(value);
+            if (Number.isNaN(parsed.getTime())) return '-';
+            return parsed.toLocaleDateString();
+        }
+
+        function formatCompact(value) {
+            const numeric = Number(value) || 0;
+            return new Intl.NumberFormat('en', {
+                notation: 'compact',
+                maximumFractionDigits: 1
+            }).format(numeric).toLowerCase();
+        }
+
+        function parsePointValue(rawValue) {
+            if (rawValue === null || rawValue === undefined) return 0;
+            if (typeof rawValue === 'number') return Number.isFinite(rawValue) ? Math.abs(rawValue) : 0;
+            const matched = String(rawValue).match(/\d+/);
+            if (!matched) return 0;
+            const value = Number(matched[0]);
+            return Number.isFinite(value) ? Math.abs(value) : 0;
+        }
+
+        function getDonationPoints(entry) {
+            const explicit = entry?.points_earned ?? entry?.life_points ?? entry?.reward_points;
+            const parsed = parsePointValue(explicit);
+            return parsed > 0 ? parsed : 500;
+        }
+
+        function getRedeemedPoints(reward) {
+            if (!reward || reward.is_claimed !== true) return 0;
+            const explicit = reward.points_used ?? reward.points_redeemed;
+            const parsed = parsePointValue(explicit);
+            if (parsed > 0) return parsed;
+            return parsePointValue(reward.reward_value);
+        }
+
+        function getTotalUnits(donations) {
+            return (donations || []).reduce((sum, entry) => {
+                const units = Number(entry?.units_donated);
+                if (Number.isFinite(units) && units > 0) {
+                    return sum + units;
+                }
+                return sum + 1;
+            }, 0);
+        }
+
+        function getLatestDonation(donations) {
+            if (!donations || donations.length === 0) return null;
+            const sorted = [...donations].sort((a, b) => {
+                const timeA = a?.donation_date ? new Date(a.donation_date).getTime() : 0;
+                const timeB = b?.donation_date ? new Date(b.donation_date).getTime() : 0;
+                return timeB - timeA;
+            });
+            return sorted[0] || null;
+        }
+
+        function getNextEligibilityDate(donations) {
+            const latest = getLatestDonation(donations);
+            if (!latest) return null;
+
+            if (latest.next_eligible_date) {
+                const explicit = new Date(latest.next_eligible_date);
+                if (!Number.isNaN(explicit.getTime())) return explicit;
+            }
+
+            if (latest.donation_date) {
+                const donationDate = new Date(latest.donation_date);
+                if (!Number.isNaN(donationDate.getTime())) {
+                    const next = new Date(donationDate);
+                    next.setDate(next.getDate() + 90);
+                    return next;
+                }
+            }
+
+            return null;
+        }
+
+        function buildFallbackProfile(user) {
+            const raw = localStorage.getItem('userData');
+            let parsed = null;
+            try {
+                parsed = raw ? JSON.parse(raw) : null;
+            } catch (error) {
+                parsed = null;
+            }
+
+            return {
+                name: parsed?.name || user?.displayName || localStorage.getItem('donorName') || 'Donor',
+                email: parsed?.email || user?.email || localStorage.getItem('userEmail') || '',
+                blood_group: parsed?.bloodGroup || 'O+',
+                phone: parsed?.phone || ''
+            };
+        }
 
         function updateAuthUI() {
-            const storedUser = localStorage.getItem('donorName');
-            const dataStr = localStorage.getItem('donorData');
+            if (!authContainer) return;
 
-            if (storedUser && storedUser.trim() !== "") {
-                const names = storedUser.trim().split(' ');
-                let initials = names[0].charAt(0);
-                if (names.length > 1) initials += names[names.length - 1].charAt(0);
+            if (activeUser) {
+                const safeName = (activeProfile?.name || activeUser.displayName || activeUser.email || 'Donor').trim();
+                const parts = safeName.split(' ').filter(Boolean);
+                const initials = `${parts[0]?.[0] || 'D'}${parts.length > 1 ? parts[parts.length - 1][0] : ''}`.toUpperCase();
 
                 authContainer.innerHTML = `
                     <div class="auth-wrapper">
-                        <div class="profile-avatar" id="avatarBtn">
-                            ${initials.toUpperCase()}
-                        </div>
+                        <div class="profile-avatar" id="avatarBtn">${escapeHtml(initials)}</div>
                         <div class="profile-dropdown-menu" id="profileMenu">
                             <div style="padding: 10px 20px; font-size: 11px; color: #888; border-bottom: 1px solid #eee;">
-                                Signed in as <br> <strong style="color: #333;">${storedUser}</strong>
+                                Signed in as <br> <strong style="color: #333;">${escapeHtml(safeName)}</strong>
                             </div>
-                             <a href="profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
-                             <a href="front_page.html" onclick="logoutDonor(event)" class="logout-btn">
+                            <a href="profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
+                            <a href="#" onclick="logoutDonor(event)" class="logout-btn">
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
-                        </div>
-                        <div id="profile-alert" class="cloud-alert">
-                            <div class="cloud-content">
-                                <span>Please complete your profile.🩸</span>
-                                 <a href="profile.html">Edit</a>
-                            </div>
-                            <div class="cloud-arrow"></div>
                         </div>
                     </div>
                 `;
 
-                document.getElementById('avatarBtn').onclick = (e) => {
-                    e.stopPropagation();
-                    document.getElementById('profileMenu').classList.toggle('show');
-                };
+                const avatarBtn = document.getElementById('avatarBtn');
+                if (avatarBtn) {
+                    avatarBtn.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        const menu = document.getElementById('profileMenu');
+                        if (menu) menu.classList.toggle('show');
+                    });
+                }
+                return;
+            }
 
-                checkProfileCompleteness(dataStr);
-            } else {
-                authContainer.innerHTML = `
-                             <a href="front_page.html" onclick="simulateLogin(event)">
-                        <i class="fas fa-user-circle"></i> Donor Login
-                    </a>
+            authContainer.innerHTML = `
+                <a href="profile.html">
+                    <i class="fas fa-user-edit"></i> Profile Edit
+                </a>
+            `;
+        }
+
+        async function logoutDonor(event) {
+            event.preventDefault();
+
+            const keysToClear = ['userId', 'userEmail', 'userData', 'donorName', DEMO_SESSION_KEY, DEMO_AUTH_MODE_KEY];
+
+            if (localStorage.getItem(DEMO_AUTH_MODE_KEY) === DEMO_AUTH_MODE_VALUE) {
+                keysToClear.forEach((key) => localStorage.removeItem(key));
+                window.location.href = 'front_page.html';
+                return;
+            }
+
+            try {
+                await signOut(auth);
+            } catch (error) {
+                console.error('Error signing out from history page:', error);
+            }
+
+            keysToClear.forEach((key) => localStorage.removeItem(key));
+            window.location.href = 'front_page.html';
+        }
+
+        window.logoutDonor = logoutDonor;
+
+        function renderDonationTable(donations) {
+            const tbody = document.getElementById('history-transactions-body');
+            if (!tbody) return;
+
+            if (!donations || donations.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="padding: 20px; text-align: center; color: var(--text-light);">No donation transactions found yet.</td>
+                    </tr>
                 `;
+                return;
             }
+
+            tbody.innerHTML = donations.map((entry, index) => {
+                const date = formatDisplayDate(entry.donation_date);
+                const center = entry.blood_center_name || entry.blood_bank || entry.blood_center_location || 'Unknown Center';
+                const units = entry.units_donated
+                    ? `${entry.units_donated} Unit${entry.units_donated > 1 ? 's' : ''}`
+                    : (entry.blood_quantity_ml ? `${entry.blood_quantity_ml} ml` : '1 Unit');
+                const status = String(entry.donation_status || 'Completed');
+                const statusClass = status.toLowerCase().includes('pending')
+                    ? 'status-pending'
+                    : (status.toLowerCase().includes('cancel') ? 'status-cancelled' : 'status-done');
+                const ref = entry.reference_id || `JD-REF-${String(900 + index).padStart(3, '0')}`;
+                const organization = entry.organization_name || 'Jeevandhara Network';
+                const doctor = entry.supervising_doctor || 'Medical Team';
+
+                return `
+                    <tr>
+                        <td><strong>${escapeHtml(date)}</strong></td>
+                        <td>${escapeHtml(center)}</td>
+                        <td>${escapeHtml(units)}</td>
+                        <td><span class="status-badge ${statusClass}">${escapeHtml(status)}</span></td>
+                        <td>
+                            <button
+                                class="btn-view js-view-details"
+                                data-date="${escapeAttr(date)}"
+                                data-location="${escapeAttr(center)}"
+                                data-organization="${escapeAttr(organization)}"
+                                data-units="${escapeAttr(units)}"
+                                data-ref="${escapeAttr(ref)}"
+                                data-doctor="${escapeAttr(doctor)}"
+                            >
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.querySelectorAll('.js-view-details').forEach((button) => {
+                button.addEventListener('click', () => {
+                    if (typeof window.viewDetails === 'function') {
+                        window.viewDetails(
+                            button.dataset.date,
+                            button.dataset.location,
+                            button.dataset.organization,
+                            button.dataset.units,
+                            button.dataset.ref,
+                            button.dataset.doctor
+                        );
+                    }
+                });
+            });
         }
 
-        function checkProfileCompleteness(dataStr) {
-            const alertBar = document.getElementById('profile-alert');
-            if (!alertBar) return;
-            let isMissing = false;
-            if (!dataStr) {
-                isMissing = true;
+        function renderHistoryData(profile, donations, rewards) {
+            const donorName = profile?.name || activeUser?.displayName || activeUser?.email || 'Donor';
+            const bloodGroup = profile?.blood_group || 'O+';
+            const totalUnits = getTotalUnits(donations);
+
+            const totalEarned = (donations || []).reduce((sum, entry) => sum + getDonationPoints(entry), 0);
+            const totalRedeemed = (rewards || []).reduce((sum, entry) => sum + getRedeemedPoints(entry), 0);
+            const lifePoints = Math.max(totalEarned - totalRedeemed, 0);
+
+            const nameNode = document.getElementById('history-donor-name');
+            const bloodBadge = document.getElementById('history-blood-type-badge');
+            const bloodSummary = document.getElementById('history-blood-type-summary');
+            const unitsNode = document.getElementById('history-total-units');
+            const pointsNode = document.getElementById('history-life-points');
+            const legacyFill = document.getElementById('history-legacy-fill');
+
+            if (nameNode) nameNode.textContent = donorName;
+            if (bloodBadge) bloodBadge.textContent = bloodGroup;
+            if (bloodSummary) bloodSummary.textContent = bloodGroup;
+            if (unitsNode) unitsNode.textContent = String(totalUnits);
+            if (pointsNode) pointsNode.textContent = formatCompact(lifePoints);
+
+            if (legacyFill) {
+                const legacyPercent = Math.max(8, Math.min(100, Math.round(((donations || []).length / 20) * 100)));
+                legacyFill.style.width = `${legacyPercent}%`;
+            }
+
+            const nextEligibilityDate = getNextEligibilityDate(donations);
+            const daysNode = document.getElementById('history-days-left');
+            const dateNode = document.getElementById('history-eligible-date');
+            const ringBar = document.querySelector('.circle-bar');
+
+            if (nextEligibilityDate) {
+                const now = new Date();
+                const dayMs = 24 * 60 * 60 * 1000;
+                const diff = nextEligibilityDate.getTime() - now.getTime();
+                const daysLeft = Math.max(0, Math.ceil(diff / dayMs));
+
+                if (daysNode) daysNode.textContent = String(daysLeft);
+                if (dateNode) dateNode.textContent = formatDisplayDate(nextEligibilityDate);
+
+                if (ringBar) {
+                    const circumference = 2 * Math.PI * 70;
+                    const progress = Math.max(0, Math.min(1, (90 - daysLeft) / 90));
+                    ringBar.style.strokeDasharray = String(circumference);
+                    ringBar.style.strokeDashoffset = String(circumference * (1 - progress));
+                }
             } else {
-                const data = JSON.parse(dataStr);
-                const checks = [
-                    !data.phone || data.phone.trim() === "" || data.phone.includes("555-0128"),
-                    !data.bloodGroup || data.bloodGroup.trim() === "",
-                    !data.email || data.email.trim() === "",
-                    !data.address || data.address.trim() === ""
-                ];
-                isMissing = checks.some(condition => condition === true);
+                if (daysNode) daysNode.textContent = '0';
+                if (dateNode) dateNode.textContent = 'Eligible now';
+                if (ringBar) {
+                    const circumference = 2 * Math.PI * 70;
+                    ringBar.style.strokeDasharray = String(circumference);
+                    ringBar.style.strokeDashoffset = '0';
+                }
             }
 
-            if (isMissing) {
-                alertBar.classList.remove('hidden');
-                alertBar.style.setProperty('display', 'flex', 'important');
-            } else {
-                alertBar.classList.add('hidden');
-                alertBar.style.setProperty('display', 'none', 'important');
+            renderDonationTable(donations || []);
+
+            if (typeof window.updateMilestoneState === 'function') {
+                window.updateMilestoneState(donorName, (donations || []).length);
             }
         }
 
-        function simulateLogin(e) {
-            e.preventDefault();
-            const name = prompt("Enter Full Name:");
-            if (name) {
-                localStorage.setItem('donorName', name);
-                updateAuthUI();
+        function getDemoSessionUser() {
+            if (localStorage.getItem(DEMO_AUTH_MODE_KEY) !== DEMO_AUTH_MODE_VALUE) {
+                return null;
+            }
+
+            const raw = localStorage.getItem(DEMO_SESSION_KEY);
+            if (!raw) return null;
+
+            try {
+                const parsed = JSON.parse(raw);
+                if (!parsed || !parsed.uid) return null;
+                return {
+                    uid: parsed.uid,
+                    email: parsed.email || '',
+                    displayName: parsed.name || 'Demo Donor',
+                    isDemo: true
+                };
+            } catch (error) {
+                return null;
             }
         }
 
-        function logoutDonor(e) {
-            e.preventDefault();
-            if (confirm("Are you sure you want to logout?")) {
-                localStorage.removeItem('donorName');
-                localStorage.removeItem('donorData');
-                window.location.reload();
+        async function hydratePage(userLike) {
+            activeUser = userLike;
+
+            if (!userLike || !userLike.uid) {
+                window.location.href = 'main_donar_login.html';
+                return;
             }
+
+            const fallbackProfile = buildFallbackProfile(userLike);
+
+            if (!userLike.isDemo) {
+                await checkAndAwardBadges(userLike.uid);
+            }
+
+            const [profile, donations, rewards] = await Promise.all([
+                getUserProfile(userLike.uid),
+                getUserDonationHistory(userLike.uid),
+                getUserRewards(userLike.uid)
+            ]);
+
+            activeProfile = profile || fallbackProfile;
+            updateAuthUI();
+            renderHistoryData(activeProfile, donations || [], rewards || []);
         }
 
-        window.onclick = () => {
+        document.addEventListener('click', () => {
             const menu = document.getElementById('profileMenu');
             if (menu) menu.classList.remove('show');
-        };
+        });
 
-        function refreshUserUI() {
-            const name = localStorage.getItem('donorName');
-            const dataStr = localStorage.getItem('donorData');
-            const authContainer = document.getElementById('auth-section');
-            const alertBar = document.getElementById('profile-alert');
-
-            if (name && authContainer) {
-                const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-                authContainer.innerHTML = `<div style="width:40px; height:40px; background:#2c9786; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">${initials}</div>`;
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                await hydratePage(user);
+                return;
             }
 
-            if (alertBar) {
-                let showNotice = false;
-                if (!dataStr) {
-                    showNotice = true;
-                } else {
-                    const data = JSON.parse(dataStr);
-                    const isPhoneMissing = !data.phone || data.phone.trim() === "" || data.phone === "(405) 555-0128";
-                    const isBloodMissing = !data.bloodGroup || data.bloodGroup.trim() === "";
-                    const isEmailMissing = !data.email || data.email.trim() === "";
-                    const isAddressMissing = !data.address || data.address.trim() === "";
-                    const isLocationMissing = !location.email || data.location.trim() === "";
-                    const isPostol_codeMissing = !posatl_code.email || data.postal_code.trim() === "";
-                    if (isPhoneMissing || isBloodMissing || isEmailMissing || isAddressMissing || isLocationMissing || isPostol_codeMissing) {
-                        showNotice = true;
-                    }
-                }
-                if (showNotice) {
-                    alertBar.style.display = 'flex';
-                } else {
-                    alertBar.style.display = 'none';
-                }
+            const demoUser = getDemoSessionUser();
+            if (demoUser) {
+                await hydratePage(demoUser);
+                return;
             }
-        }
 
-        document.addEventListener('DOMContentLoaded', updateAuthUI);
+            window.location.href = 'main_donar_login.html';
+        });
     </script>
 </body>
 
