@@ -1500,8 +1500,8 @@
                 return 'Failed to send (sender email/domain not verified)';
             }
 
-            if (/test mode|testing emails|only send to your own email/i.test(message)) {
-                return 'Failed to send (Resend test mode recipient restriction)';
+            if (/test mode|testing emails|only send to your own email|recipient restriction/i.test(message)) {
+                return 'Failed to send (email provider recipient restriction)';
             }
 
             if (/failed to fetch|network|timed out/i.test(message)) {
@@ -1510,6 +1510,24 @@
 
             const shortMessage = message.length > 120 ? `${message.slice(0, 117)}...` : message;
             return `Failed to send (${shortMessage})`;
+        }
+
+        function isUnsupportedPostHost(statusCode, rawBody) {
+            if (statusCode !== 501) return false;
+
+            const text = String(rawBody || '');
+            return /Unsupported method \('POST'\)|Server does not support this operation/i.test(text);
+        }
+
+        function getEmailBackendUnavailableLabel() {
+            const host = String(window.location.hostname || '').toLowerCase();
+            const isLocalHost = host === 'localhost' || host === '127.0.0.1' || host === '';
+
+            if (isLocalHost) {
+                return 'Email not sent (backend unavailable on local host. Use deployed Netlify URL).';
+            }
+
+            return 'Email not sent (backend unavailable on this host. Check Netlify function deploy).';
         }
 
         async function sendAppointmentConfirmationEmail(details) {
@@ -1546,6 +1564,11 @@
 
                     if (!response.ok) {
                         const rawMessage = await response.text();
+
+                        if (isUnsupportedPostHost(response.status, rawMessage)) {
+                            continue;
+                        }
+
                         const reason = extractEmailFailureReason(response.status, rawMessage);
                         throw new Error(reason);
                     }
@@ -1560,7 +1583,7 @@
 
                 return {
                     status: 'pending',
-                    label: 'Pending (email backend is not running on this host)'
+                    label: getEmailBackendUnavailableLabel()
                 };
             } catch (error) {
                 console.error('Failed to send appointment confirmation email:', error);
