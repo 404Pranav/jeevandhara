@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Dashboard — Jeevandhara</title>
+    <title>Hospital Dashboard â€” Jeevandhara</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,16 +34,16 @@
         }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-        /* ── Animations ── */
+        /* â”€â”€ Animations â”€â”€ */
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.3); } 50% { box-shadow: 0 0 0 8px rgba(239,68,68,0); } }
         @keyframes slideToast { from { transform: translateY(100px) scale(0.95); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
         .tab-panel.visible { animation: fadeInUp 0.35s ease forwards; }
 
-        /* ── Layout ── */
+        /* â”€â”€ Layout â”€â”€ */
         .layout { display: flex; min-height: 100vh; }
 
-        /* ── Sidebar — Dark Premium ── */
+        /* â”€â”€ Sidebar â€” Dark Premium â”€â”€ */
         .sidebar {
             width: var(--sidebar-w); background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
             display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 50;
@@ -94,10 +94,10 @@
         .user-card .user-info p { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.2; }
         .user-card .user-info small { font-size: 10px; color: rgba(255,255,255,0.35); font-weight: 500; }
 
-        /* ── Main Content ── */
+        /* â”€â”€ Main Content â”€â”€ */
         .main { margin-left: var(--sidebar-w); flex: 1; }
 
-        /* ── Header ── */
+        /* â”€â”€ Header â”€â”€ */
         .header {
             height: var(--header-h); background: rgba(255,255,255,0.85);
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
@@ -117,14 +117,14 @@
         .header-btn:hover { background: var(--bg); color: var(--accent); transform: translateY(-1px); box-shadow: var(--shadow-md); }
         .hamburger { display: none; }
 
-        /* ── Content ── */
+        /* â”€â”€ Content â”€â”€ */
         .content { padding: 32px 36px; }
 
-        /* ── Tabs ── */
+        /* â”€â”€ Tabs â”€â”€ */
         .tab-panel { display: none; }
         .tab-panel.visible { display: block; }
 
-        /* ── Cards ── */
+        /* â”€â”€ Cards â”€â”€ */
         .card {
             background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
             padding: 28px; box-shadow: var(--shadow-sm); transition: box-shadow 0.2s ease;
@@ -134,7 +134,7 @@
         .card-header h2 { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
         .card-header .badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 5px 12px; border-radius: 8px; }
 
-        /* ── Stat Cards ── */
+        /* â”€â”€ Stat Cards â”€â”€ */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 28px; }
         .stat-card {
             background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
@@ -162,7 +162,7 @@
         .stat-info .value { font-size: 28px; font-weight: 800; line-height: 1.2; margin-top: 3px; letter-spacing: -0.5px; }
         .stat-info .sub { font-size: 11px; color: var(--text-light); font-weight: 500; margin-top: 3px; }
 
-        /* ── Blood Stock Table ── */
+        /* â”€â”€ Blood Stock Table â”€â”€ */
         .stock-table { width: 100%; border-collapse: collapse; }
         .stock-table th {
             font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;
@@ -189,7 +189,7 @@
         .status-dot.low { background: var(--amber); box-shadow: 0 0 0 3px rgba(245,158,11,0.15); }
         .status-dot.critical { background: var(--red); box-shadow: 0 0 0 3px rgba(239,68,68,0.15); animation: pulse-glow 2s infinite; }
 
-        /* ── Action Buttons ── */
+        /* â”€â”€ Action Buttons â”€â”€ */
         .btn {
             display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 10px;
             font-size: 12.5px; font-weight: 600; cursor: pointer; border: none;
@@ -212,7 +212,7 @@
         .btn-danger:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(239,68,68,0.35); }
         .btn-sm { padding: 7px 14px; font-size: 11.5px; }
 
-        /* ── Forms ── */
+        /* â”€â”€ Forms â”€â”€ */
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-size: 11.5px; font-weight: 600; color: var(--text-light); margin-bottom: 7px; text-transform: uppercase; letter-spacing: 0.6px; }
         .form-input {
@@ -224,7 +224,7 @@
         .form-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(59,130,246,0.1), var(--shadow-sm); }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 
-        /* ── Info List ── */
+        /* â”€â”€ Info List â”€â”€ */
         .info-list { display: flex; flex-direction: column; gap: 10px; }
         .info-item {
             display: flex; align-items: center; gap: 14px; padding: 14px 16px;
@@ -241,7 +241,7 @@
         .info-item .info-label { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
         .info-item .info-value { font-size: 14px; font-weight: 600; color: var(--text); }
 
-        /* ── Staff Grid ── */
+        /* â”€â”€ Staff Grid â”€â”€ */
         .staff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
         .staff-card {
             display: flex; align-items: center; gap: 12px; padding: 18px;
@@ -261,7 +261,7 @@
         .staff-status.off { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
         .staff-status.break { background: var(--amber-light); color: var(--amber); }
 
-        /* ── Toast ── */
+        /* â”€â”€ Toast â”€â”€ */
         .toast {
             position: fixed; bottom: 28px; right: 28px;
             background: linear-gradient(135deg, #0f172a, #1e293b);
@@ -273,7 +273,7 @@
         .toast.show { transform: translateY(0) scale(1); opacity: 1; }
         .toast i { font-size: 16px; color: #4ade80; }
 
-        /* ── Responsive ── */
+        /* â”€â”€ Responsive â”€â”€ */
         @media (max-width: 1024px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .staff-grid { grid-template-columns: repeat(2, 1fr); }
@@ -290,7 +290,7 @@
             .header { padding: 0 16px; }
         }
 
-        /* ── Overlay for mobile sidebar ── */
+        /* â”€â”€ Overlay for mobile sidebar â”€â”€ */
         .sidebar-overlay {
             display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.4);
             z-index: 45; opacity: 0; transition: opacity 0.35s ease;
@@ -305,7 +305,7 @@
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     <div class="layout">
-        <!-- ─── SIDEBAR ─── -->
+        <!-- â”€â”€â”€ SIDEBAR â”€â”€â”€ -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-brand">
                 <div class="logo"><i class="fas fa-heartbeat"></i></div>
@@ -360,7 +360,7 @@
             </div>
         </aside>
 
-        <!-- ─── MAIN ─── -->
+        <!-- â”€â”€â”€ MAIN â”€â”€â”€ -->
         <div class="main">
             <!-- Header -->
             <header class="header">
@@ -380,7 +380,7 @@
             <!-- Content Area -->
             <div class="content">
 
-                <!-- ═══ OVERVIEW TAB ═══ -->
+                <!-- â•â•â• OVERVIEW TAB â•â•â• -->
                 <div class="tab-panel visible" id="tab-overview">
                     <!-- Stat Cards -->
                     <div class="stats-grid">
@@ -471,7 +471,7 @@
                     </div>
                 </div>
 
-                <!-- ═══ BLOOD STOCK TAB ═══ -->
+                <!-- â•â•â• BLOOD STOCK TAB â•â•â• -->
                 <div class="tab-panel" id="tab-stock">
                     <div class="card">
                         <div class="card-header">
@@ -494,7 +494,7 @@
                     </div>
                 </div>
 
-                <!-- ═══ STAFF TAB ═══ -->
+                <!-- â•â•â• STAFF TAB â•â•â• -->
                 <div class="tab-panel" id="tab-staff">
                     <div class="card">
                         <div class="card-header">
@@ -508,7 +508,7 @@
                     </div>
                 </div>
 
-                <!-- ═══ ADD STAFF TAB ═══ -->
+                <!-- â•â•â• ADD STAFF TAB â•â•â• -->
                 <div class="tab-panel" id="tab-addstaff">
                     <div class="card" style="max-width:700px;">
                         <div class="card-header">
@@ -568,10 +568,10 @@
                                     <label>Shift Timing *</label>
                                     <select class="form-input" id="staff-shift" required>
                                         <option value="">Select shift...</option>
-                                        <option value="Morning (6 AM – 2 PM)">Morning (6 AM – 2 PM)</option>
-                                        <option value="Afternoon (2 PM – 10 PM)">Afternoon (2 PM – 10 PM)</option>
-                                        <option value="Night (10 PM – 6 AM)">Night (10 PM – 6 AM)</option>
-                                        <option value="General (9 AM – 5 PM)">General (9 AM – 5 PM)</option>
+                                        <option value="Morning (6 AM â€“ 2 PM)">Morning (6 AM â€“ 2 PM)</option>
+                                        <option value="Afternoon (2 PM â€“ 10 PM)">Afternoon (2 PM â€“ 10 PM)</option>
+                                        <option value="Night (10 PM â€“ 6 AM)">Night (10 PM â€“ 6 AM)</option>
+                                        <option value="General (9 AM â€“ 5 PM)">General (9 AM â€“ 5 PM)</option>
                                         <option value="Rotational">Rotational</option>
                                     </select>
                                 </div>
@@ -610,7 +610,7 @@
                     </div>
                 </div>
 
-                <!-- ═══ UPDATE STOCK TAB ═══ -->
+                <!-- â•â•â• UPDATE STOCK TAB â•â•â• -->
                 <div class="tab-panel" id="tab-update">
                     <div class="card" style="max-width:600px;">
                         <div class="card-header">
@@ -622,13 +622,13 @@
                                     <label>Blood Group</label>
                                     <select class="form-input" id="stock-blood-type">
                                         <option value="O+">O Positive (O+)</option>
-                                        <option value="O-">O Negative (O−)</option>
+                                        <option value="O-">O Negative (Oâˆ’)</option>
                                         <option value="A+">A Positive (A+)</option>
-                                        <option value="A-">A Negative (A−)</option>
+                                        <option value="A-">A Negative (Aâˆ’)</option>
                                         <option value="B+">B Positive (B+)</option>
-                                        <option value="B-">B Negative (B−)</option>
+                                        <option value="B-">B Negative (Bâˆ’)</option>
                                         <option value="AB+">AB Positive (AB+)</option>
-                                        <option value="AB-">AB Negative (AB−)</option>
+                                        <option value="AB-">AB Negative (ABâˆ’)</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -654,7 +654,7 @@
                     </div>
                 </div>
 
-                <!-- ═══ HOSPITAL INFO TAB ═══ -->
+                <!-- â•â•â• HOSPITAL INFO TAB â•â•â• -->
                 <div class="tab-panel" id="tab-hospital">
                     <div class="card" style="max-width:700px;">
                         <div class="card-header">
@@ -696,7 +696,7 @@
                     </div>
                 </div>
 
-                <!-- ═══ SETTINGS TAB ═══ -->
+                <!-- â•â•â• SETTINGS TAB â•â•â• -->
                 <div class="tab-panel" id="tab-settings">
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; max-width:800px;">
                         <!-- Password Reset -->
@@ -761,7 +761,7 @@
     <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toast-msg"></span></div>
 
     <script>
-        // ─── Blood Stock Data ───
+        // â”€â”€â”€ Blood Stock Data â”€â”€â”€
         var stockData = [
             { type: 'O+', units: 320, max: 400 },
             { type: 'O-', units: 85, max: 300 },
@@ -773,7 +773,7 @@
             { type: 'AB-', units: 100, max: 200 }
         ];
 
-        // ─── Staff Data ───
+        // â”€â”€â”€ Staff Data â”€â”€â”€
         var staffData = [
             { name: 'Dr. Anand Sharma', role: 'Chief Pathologist', status: 'on', color: '#3b82f6' },
             { name: 'Priya Menon', role: 'Blood Bank Tech', status: 'on', color: '#e11d48' },
@@ -795,7 +795,7 @@
             { name: 'Sunita Rao', role: 'Nurse', status: 'off', color: '#14b8a6' }
         ];
 
-        // ─── Tab Headers ───
+        // â”€â”€â”€ Tab Headers â”€â”€â”€
         var tabTitles = {
             overview: ['Dashboard Overview', 'Welcome back, Apollo City Hospital'],
             stock: ['Blood Stock Inventory', 'Detailed inventory levels across all blood types'],
@@ -806,7 +806,7 @@
             settings: ['Settings', 'Manage password and notification preferences']
         };
 
-        // ─── Tab Switching ───
+        // â”€â”€â”€ Tab Switching â”€â”€â”€
         function switchTab(name) {
             // Hide all panels
             var panels = document.getElementsByClassName('tab-panel');
@@ -841,13 +841,13 @@
             document.getElementById('sidebarOverlay').classList.remove('show');
         }
 
-        // ─── Toggle Sidebar (mobile) ───
+        // â”€â”€â”€ Toggle Sidebar (mobile) â”€â”€â”€
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('sidebarOverlay').classList.toggle('show');
         }
 
-        // ─── Render Stock Tables ───
+        // â”€â”€â”€ Render Stock Tables â”€â”€â”€
         function renderStockTables() {
             // Overview table (compact)
             var overviewBody = document.querySelector('#overview-stock-table tbody');
@@ -891,7 +891,7 @@
             document.getElementById('total-units').textContent = total.toLocaleString();
         }
 
-        // ─── Render Staff ───
+        // â”€â”€â”€ Render Staff â”€â”€â”€
         function renderStaff() {
             var grid = document.getElementById('staff-grid');
             var html = '';
@@ -902,7 +902,7 @@
                 var phoneLine = s.phone ? '<div style="font-size:10px;color:var(--text-muted);margin-top:1px;"><i class="fas fa-phone" style="margin-right:3px;"></i>' + s.phone + '</div>' : '';
                 html += '<div class="staff-card" style="position:relative;">' +
                     '<div class="staff-avatar" style="background:' + s.color + ';">' + initials + '</div>' +
-                    '<div style="flex:1;"><div class="staff-name">' + s.name + '</div><div class="staff-role">' + s.role + (s.dept ? ' · ' + s.dept : '') + '</div>' +
+                    '<div style="flex:1;"><div class="staff-name">' + s.name + '</div><div class="staff-role">' + s.role + (s.dept ? ' Â· ' + s.dept : '') + '</div>' +
                     shiftLine + phoneLine +
                     '<span class="staff-status ' + s.status + '">' + statusLabel + '</span></div>' +
                     '<button onclick="removeStaff(' + idx + ')" class="btn btn-outline btn-sm" style="position:absolute;top:12px;right:12px;padding:4px 8px;font-size:10px;color:var(--red);" title="Remove"><i class="fas fa-trash"></i></button>' +
@@ -916,7 +916,7 @@
             if (badge) badge.textContent = onDuty + ' On Duty';
         }
 
-        // ─── Remove Staff ───
+        // â”€â”€â”€ Remove Staff â”€â”€â”€
         function removeStaff(idx) {
             if (confirm('Remove ' + staffData[idx].name + ' from the directory?')) {
                 var name = staffData[idx].name;
@@ -926,7 +926,7 @@
             }
         }
 
-        // ─── Handle Add Staff ───
+        // â”€â”€â”€ Handle Add Staff â”€â”€â”€
         function handleAddStaff(e) {
             e.preventDefault();
             var colors = ['#3b82f6','#e11d48','#7c3aed','#0d9488','#ea580c','#2563eb','#16a34a','#d946ef','#f59e0b','#06b6d4','#8b5cf6','#ec4899','#84cc16','#f43f5e','#14b8a6'];
@@ -950,14 +950,14 @@
             switchTab('staff');
         }
 
-        // ─── Quick Update (from stock table) ───
+        // â”€â”€â”€ Quick Update (from stock table) â”€â”€â”€
         function quickUpdate(type) {
             switchTab('update');
             document.getElementById('stock-blood-type').value = type;
             document.getElementById('stock-qty').focus();
         }
 
-        // ─── Handle Stock Update ───
+        // â”€â”€â”€ Handle Stock Update â”€â”€â”€
         function handleStockUpdate(e) {
             e.preventDefault();
             var type = document.getElementById('stock-blood-type').value;
@@ -980,19 +980,19 @@
             showToast((op === 'add' ? 'Added' : 'Removed') + ' ' + qty + ' units of ' + type);
         }
 
-        // ─── Handle Hospital Update ───
+        // â”€â”€â”€ Handle Hospital Update â”€â”€â”€
         function handleHospitalUpdate(e) {
             e.preventDefault();
             showToast('Hospital information updated successfully');
         }
 
-        // ─── Handle Password Reset ───
+        // â”€â”€â”€ Handle Password Reset â”€â”€â”€
         function handlePasswordReset(e) {
             e.preventDefault();
             showToast('Password has been reset successfully');
         }
 
-        // ─── Toast ───
+        // â”€â”€â”€ Toast â”€â”€â”€
         function showToast(msg) {
             var toast = document.getElementById('toast');
             document.getElementById('toast-msg').textContent = msg;
@@ -1000,12 +1000,13 @@
             setTimeout(function() { toast.classList.remove('show'); }, 3000);
         }
 
-        // ─── Initialize ───
+        // â”€â”€â”€ Initialize â”€â”€â”€
         document.addEventListener('DOMContentLoaded', function() {
             renderStockTables();
             renderStaff();
             switchTab('overview');
         });
     </script>
+<script src="../config/mobile-sidebar.js" defer></script>
 </body>
 </html>
