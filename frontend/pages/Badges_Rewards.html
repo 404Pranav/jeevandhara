@@ -31,6 +31,8 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; color: var(--text-dark); background-color: #f8f9fc; overflow-x: hidden; }
+        body.auth-pending { visibility: hidden; }
+        body.auth-ready { visibility: visible; }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; }
        button { cursor: pointer; border: none; outline: none; font-family: inherit; }
@@ -570,6 +572,9 @@
     </style>
 </head>
 <body>
+    <script>
+        document.body.classList.add('auth-pending');
+    </script>
 
     <header class="header-bg">
         <nav class="navbar">
@@ -636,8 +641,6 @@
 
         
     </header>
-
-<body>
 
 
     <section class="profile-hero" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);">
@@ -1044,6 +1047,7 @@ window.addEventListener('load', () => {
         const DEMO_AUTH_MODE_KEY = 'authMode';
         const DEMO_AUTH_MODE_VALUE = 'demo';
         const DEMO_SESSION_KEY = 'demoAuthUser';
+        const NEXT_PAGE = 'Badges_Rewards.html';
         const POINTS_PER_DONATION = 500;
         const ROADMAP_STEPS = [
             { label: 'First Drop', requiredDonations: 1 },
@@ -1055,6 +1059,19 @@ window.addEventListener('load', () => {
 
         let activeUser = null;
         let activeProfile = null;
+
+        function buildLoginUrl(nextPage) {
+            return `main_donar_login.html?next=${encodeURIComponent(nextPage)}`;
+        }
+
+        function redirectToLogin() {
+            window.location.replace(buildLoginUrl(NEXT_PAGE));
+        }
+
+        function revealAuthGate() {
+            document.body.classList.remove('auth-pending');
+            document.body.classList.add('auth-ready');
+        }
 
         function escapeHtml(value) {
             return String(value ?? '')
@@ -1499,7 +1516,7 @@ window.addEventListener('load', () => {
         async function hydratePage(userLike) {
             activeUser = userLike;
             if (!userLike || !userLike.uid) {
-                window.location.href = 'main_donar_login.html';
+                redirectToLogin();
                 return;
             }
 
@@ -1520,6 +1537,7 @@ window.addEventListener('load', () => {
             activeProfile = profile || fallbackProfile;
             updateAuthUI();
             renderDashboard(activeProfile, donations || [], userBadges || [], rewards || [], allBadges || []);
+            revealAuthGate();
         }
 
         document.addEventListener('click', () => {
@@ -1527,19 +1545,54 @@ window.addEventListener('load', () => {
             if (menu) menu.classList.remove('show');
         });
 
+        const authResolveTimer = window.setTimeout(() => {
+            redirectToLogin();
+        }, 3500);
+
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                await hydratePage(user);
-                return;
+            window.clearTimeout(authResolveTimer);
+
+            try {
+                if (user) {
+                    await hydratePage(user);
+                    return;
+                }
+
+                const demoUser = getDemoSessionUser();
+                if (demoUser) {
+                    await hydratePage(demoUser);
+                    return;
+                }
+
+                redirectToLogin();
+            } catch (error) {
+                console.error('Badges page auth bootstrap failed:', error);
+                redirectToLogin();
             }
+        }, () => {
+            window.clearTimeout(authResolveTimer);
+            redirectToLogin();
+        });
+
+        window.addEventListener('pageshow', async (event) => {
+            if (!event.persisted) return;
 
             const demoUser = getDemoSessionUser();
-            if (demoUser) {
-                await hydratePage(demoUser);
+            const firebaseUser = auth.currentUser;
+
+            if (!firebaseUser && !demoUser) {
+                document.body.classList.add('auth-pending');
+                document.body.classList.remove('auth-ready');
+                redirectToLogin();
                 return;
             }
 
-            window.location.href = 'main_donar_login.html';
+            if (firebaseUser) {
+                await hydratePage(firebaseUser);
+                return;
+            }
+
+            await hydratePage(demoUser);
         });
     </script>
 </body>
