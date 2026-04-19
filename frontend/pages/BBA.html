@@ -39,7 +39,7 @@
 
         /* --- NAVBAR STYLES --- */
         .header-bg { background: var(--primary-gradient); color: var(--white); position: relative; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: -10px 50px; position: relative; z-index: 100; min-height: 100px; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 10px 50px; position: relative; z-index: 100; min-height: 100px; }
 
         /* --- SCROLLING TICKER STYLES --- */
         .scrolling-ticker {
@@ -947,28 +947,58 @@
         @media(max-width:768px) {
             .navbar {
                 flex-direction: column;
-                padding: 0 20px;
+                padding: 8px 16px 14px;
                 gap: 10px;
             }
 
+            .logo img {
+                height: 76px;
+            }
+
             .nav-links {
+                position: relative;
+                left: 0;
+                transform: none;
                 margin-left: 0;
                 flex-wrap: wrap;
                 justify-content: center;
                 gap: 10px;
+                width: 100%;
+                margin-top: 8px;
+            }
+
+            .nav-item>a {
+                font-size: 14px;
+            }
+
+            .main-container {
+                margin: 24px auto;
+                padding: 0 12px;
             }
 
             .hero-content h1 {
                 font-size: 32px;
             }
 
+            .hero-content p {
+                font-size: 16px;
+                line-height: 1.6;
+            }
+
             .form-section {
-                padding: 0 15px;
+                padding: 0 12px;
                 margin-top: -30px;
             }
 
             .stepper-container {
-                padding: 20px 15px;
+                padding: 18px 12px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .stepper {
+                min-width: 560px;
+                justify-content: flex-start;
             }
 
             .step-label {
@@ -982,11 +1012,17 @@
             }
 
             .form-wrapper {
-                padding: 25px 20px;
+                padding: 22px 16px;
             }
 
             .form-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .form-group input,
+            .form-group select {
+                font-size: 16px;
+                padding: 12px 14px;
             }
 
             .gender-cards {
@@ -1011,6 +1047,100 @@
 
             .step-header h2 {
                 font-size: 22px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .btn-next,
+            .btn-confirm,
+            .btn-prev {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .success-actions {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .btn-home,
+            .btn-new {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .success-details {
+                grid-template-columns: 1fr;
+                max-width: 100%;
+            }
+        }
+
+        @media(max-width:480px) {
+            .hero-content {
+                padding: 38px 14px 0;
+            }
+
+            .hero-content h1 {
+                font-size: 27px;
+            }
+
+            .hero-content p {
+                font-size: 15px;
+                margin-bottom: 20px;
+            }
+
+            .step-label {
+                display: none;
+            }
+
+            .step-circle {
+                width: 34px;
+                height: 34px;
+                font-size: 12px;
+            }
+
+            .step-line {
+                margin-bottom: 16px;
+                max-width: 56px;
+            }
+
+            .step-header {
+                margin-bottom: 24px;
+            }
+
+            .step-header h2 {
+                font-size: 20px;
+            }
+
+            .step-header p {
+                font-size: 14px;
+            }
+
+            .date-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .time-pill {
+                flex: 1 1 calc(50% - 8px);
+                text-align: center;
+                padding: 10px 8px;
+            }
+
+            .summary-card {
+                padding: 18px;
+            }
+
+            .success-container {
+                padding: 28px 6px;
+            }
+
+            .success-container h2 {
+                font-size: 26px;
             }
         }
 
@@ -1326,10 +1456,16 @@
         let selectedDate = '';
         let selectedTime = '';
 
+        // Optional: set this to your deployed backend host when frontend runs on GitHub Pages.
+        // Example: const EMAIL_BACKEND_BASE_URL = 'https://your-site.netlify.app';
+        const EMAIL_BACKEND_BASE_URL = '';
+        const normalizedBackendBase = String(EMAIL_BACKEND_BASE_URL || '').trim().replace(/\/+$/, '');
+
         const APPOINTMENT_EMAIL_ENDPOINTS = [
+            normalizedBackendBase ? `${normalizedBackendBase}/.netlify/functions/send-appointment-email` : '',
             '/.netlify/functions/send-appointment-email',
             '/api/send-appointment-email'
-        ];
+        ].filter(Boolean);
 
         // --- BLOOD CENTERS DATA ---
         const centers = [
@@ -1522,12 +1658,29 @@
         function getEmailBackendUnavailableLabel() {
             const host = String(window.location.hostname || '').toLowerCase();
             const isLocalHost = host === 'localhost' || host === '127.0.0.1' || host === '';
+            const isGithubPages = /github\.io$/.test(host);
 
             if (isLocalHost) {
                 return 'Email not sent (backend unavailable on local host. Use deployed Netlify URL).';
             }
 
+            if (isGithubPages) {
+                return 'Email not sent (GitHub Pages cannot run backend. Use deployed Netlify/Vercel function URL).';
+            }
+
             return 'Email not sent (backend unavailable on this host. Check Netlify function deploy).';
+        }
+
+        function isEndpointUnavailableResponse(statusCode, rawBody) {
+            if (statusCode === 404) return true;
+            if (statusCode === 501) return true;
+
+            if (statusCode === 405) {
+                const text = String(rawBody || '');
+                return /405|not allowed|method not allowed|cannot post|unsupported method/i.test(text);
+            }
+
+            return false;
         }
 
         async function sendAppointmentConfirmationEmail(details) {
@@ -1558,14 +1711,10 @@
                         body: JSON.stringify(payload)
                     });
 
-                    if (response.status === 404) {
-                        continue;
-                    }
-
                     if (!response.ok) {
                         const rawMessage = await response.text();
 
-                        if (isUnsupportedPostHost(response.status, rawMessage)) {
+                        if (isUnsupportedPostHost(response.status, rawMessage) || isEndpointUnavailableResponse(response.status, rawMessage)) {
                             continue;
                         }
 
