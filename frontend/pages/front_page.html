@@ -862,6 +862,94 @@
             .cta-content { padding-right: 0; margin-top: 30px; }
         }
 
+        @media (max-width: 768px) {
+            .navbar { padding: 10px 14px; gap: 12px; }
+            .logo img { height: 64px; }
+            .nav-links { gap: 10px; }
+            .nav-item { padding: 8px 0; }
+            .nav-item > a { font-size: 14px; }
+
+            .nav-actions {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .top-login-btn,
+            .top-admin-btn {
+                padding: 8px 14px;
+            }
+
+            .hero-content {
+                margin-top: 78px;
+                padding: 0 14px;
+            }
+
+            .stethoscope-icon { font-size: 34px; }
+            .hero-title { font-size: 32px; line-height: 1.25; }
+
+            .services-section,
+            .donate-section,
+            .compatibility-section,
+            .final-cta-section {
+                padding: 56px 16px;
+            }
+
+            .section-header { font-size: 24px; margin-bottom: 30px; }
+            .main-heading { font-size: 30px; }
+            .paragraph { font-size: 14px; }
+
+            .silhouette-bg-circle {
+                width: 260px;
+                height: 260px;
+            }
+
+            .web-container { width: 250px; height: 250px; }
+            .web-svg { width: 500px; height: 500px; }
+            .center-highlight { font-size: 32px; }
+
+            .details-panel {
+                width: 95%;
+                padding: 18px;
+            }
+
+            .modal-container { padding: 32px 20px; }
+            .gender-options { flex-direction: column; align-items: center; }
+            .gender-card { width: 100%; max-width: 230px; }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links { gap: 8px; }
+            .nav-item > a { font-size: 13px; }
+            .dropdown { min-width: 210px; }
+
+            .hero-title { font-size: 27px; }
+            .search-widget { margin-top: 30px; }
+
+            .services-grid { grid-template-columns: 1fr; gap: 16px; }
+
+            .web-container { width: 220px; height: 220px; }
+            .web-svg { width: 440px; height: 440px; }
+            .blood-node { width: 42px; height: 42px; font-size: 12px; }
+            .center-highlight { font-size: 26px; }
+            .center-text { font-size: 12px; }
+
+            .legend {
+                flex-direction: column;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .modal-title { font-size: 20px; }
+            .modal-desc { font-size: 13px; }
+
+            footer {
+                font-size: 11px;
+                padding: 12px 10px;
+            }
+        }
+
         /* --- FINAL CTA SECTION --- */
         .final-cta-section {
             padding: 80px 50px;
@@ -1464,19 +1552,6 @@
         });
 
     </script>
-
-    <section class="final-cta-section">
-        <div class="cta-container">
-            <div class="cta-content">
-                <h2>Ready to Save Lives? <span>Login Now</span></h2>
-                <p>Join the Jeevandhara network today. Access your donor dashboard, track your donations, and be part of something bigger than yourself.</p>
-                <button class="btn-primary" onclick="window.location.href='main_donar_login.html'">Donor Login</button>
-            </div>
-            <div class="cta-image-box">
-                <img src="../images/0e419862ed7d603f67d4006dc8e814a0.jpg" alt="Blood Donation Illustration">
-            </div>
-        </div>
-    </section>
 
     <footer>
         <p>&copy; 2026 Jeevandhara Blood Network. All Rights Reserved.</p>
