@@ -3,6 +3,10 @@
   "outputDirectory": ".",
   "rewrites": [
     {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -12,6 +16,8 @@
     "FIREBASE_AUTH_DOMAIN": "@firebase_auth_domain",
     "FIREBASE_PROJECT_ID": "@firebase_project_id",
     "SUPABASE_URL": "@supabase_url",
-    "SUPABASE_ANON_KEY": "@supabase_anon_key"
+    "SUPABASE_ANON_KEY": "@supabase_anon_key",
+    "RESEND_API_KEY": "@resend_api_key",
+    "RESEND_FROM_EMAIL": "@resend_from_email"
   }
 }

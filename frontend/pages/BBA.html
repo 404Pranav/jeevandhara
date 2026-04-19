@@ -1145,7 +1145,7 @@
                     </div>
                     <div class="form-group">
                         <label for="email"><i class="fas fa-envelope"></i> Email</label>
-                        <input type="email" id="email" placeholder="your@email.com">
+                        <input type="email" id="email" placeholder="your@email.com" required>
                     </div>
                     <div class="form-group">
                         <label for="dob"><i class="fas fa-birthday-cake"></i> Date of Birth</label>
@@ -1326,6 +1326,11 @@
         let selectedDate = '';
         let selectedTime = '';
 
+        const APPOINTMENT_EMAIL_ENDPOINTS = [
+            '/.netlify/functions/send-appointment-email',
+            '/api/send-appointment-email'
+        ];
+
         // --- BLOOD CENTERS DATA ---
         const centers = [
             { name: "Jeevandhara Central Blood Bank", city: "Mumbai", address: "123 MG Road, Dadar, Mumbai 400014", tags: ["24/7", "Walk-in", "All Groups"] },
@@ -1382,9 +1387,12 @@
             if (step === 1) {
                 const name = document.getElementById('fullName').value.trim();
                 const phone = document.getElementById('phone').value.trim();
+                const email = document.getElementById('email').value.trim();
                 const dob = document.getElementById('dob').value;
                 if (!name) { showToast('Please enter your full name.'); return false; }
                 if (!phone) { showToast('Please enter your phone number.'); return false; }
+                if (!email) { showToast('Please enter your email so we can send confirmation.'); return false; }
+                if (!isValidEmail(email)) { showToast('Please enter a valid email address.'); return false; }
                 if (!dob) { showToast('Please select your date of birth.'); return false; }
                 if (!selectedGender) { showToast('Please select your gender.'); return false; }
                 return true;
@@ -1399,6 +1407,168 @@
                 return true;
             }
             return true;
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || '').trim());
+        }
+
+        function buildAppointmentDetails() {
+            return {
+                appointmentRef: `BBA-${Date.now().toString().slice(-8)}`,
+                fullName: document.getElementById('fullName').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                bloodGroup: document.getElementById('bloodGroup').value || 'Not selected',
+                gender: selectedGender ? selectedGender.charAt(0).toUpperCase() + selectedGender.slice(1) : 'Not selected',
+                center: selectedCenter,
+                date: selectedDate,
+                time: selectedTime
+            };
+        }
+
+        function tryParseJson(text) {
+            try {
+                return JSON.parse(text);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function pickFirstString(values) {
+            for (const value of values) {
+                if (typeof value === 'string' && value.trim()) {
+                    return value.trim();
+                }
+            }
+            return '';
+        }
+
+        function extractEmailFailureReason(statusCode, rawBody) {
+            const parsed = tryParseJson(rawBody);
+
+            if (parsed && typeof parsed === 'object') {
+                const directReason = pickFirstString([
+                    parsed.reason,
+                    parsed.error,
+                    parsed.message,
+                    parsed?.details?.reason,
+                    parsed?.details?.error,
+                    parsed?.details?.message,
+                    parsed?.details?.name
+                ]);
+
+                if (directReason) {
+                    return directReason;
+                }
+
+                if (Array.isArray(parsed?.details?.errors)) {
+                    const listReason = parsed.details.errors
+                        .map((item) => pickFirstString([
+                            item?.message,
+                            item?.error,
+                            typeof item === 'string' ? item : ''
+                        ]))
+                        .filter(Boolean)
+                        .join('; ');
+
+                    if (listReason) {
+                        return listReason;
+                    }
+                }
+            }
+
+            if (typeof rawBody === 'string' && rawBody.trim()) {
+                return rawBody.trim();
+            }
+
+            return `Email API failed (${statusCode})`;
+        }
+
+        function buildEmailFailedLabel(reason) {
+            const message = String(reason || '').trim();
+
+            if (!message) {
+                return 'Failed to send (please retry later)';
+            }
+
+            if (/api key|unauthorized|invalid api key|forbidden/i.test(message)) {
+                return 'Failed to send (email service key issue)';
+            }
+
+            if (/sender|from address|domain|verify/i.test(message)) {
+                return 'Failed to send (sender email/domain not verified)';
+            }
+
+            if (/test mode|testing emails|only send to your own email/i.test(message)) {
+                return 'Failed to send (Resend test mode recipient restriction)';
+            }
+
+            if (/failed to fetch|network|timed out/i.test(message)) {
+                return 'Failed to send (network issue, retry later)';
+            }
+
+            const shortMessage = message.length > 120 ? `${message.slice(0, 117)}...` : message;
+            return `Failed to send (${shortMessage})`;
+        }
+
+        async function sendAppointmentConfirmationEmail(details) {
+            if (!details.email || !isValidEmail(details.email)) {
+                return {
+                    status: 'skipped',
+                    label: 'Not sent (valid email not provided)'
+                };
+            }
+
+            const payload = {
+                appointmentRef: details.appointmentRef,
+                fullName: details.fullName,
+                phone: details.phone,
+                email: details.email,
+                bloodGroup: details.bloodGroup,
+                gender: details.gender,
+                center: details.center,
+                date: details.date,
+                time: details.time
+            };
+
+            try {
+                for (const endpoint of APPOINTMENT_EMAIL_ENDPOINTS) {
+                    const response = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.status === 404) {
+                        continue;
+                    }
+
+                    if (!response.ok) {
+                        const rawMessage = await response.text();
+                        const reason = extractEmailFailureReason(response.status, rawMessage);
+                        throw new Error(reason);
+                    }
+
+                    const data = await response.json().catch(() => ({}));
+
+                    return {
+                        status: 'sent',
+                        label: data?.id ? `Sent to ${details.email}` : `Queued for ${details.email}`
+                    };
+                }
+
+                return {
+                    status: 'pending',
+                    label: 'Pending (email backend is not running on this host)'
+                };
+            } catch (error) {
+                console.error('Failed to send appointment confirmation email:', error);
+                return {
+                    status: 'failed',
+                    label: buildEmailFailedLabel(error && error.message ? error.message : '')
+                };
+            }
         }
 
         // --- TOAST NOTIFICATION ---
@@ -1513,6 +1683,8 @@
 
         // --- CONFIRM ---
         function confirmAppointment() {
+            const details = buildAppointmentDetails();
+
             // Hide step 4
             document.getElementById('form-step-4').classList.remove('active');
             // Show success
@@ -1522,10 +1694,12 @@
 
             // Populate success details
             document.getElementById('successDetails').innerHTML = `
-                <div class="summary-item"><span class="s-label"><i class="fas fa-user"></i> Name</span><span class="s-value">${document.getElementById('fullName').value}</span></div>
-                <div class="summary-item"><span class="s-label"><i class="fas fa-hospital"></i> Center</span><span class="s-value">${selectedCenter}</span></div>
-                <div class="summary-item"><span class="s-label"><i class="fas fa-calendar"></i> Date</span><span class="s-value">${selectedDate}</span></div>
-                <div class="summary-item"><span class="s-label"><i class="fas fa-clock"></i> Time</span><span class="s-value">${selectedTime}</span></div>
+                <div class="summary-item"><span class="s-label"><i class="fas fa-hashtag"></i> Ref</span><span class="s-value">${details.appointmentRef}</span></div>
+                <div class="summary-item"><span class="s-label"><i class="fas fa-user"></i> Name</span><span class="s-value">${details.fullName}</span></div>
+                <div class="summary-item"><span class="s-label"><i class="fas fa-hospital"></i> Center</span><span class="s-value">${details.center}</span></div>
+                <div class="summary-item"><span class="s-label"><i class="fas fa-calendar"></i> Date</span><span class="s-value">${details.date}</span></div>
+                <div class="summary-item"><span class="s-label"><i class="fas fa-clock"></i> Time</span><span class="s-value">${details.time}</span></div>
+                <div class="summary-item"><span class="s-label"><i class="fas fa-envelope"></i> Email Status</span><span class="s-value" id="emailStatusValue">Sending...</span></div>
             `;
 
             // Update stepper to all completed
@@ -1538,6 +1712,20 @@
             // Launch confetti
             launchConfetti();
             window.scrollTo({ top: document.getElementById('appointment-form').offsetTop - 20, behavior: 'smooth' });
+
+            const emailStatusEl = document.getElementById('emailStatusValue');
+            sendAppointmentConfirmationEmail(details).then((result) => {
+                if (!emailStatusEl) return;
+                emailStatusEl.textContent = result.label;
+
+                if (result.status === 'sent') {
+                    emailStatusEl.style.color = '#166534';
+                } else if (result.status === 'failed') {
+                    emailStatusEl.style.color = '#991b1b';
+                } else {
+                    emailStatusEl.style.color = '#92400e';
+                }
+            });
         }
 
         // --- RESET FORM ---
