@@ -635,6 +635,14 @@
             border-color: var(--blood-red);
         }
 
+        .blood-node.is-active {
+            transform: scale(1.15);
+            background: var(--blood-red);
+            color: white;
+            box-shadow: 0 15px 30px rgba(230, 57, 70, 0.4);
+            border-color: var(--blood-red);
+        }
+
         /* Center Info */
         .center-info {
             position: absolute;
@@ -970,17 +978,19 @@
             }
 
             .hero-section {
-                min-height: auto;
-                padding-bottom: 0;
-                background: var(--primary-gradient);
+                min-height: 0;
+                padding-bottom: clamp(160px, 40vw, 260px);
+                background: transparent;
             }
 
             .hero-slider {
-                display: none;
+                display: block;
+                z-index: 1;
             }
 
             .scrolling-ticker {
                 z-index: 70;
+                margin-bottom: 6px;
             }
 
             .hero-content {
@@ -998,6 +1008,23 @@
                 padding: 56px 16px;
             }
 
+            .compatibility-section {
+                min-height: 760px;
+                padding-top: 42px;
+            }
+
+            .web-header {
+                margin-bottom: 30px;
+            }
+
+            .web-header h2 {
+                font-size: 30px;
+            }
+
+            .web-header p {
+                font-size: 14px;
+            }
+
             .section-header { font-size: 24px; margin-bottom: 30px; }
             .main-heading { font-size: 30px; }
             .paragraph { font-size: 14px; }
@@ -1007,9 +1034,37 @@
                 height: 260px;
             }
 
-            .web-container { width: 250px; height: 250px; }
-            .web-svg { width: 500px; height: 500px; }
-            .center-highlight { font-size: 32px; }
+            .web-container {
+                width: min(78vw, 320px);
+                height: min(78vw, 320px);
+                margin-bottom: 150px;
+            }
+
+            .web-svg {
+                width: 100%;
+                height: 100%;
+            }
+
+            .center-info {
+                top: calc(100% + 14px);
+                left: 50%;
+                transform: translateX(-50%);
+                width: min(86vw, 280px);
+            }
+
+            .center-highlight { font-size: 30px; }
+
+            .center-text {
+                font-size: 13px;
+                line-height: 1.45;
+            }
+
+            .center-info .legend {
+                margin-top: 10px;
+                justify-content: center;
+                gap: 14px;
+                flex-wrap: wrap;
+            }
 
             .details-panel {
                 width: 95%;
@@ -1031,16 +1086,70 @@
                 width: min(88vw, 320px);
             }
 
+            .hero-section {
+                padding-bottom: clamp(130px, 44vw, 220px);
+            }
+
             .hero-title { font-size: 27px; }
             .search-widget { margin-top: 30px; }
 
             .services-grid { grid-template-columns: 1fr; gap: 16px; }
 
-            .web-container { width: 220px; height: 220px; }
-            .web-svg { width: 440px; height: 440px; }
+            .web-container {
+                width: min(84vw, 280px);
+                height: min(84vw, 280px);
+                margin-bottom: 136px;
+            }
+
+            .web-svg {
+                width: 100%;
+                height: 100%;
+            }
+
             .blood-node { width: 42px; height: 42px; font-size: 12px; }
-            .center-highlight { font-size: 26px; }
-            .center-text { font-size: 12px; }
+            .center-highlight {
+                font-size: 24px;
+                margin-bottom: 2px;
+            }
+
+            .center-text {
+                font-size: 11px;
+                line-height: 1.35;
+            }
+
+            .compatibility-section {
+                min-height: 700px;
+                padding-top: 34px;
+            }
+
+            .web-header {
+                margin-bottom: 24px;
+            }
+
+            .web-header h2 {
+                font-size: 26px;
+            }
+
+            .web-header p {
+                font-size: 13px;
+                max-width: 280px;
+            }
+
+            .center-info {
+                top: calc(100% + 12px);
+                width: min(92vw, 250px);
+            }
+
+            .center-info .legend {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px 14px;
+            }
+
+            .center-info .legend span {
+                font-size: 11px;
+            }
 
             .legend {
                 flex-direction: column;
@@ -1546,39 +1655,131 @@
         const svg = document.getElementById('linesSvg');
         const centerType = document.getElementById('centerType');
         const centerDesc = document.getElementById('centerDesc');
-        
-        const radius = 200; // Radius of the circle of nodes
-        const centerX = 500; // SVG viewBox center X
-        const centerY = 500; // SVG viewBox center Y
+
+        let radius = 200;
+        let centerX = 500;
+        let centerY = 500;
         
         // Position variables
         const positions = {};
+        const nodesByType = {};
+        let activeType = null;
+
+        function setActiveNode(type) {
+            activeType = type || null;
+            bloodTypes.forEach((bloodType) => {
+                const node = nodesByType[bloodType];
+                if (!node) return;
+                node.classList.toggle('is-active', bloodType === activeType);
+            });
+        }
+
+        function getCompatibilityLayout() {
+            const containerWidth = container ? container.clientWidth : 500;
+            const containerHeight = container ? container.clientHeight : 500;
+            const viewportWidth = window.innerWidth;
+
+            const nodeSize = viewportWidth <= 480 ? 42 : (viewportWidth <= 1000 ? 50 : 70);
+            const edgePadding = viewportWidth <= 480 ? 8 : (viewportWidth <= 768 ? 10 : 12);
+            const computedRadius = Math.max(
+                70,
+                Math.min(containerWidth, containerHeight) / 2 - nodeSize / 2 - edgePadding
+            );
+
+            return {
+                width: Math.max(220, containerWidth),
+                height: Math.max(220, containerHeight),
+                nodeSize,
+                radius: computedRadius,
+                centerX: containerWidth / 2,
+                centerY: containerHeight / 2
+            };
+        }
+
+        function applyCompatibilityLayout() {
+            const layout = getCompatibilityLayout();
+            centerX = layout.centerX;
+            centerY = layout.centerY;
+            radius = layout.radius;
+
+            svg.setAttribute('viewBox', `0 0 ${layout.width} ${layout.height}`);
+            svg.style.width = `${layout.width}px`;
+            svg.style.height = `${layout.height}px`;
+            svg.style.top = '0';
+            svg.style.left = '0';
+            svg.style.transform = 'none';
+
+            bloodTypes.forEach((type, index) => {
+                const angle = (index / bloodTypes.length) * 2 * Math.PI - (Math.PI / 2);
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+
+                positions[type] = { x, y };
+
+                const node = nodesByType[type];
+                if (node) {
+                    node.style.left = `${x - layout.nodeSize / 2}px`;
+                    node.style.top = `${y - layout.nodeSize / 2}px`;
+                }
+            });
+        }
 
         // 1. Create Nodes
         bloodTypes.forEach((type, index) => {
-            const angle = (index / bloodTypes.length) * 2 * Math.PI - (Math.PI / 2); // Start at top
-            const x = centerX + radius * Math.cos(angle);
-            const y = centerY + radius * Math.sin(angle);
-            
-            positions[type] = { x, y };
-
             const node = document.createElement('div');
             node.className = 'blood-node';
             node.innerText = type;
-            // Adjust position to center the div
-            node.style.left = `calc(${50}% + ${radius * Math.cos(angle)}px - 35px)`;
-            node.style.top = `calc(${50}% + ${radius * Math.sin(angle)}px - 35px)`;
+            nodesByType[type] = node;
             
             node.addEventListener('mouseenter', () => highlightConnections(type));
-            node.addEventListener('mouseleave', resetConnections);
+            node.addEventListener('mouseleave', () => {
+                if (window.matchMedia('(hover: hover)').matches) {
+                    resetConnections();
+                }
+            });
+            node.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (activeType === type) {
+                    resetConnections();
+                    return;
+                }
+
+                highlightConnections(type);
+            });
             
             container.appendChild(node);
         });
+
+        applyCompatibilityLayout();
+
+        window.addEventListener('resize', () => {
+            applyCompatibilityLayout();
+
+            if (detailsPanel.classList.contains('active')) {
+                const activeType = centerType.innerText;
+                if (donationRules[activeType]) {
+                    highlightConnections(activeType);
+                }
+            }
+        });
+
+        if (container) {
+            container.addEventListener('click', (event) => {
+                const target = event.target;
+                if (!(target instanceof Element)) return;
+                if (!target.closest('.blood-node')) {
+                    resetConnections();
+                }
+            });
+        }
 
         function highlightConnections(type) {
             svg.innerHTML = ''; // Clear lines
             centerType.innerText = type;
             centerDesc.innerText = "Showing compatibility";
+            setActiveNode(type);
 
             // Draw Giving Lines (Teal)
             const recipients = donationRules[type];
@@ -1633,6 +1834,7 @@
             svg.innerHTML = '';
             centerType.innerText = "Hover Me";
             centerDesc.innerText = "Hover a blood type to see details";
+            setActiveNode(null);
 
             // Hide Panel
             detailsPanel.classList.remove('active');
