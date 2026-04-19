@@ -289,16 +289,51 @@
         }
 
         .mobile-nav-section {
-            margin-bottom: 16px;
+            display: grid;
+            gap: 8px;
         }
 
-        .mobile-nav-section h4 {
-            font-size: 12px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.78);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+        .mobile-nav-group {
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 8px;
+        }
+
+        .mobile-nav-parent {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: none;
+            background: transparent;
+            color: #ffffff;
+            text-align: left;
+            padding: 8px 6px;
+            font: 600 14px/1.2 'Poppins', sans-serif;
+            cursor: pointer;
+        }
+
+        .mobile-nav-parent .chevron {
+            transition: transform 0.2s ease;
+        }
+
+        .mobile-nav-group.open .mobile-nav-parent .chevron {
+            transform: rotate(180deg);
+        }
+
+        .mobile-nav-children {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.24s ease, margin-top 0.24s ease;
+            margin-top: 0;
+            display: grid;
+            gap: 8px;
+        }
+
+        .mobile-nav-group.open .mobile-nav-children {
+            max-height: 520px;
+            margin-top: 6px;
         }
 
         .mobile-nav-link {
@@ -312,7 +347,7 @@
             color: #ffffff;
             font-size: 14px;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 0;
         }
 
         .mobile-nav-link.sos-link {
@@ -1361,36 +1396,54 @@
             </div>
 
             <div class="mobile-nav-section">
-                <h4>Main</h4>
-                <a class="mobile-nav-link" href="front_page.html">Home</a>
-                <a class="mobile-nav-link" href="about_jeevandhara.html">About Jeevandhara</a>
-                <a class="mobile-nav-link" href="main_donar_login.html">Donor Login</a>
-                <a class="mobile-nav-link" href="admin_login.html">Admin Login</a>
-            </div>
+                <div class="mobile-nav-group open">
+                    <button class="mobile-nav-parent" type="button" aria-expanded="true">Home <span class="chevron">&#9662;</span></button>
+                    <div class="mobile-nav-children">
+                        <a class="mobile-nav-link" href="front_page.html">Home</a>
+                        <a class="mobile-nav-link" href="main_donar_login.html">Donor Login</a>
+                        <a class="mobile-nav-link" href="admin_login.html">Admin Login</a>
+                    </div>
+                </div>
 
-            <div class="mobile-nav-section">
-                <h4>Looking For Blood</h4>
-                <a class="mobile-nav-link" href="blood_availability.html">Blood Availability</a>
-                <a class="mobile-nav-link" href="blood_center_directory.html">Blood Center Directory</a>
-                <a class="mobile-nav-link sos-link" href="blood_center.html">SOS Emergency</a>
-            </div>
+                <div class="mobile-nav-group">
+                    <button class="mobile-nav-parent" type="button" aria-expanded="false">About Jeevandhara <span class="chevron">&#9662;</span></button>
+                    <div class="mobile-nav-children">
+                        <a class="mobile-nav-link" href="about_jeevandhara.html">About Jeevandhara</a>
+                        <a class="mobile-nav-link" href="history_tracker.html">Donation History Tracking</a>
+                        <a class="mobile-nav-link" href="Badges_Rewards.html">Badges and Rewards</a>
+                        <a class="mobile-nav-link" href="FAQ.html">Jeevandhara FAQ</a>
+                        <a class="mobile-nav-link" href="about_jeevandhara.html">Contact Us</a>
+                    </div>
+                </div>
 
-            <div class="mobile-nav-section">
-                <h4>Want To Donate</h4>
-                <a class="mobile-nav-link" href="BBA.html">Blood Bank Appointment</a>
-                <a class="mobile-nav-link" href="AI.html">AI Blood Matching</a>
-                <a class="mobile-nav-link" href="health_advice.html">Health Advice</a>
-                <a class="mobile-nav-link" href="VBD.html">Register VBD Camp</a>
-                <a class="mobile-nav-link" href="camp.html">Blood Donation Camps</a>
-                <a class="mobile-nav-link" href="history_tracker.html">Donation History Tracking</a>
-                <a class="mobile-nav-link" href="Badges_Rewards.html">Badges and Rewards</a>
-                <a class="mobile-nav-link" href="FAQ.html">FAQ</a>
-            </div>
+                <div class="mobile-nav-group">
+                    <button class="mobile-nav-parent" type="button" aria-expanded="false">Looking for Blood <span class="chevron">&#9662;</span></button>
+                    <div class="mobile-nav-children">
+                        <a class="mobile-nav-link" href="main_donar_login.html">Donor Login</a>
+                        <a class="mobile-nav-link" href="blood_availability.html">Blood Availability</a>
+                        <a class="mobile-nav-link" href="blood_center_directory.html">Blood Center Directory</a>
+                        <a class="mobile-nav-link sos-link" href="blood_center.html">SOS Emergency</a>
+                    </div>
+                </div>
 
-            <div class="mobile-nav-section">
-                <h4>Blood Center</h4>
-                <a class="mobile-nav-link" href="jeevandhara_login.html">Jeevandhara Login</a>
-                <a class="mobile-nav-link" href="blood_center.html">Add Your Blood Center</a>
+                <div class="mobile-nav-group">
+                    <button class="mobile-nav-parent" type="button" aria-expanded="false">Want to Donate <span class="chevron">&#9662;</span></button>
+                    <div class="mobile-nav-children">
+                        <a class="mobile-nav-link" href="BBA.html">Blood Bank Appointment</a>
+                        <a class="mobile-nav-link" href="AI.html">AI Blood Matching</a>
+                        <a class="mobile-nav-link" href="health_advice.html">Health Advice (Diet)</a>
+                        <a class="mobile-nav-link" href="VBD.html">Register VBD Camp</a>
+                        <a class="mobile-nav-link" href="camp.html">Blood Donation Camps</a>
+                    </div>
+                </div>
+
+                <div class="mobile-nav-group">
+                    <button class="mobile-nav-parent" type="button" aria-expanded="false">Blood Center Login <span class="chevron">&#9662;</span></button>
+                    <div class="mobile-nav-children">
+                        <a class="mobile-nav-link" href="jeevandhara_login.html">Jeevandhara Login</a>
+                        <a class="mobile-nav-link" href="blood_center.html">Add your Blood Center</a>
+                    </div>
+                </div>
             </div>
         </aside>
 
@@ -1399,15 +1452,15 @@
     <div class="ticker-track">
         
         <div class="ticker-content">
-            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
-            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
-            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+            <span>ðŸ©¸ ðð”ðˆð‹ð“ ð…ðŽð‘ ð„ðŒð„ð‘ð†ð„ðð‚ðˆð„ð’ âœ¦ ððŽð–ð„ð‘ð„ðƒ ðð˜ ðð„ðŽðð‹ð„ â¤ï¸</span>
+            <span>ðŸ©¸ ðð”ðˆð‹ð“ ð…ðŽð‘ ð„ðŒð„ð‘ð†ð„ðð‚ðˆð„ð’ âœ¦ ððŽð–ð„ð‘ð„ðƒ ðð˜ ðð„ðŽðð‹ð„ â¤ï¸</span>
+            <span>ðŸ©¸ ðð”ðˆð‹ð“ ð…ðŽð‘ ð„ðŒð„ð‘ð†ð„ðð‚ðˆð„ð’ âœ¦ ððŽð–ð„ð‘ð„ðƒ ðð˜ ðð„ðŽðð‹ð„ â¤ï¸</span>
         </div>
 
         <div class="ticker-content">
-            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
-            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
-            <span>🩸 𝐁𝐔𝐈𝐋𝐓 𝐅𝐎𝐑 𝐄𝐌𝐄𝐑𝐆𝐄𝐍𝐂𝐈𝐄𝐒 ✦ 𝐏𝐎𝐖𝐄𝐑𝐄𝐃 𝐁𝐘 𝐏𝐄𝐎𝐏𝐋𝐄 ❤️</span>
+            <span>ðŸ©¸ ðð”ðˆð‹ð“ ð…ðŽð‘ ð„ðŒð„ð‘ð†ð„ðð‚ðˆð„ð’ âœ¦ ððŽð–ð„ð‘ð„ðƒ ðð˜ ðð„ðŽðð‹ð„ â¤ï¸</span>
+            <span>ðŸ©¸ ðð”ðˆð‹ð“ ð…ðŽð‘ ð„ðŒð„ð‘ð†ð„ðð‚ðˆð„ð’ âœ¦ ððŽð–ð„ð‘ð„ðƒ ðð˜ ðð„ðŽðð‹ð„ â¤ï¸</span>
+            <span>ðŸ©¸ ðð”ðˆð‹ð“ ð…ðŽð‘ ð„ðŒð„ð‘ð†ð„ðð‚ðˆð„ð’ âœ¦ ððŽð–ð„ð‘ð„ðƒ ðð˜ ðð„ðŽðð‹ð„ â¤ï¸</span>
         </div>
 
     </div>
@@ -1468,6 +1521,18 @@
 </section>
 
     <script>
+        function resetMobileSidebarDropdowns() {
+            const groups = document.querySelectorAll('#mobileSidebar .mobile-nav-group');
+            groups.forEach((group, index) => {
+                const shouldOpen = index === 0;
+                group.classList.toggle('open', shouldOpen);
+                const parentButton = group.querySelector('.mobile-nav-parent');
+                if (parentButton) {
+                    parentButton.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
+                }
+            });
+        }
+
         function toggleMobileSidebar(forceOpen) {
             const sidebar = document.getElementById('mobileSidebar');
             const overlay = document.getElementById('mobileSidebarOverlay');
@@ -1481,6 +1546,10 @@
             overlay.classList.toggle('open', shouldOpen);
             document.body.classList.toggle('nav-open', shouldOpen);
             sidebar.setAttribute('aria-hidden', shouldOpen ? 'false' : 'true');
+
+            if (!shouldOpen) {
+                resetMobileSidebarDropdowns();
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -1502,13 +1571,40 @@
                 setInterval(nextSlide, 3000);
             }
 
+            const mobileDropdowns = document.querySelectorAll('#mobileSidebar .mobile-nav-parent');
+            const mobileGroups = document.querySelectorAll('#mobileSidebar .mobile-nav-group');
+
+            mobileDropdowns.forEach((dropdown) => {
+                dropdown.addEventListener('click', () => {
+                    const group = dropdown.closest('.mobile-nav-group');
+                    if (!group) return;
+
+                    const willOpen = !group.classList.contains('open');
+
+                    mobileGroups.forEach((item) => {
+                        item.classList.remove('open');
+                        const itemDropdown = item.querySelector('.mobile-nav-parent');
+                        if (itemDropdown) {
+                            itemDropdown.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+
+                    if (willOpen) {
+                        group.classList.add('open');
+                        dropdown.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+
+            resetMobileSidebarDropdowns();
+
             const mobileLinks = document.querySelectorAll('#mobileSidebar a');
             mobileLinks.forEach((link) => {
                 link.addEventListener('click', () => toggleMobileSidebar(false));
             });
 
             window.addEventListener('resize', () => {
-                if (window.innerWidth > 768) {
+                if (window.innerWidth > 1100) {
                     toggleMobileSidebar(false);
                 }
             });
@@ -1969,5 +2065,6 @@
     <footer>
         <p>&copy; 2026 Jeevandhara Blood Network. All Rights Reserved.</p>
     </footer>
+<script src="../config/mobile-sidebar.js" defer></script>
 </body>
 </html>
