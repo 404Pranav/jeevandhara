@@ -17,7 +17,9 @@
     "FIREBASE_PROJECT_ID": "@firebase_project_id",
     "SUPABASE_URL": "@supabase_url",
     "SUPABASE_ANON_KEY": "@supabase_anon_key",
-    "RESEND_API_KEY": "@resend_api_key",
-    "RESEND_FROM_EMAIL": "@resend_from_email"
+    "MAILJET_API_KEY": "@mailjet_api_key",
+    "MAILJET_API_SECRET": "@mailjet_api_secret",
+    "MAILJET_FROM_EMAIL": "@mailjet_from_email",
+    "MAILJET_FROM_NAME": "@mailjet_from_name"
   }
 }

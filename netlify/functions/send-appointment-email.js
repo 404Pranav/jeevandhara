@@ -37,7 +37,11 @@ function normalizeErrorReason(value) {
     const direct = normalizeErrorReason(value.reason)
       || normalizeErrorReason(value.error)
       || normalizeErrorReason(value.message)
-      || normalizeErrorReason(value.name);
+      || normalizeErrorReason(value.name)
+      || normalizeErrorReason(value.ErrorMessage)
+      || normalizeErrorReason(value.ErrorInfo)
+      || normalizeErrorReason(value.ErrorIdentifier)
+      || normalizeErrorReason(value.StatusText);
 
     if (direct) return direct;
 
@@ -50,8 +54,21 @@ function normalizeErrorReason(value) {
       if (listReason) return listReason;
     }
 
+    if (Array.isArray(value.Errors)) {
+      const listReason = value.Errors
+        .map((item) => normalizeErrorReason(item))
+        .filter(Boolean)
+        .join('; ');
+
+      if (listReason) return listReason;
+    }
+
     if (value.details) {
       return normalizeErrorReason(value.details);
+    }
+
+    if (value.Details) {
+      return normalizeErrorReason(value.Details);
     }
   }
 
@@ -67,15 +84,22 @@ exports.handler = async function handler(event) {
     };
   }
 
-  const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_xxxxxxxxx';
-  const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+  const MAILJET_API_KEY = process.env.MAILJET_API_KEY || 'mailjet_api_key_here';
+  const MAILJET_API_SECRET = process.env.MAILJET_API_SECRET || 'mailjet_api_secret_here';
+  const MAILJET_FROM_EMAIL = process.env.MAILJET_FROM_EMAIL || 'no-reply@example.com';
+  const MAILJET_FROM_NAME = process.env.MAILJET_FROM_NAME || 'Jeevandhara Blood Network';
 
-  if (!RESEND_API_KEY || RESEND_API_KEY === 're_xxxxxxxxx') {
+  if (
+    !MAILJET_API_KEY
+    || MAILJET_API_KEY === 'mailjet_api_key_here'
+    || !MAILJET_API_SECRET
+    || MAILJET_API_SECRET === 'mailjet_api_secret_here'
+  ) {
     return {
       statusCode: 500,
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
-        error: 'Resend API key is not configured. Replace re_xxxxxxxxx with your real API key in RESEND_API_KEY environment variable.'
+        error: 'Mailjet credentials are not configured. Set MAILJET_API_KEY and MAILJET_API_SECRET environment variables.'
       })
     };
   }
@@ -120,6 +144,23 @@ exports.handler = async function handler(event) {
   };
 
   const subject = `Your appointment is fixed - ${safe.appointmentRef}`;
+  const textPart = [
+    'Your appointment is fixed',
+    '',
+    `Reference: ${safe.appointmentRef}`,
+    `Name: ${safe.fullName}`,
+    `Center: ${safe.center}`,
+    `Date: ${safe.date}`,
+    `Time: ${safe.time}`,
+    `Blood Group: ${safe.bloodGroup}`,
+    `Gender: ${safe.gender}`,
+    `Phone: ${safe.phone || '-'}`,
+    `Email: ${safe.email}`,
+    '',
+    'Thank you for choosing to save lives.',
+    'Jeevandhara Blood Network'
+  ].join('\n');
+
   const html = `
     <div style="font-family: Arial, sans-serif; color: #1f2937; line-height: 1.5;">
       <h2 style="margin-bottom: 8px;">Your appointment is fixed</h2>
@@ -140,41 +181,78 @@ exports.handler = async function handler(event) {
   `;
 
   try {
-    const resendResponse = await fetch('https://api.resend.com/emails', {
+    const basicAuth = Buffer.from(`${MAILJET_API_KEY}:${MAILJET_API_SECRET}`).toString('base64');
+
+    const mailjetResponse = await fetch('https://api.mailjet.com/v3.1/send', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${RESEND_API_KEY}`
+        Authorization: `Basic ${basicAuth}`
       },
       body: JSON.stringify({
-        from: RESEND_FROM_EMAIL,
-        to: [email],
-        subject,
-        html
+        Messages: [
+          {
+            From: {
+              Email: MAILJET_FROM_EMAIL,
+              Name: MAILJET_FROM_NAME
+            },
+            To: [
+              {
+                Email: email,
+                Name: fullName || email
+              }
+            ],
+            Subject: subject,
+            TextPart: textPart,
+            HTMLPart: html,
+            CustomID: safe.appointmentRef
+          }
+        ]
       })
     });
 
-    const payload = await resendResponse.json().catch(() => ({}));
+    const payload = await mailjetResponse.json().catch(() => ({}));
 
-    if (!resendResponse.ok) {
+    if (!mailjetResponse.ok) {
       const reason = normalizeErrorReason(payload);
       return {
-        statusCode: resendResponse.status,
+        statusCode: mailjetResponse.status,
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          error: 'Failed to send email with Resend',
+          error: 'Failed to send email with Mailjet',
           reason,
           details: payload
         })
       };
     }
 
+    const firstMessage = payload && Array.isArray(payload.Messages) ? payload.Messages[0] : null;
+    const firstError = firstMessage && Array.isArray(firstMessage.Errors) ? firstMessage.Errors[0] : null;
+
+    if (firstError) {
+      const reason = normalizeErrorReason(firstError) || 'Mailjet returned a delivery error';
+      return {
+        statusCode: 502,
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          error: 'Mailjet rejected the message',
+          reason,
+          details: payload
+        })
+      };
+    }
+
+    const firstRecipient = firstMessage && Array.isArray(firstMessage.To) ? firstMessage.To[0] : null;
+    const messageId = firstRecipient && (firstRecipient.MessageID || firstRecipient.MessageUUID)
+      ? (firstRecipient.MessageID || firstRecipient.MessageUUID)
+      : null;
+
     return {
       statusCode: 200,
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
         success: true,
-        id: payload && payload.id ? payload.id : null
+        id: messageId
       })
     };
   } catch (error) {
