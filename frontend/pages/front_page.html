@@ -212,6 +212,118 @@
             flex-shrink: 0;
         }
 
+        .mobile-menu-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .mobile-sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            z-index: 1098;
+        }
+
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(86vw, 340px);
+            height: 100vh;
+            background: linear-gradient(160deg, #1c7e7a 0%, #184f72 100%);
+            color: #ffffff;
+            transform: translateX(100%);
+            transition: transform 0.28s ease;
+            z-index: 1099;
+            padding: 18px 16px 26px;
+            overflow-y: auto;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.22);
+        }
+
+        .mobile-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .mobile-sidebar-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mobile-sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+        }
+
+        .mobile-sidebar-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .mobile-sidebar-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.38);
+            color: #ffffff;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-nav-section {
+            margin-bottom: 16px;
+        }
+
+        .mobile-nav-section h4 {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.78);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .mobile-nav-link.sos-link {
+            background: rgba(230, 57, 70, 0.28);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        body.nav-open {
+            overflow: hidden;
+        }
+
         .top-login-btn {
             display: inline-flex;
             align-items: center;
@@ -863,27 +975,42 @@
         }
 
         @media (max-width: 768px) {
-            .navbar { padding: 10px 14px; gap: 12px; }
+            .navbar {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 14px;
+                gap: 10px;
+                min-height: auto;
+            }
             .logo img { height: 64px; }
-            .nav-links { gap: 10px; }
-            .nav-item { padding: 8px 0; }
-            .nav-item > a { font-size: 14px; }
 
+            .nav-links,
             .nav-actions {
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 8px;
+                display: none;
             }
 
-            .top-login-btn,
-            .top-admin-btn {
-                padding: 8px 14px;
+            .mobile-menu-toggle {
+                display: inline-flex;
+            }
+
+            .hero-section {
+                min-height: auto;
+                padding-bottom: 0;
+                background: var(--primary-gradient);
+            }
+
+            .hero-slider {
+                display: none;
+            }
+
+            .scrolling-ticker {
+                z-index: 70;
             }
 
             .hero-content {
-                margin-top: 78px;
-                padding: 0 14px;
+                margin-top: 24px;
+                padding: 0 14px 18px;
             }
 
             .stethoscope-icon { font-size: 34px; }
@@ -920,9 +1047,14 @@
         }
 
         @media (max-width: 480px) {
-            .nav-links { gap: 8px; }
-            .nav-item > a { font-size: 13px; }
-            .dropdown { min-width: 210px; }
+            .mobile-menu-toggle {
+                width: 42px;
+                height: 42px;
+            }
+
+            .mobile-sidebar {
+                width: min(88vw, 320px);
+            }
 
             .hero-title { font-size: 27px; }
             .search-widget { margin-top: 30px; }
@@ -1104,7 +1236,54 @@
                 <a class="top-login-btn" href="main_donar_login.html">Donor Login</a>
                 <a class="top-admin-btn" href="admin_login.html">Admin Login</a>
             </div>
+
+            <button class="mobile-menu-toggle" type="button" aria-label="Open navigation menu" onclick="toggleMobileSidebar(true)">
+                <i class="fas fa-bars"></i>
+            </button>
         </nav>
+
+        <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileSidebar(false)"></div>
+        <aside class="mobile-sidebar" id="mobileSidebar" aria-hidden="true">
+            <div class="mobile-sidebar-header">
+                <h3>Navigate</h3>
+                <button class="mobile-sidebar-close" type="button" aria-label="Close navigation menu" onclick="toggleMobileSidebar(false)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="mobile-nav-section">
+                <h4>Main</h4>
+                <a class="mobile-nav-link" href="front_page.html">Home</a>
+                <a class="mobile-nav-link" href="about_jeevandhara.html">About Jeevandhara</a>
+                <a class="mobile-nav-link" href="main_donar_login.html">Donor Login</a>
+                <a class="mobile-nav-link" href="admin_login.html">Admin Login</a>
+            </div>
+
+            <div class="mobile-nav-section">
+                <h4>Looking For Blood</h4>
+                <a class="mobile-nav-link" href="blood_availability.html">Blood Availability</a>
+                <a class="mobile-nav-link" href="blood_center_directory.html">Blood Center Directory</a>
+                <a class="mobile-nav-link sos-link" href="blood_center.html">SOS Emergency</a>
+            </div>
+
+            <div class="mobile-nav-section">
+                <h4>Want To Donate</h4>
+                <a class="mobile-nav-link" href="BBA.html">Blood Bank Appointment</a>
+                <a class="mobile-nav-link" href="AI.html">AI Blood Matching</a>
+                <a class="mobile-nav-link" href="health_advice.html">Health Advice</a>
+                <a class="mobile-nav-link" href="VBD.html">Register VBD Camp</a>
+                <a class="mobile-nav-link" href="camp.html">Blood Donation Camps</a>
+                <a class="mobile-nav-link" href="history_tracker.html">Donation History Tracking</a>
+                <a class="mobile-nav-link" href="Badges_Rewards.html">Badges and Rewards</a>
+                <a class="mobile-nav-link" href="FAQ.html">FAQ</a>
+            </div>
+
+            <div class="mobile-nav-section">
+                <h4>Blood Center</h4>
+                <a class="mobile-nav-link" href="jeevandhara_login.html">Jeevandhara Login</a>
+                <a class="mobile-nav-link" href="blood_center.html">Add Your Blood Center</a>
+            </div>
+        </aside>
 
 
         <div class="scrolling-ticker">
@@ -1180,6 +1359,21 @@
 </section>
 
     <script>
+        function toggleMobileSidebar(forceOpen) {
+            const sidebar = document.getElementById('mobileSidebar');
+            const overlay = document.getElementById('mobileSidebarOverlay');
+            if (!sidebar || !overlay) return;
+
+            const shouldOpen = typeof forceOpen === 'boolean'
+                ? forceOpen
+                : !sidebar.classList.contains('open');
+
+            sidebar.classList.toggle('open', shouldOpen);
+            overlay.classList.toggle('open', shouldOpen);
+            document.body.classList.toggle('nav-open', shouldOpen);
+            sidebar.setAttribute('aria-hidden', shouldOpen ? 'false' : 'true');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const slides = document.querySelectorAll('.slide');
             let currentSlide = 0;
@@ -1195,9 +1389,26 @@
                 slides[currentSlide].classList.add('active');
             }
 
-            // Change slide every 3000 milliseconds (3 seconds).
-            // Change 3000 to 1000 if you want it to change every 1 second.
-            setInterval(nextSlide, 3000); 
+            if (slides.length > 1) {
+                setInterval(nextSlide, 3000);
+            }
+
+            const mobileLinks = document.querySelectorAll('#mobileSidebar a');
+            mobileLinks.forEach((link) => {
+                link.addEventListener('click', () => toggleMobileSidebar(false));
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    toggleMobileSidebar(false);
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    toggleMobileSidebar(false);
+                }
+            });
         });
     </script>
 
